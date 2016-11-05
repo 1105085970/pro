@@ -33,7 +33,7 @@ class IndexController extends Controller
     	
     	$arr=$this->Category;
 
-    	//判断用户访问的url中有没有这个预定类别，没有返回404
+    	//判断用户访问的url中有没有这个预定类别，没有返回404。
     	if(!in_array($U1, $arr))return view('errors.404');
 
     	//存在返回主页视图
