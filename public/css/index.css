@@ -1,0 +1,50 @@
+/*
+首页css样式
+*/
+
+/*三列
+@media (min-width: 1920px) { ... }
+
+二列
+@media (min-width: 1280px) { ... }
+
+一列
+@media (min-width: 1070px) { ... }
+
+一列隐藏类别
+@media (min-width: 750px) { ... }
+
+*/
+
+*{
+	font-family:微软雅黑;
+}
+body{
+	background-color: rgba(0,0,0,0.2);
+}
+
+/*顶部*/
+#top{
+	background: #db4437;
+	padding: 0 0 0 8px;
+	box-shadow: 0 1px 8px rgba(0,0,0,.3);
+	color: #fff;
+}
+
+/*顶部搜索*/
+#search{
+	height:64px;
+}
+
+/*顶部子类别*/
+#subclass{
+	
+}
+
+/*主内容*/
+#contents{
+	height:1000px;
+	margin-left: 210px;
+	background: #fff;
+}
+
