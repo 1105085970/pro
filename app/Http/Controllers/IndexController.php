@@ -16,31 +16,36 @@ class IndexController extends Controller
 {
 	/*
 	所有类别
+    log login 登录页
 	hom home 首页
 	pos posts 文章
 	sea search 搜索
 	col Collections 收藏集
 	com Communities 社区
 	pro Profile 	资料
-	peo People		人
+	peo People		人脉
 	not Notifications 通知
 	set Settings 	设置
 	*/
-	public $Category=['hom','pos','sea','col','com','pro','peo','not','set'];
+	public $Category=['log','hom','pos','sea','col','com','pro','peo','not','set'];
 
     //首页控制器
-    public function Index($U1='hom',$U2='',$U3=''){
+    public function Index($U1='hom',$U2='',$U3='',$U4=''){
     	
     	$arr=$this->Category;
 
     	//判断用户访问的url中有没有这个预定类别，没有返回404。
     	if(!in_array($U1, $arr))return view('errors.404');
 
+        $Param=[];
+        if($U2)$Param[]=$U2;
+        if($U3)$Param[]=$U3;
+        if($U4)$Param[]=$U4;
+
     	//存在返回主页视图
     	$arr=[
-    		'U1'=>$U1,
-    		'U2'=>$U2,
-    		'U3'=>$U3
+    		'Action'=>$U1,
+    		'Param'=>((count($Param))?implode(',',$Param):'')
     	];
     	return view('index',$arr);
 
@@ -61,13 +66,27 @@ class IndexController extends Controller
     	$Method='Post'.$request->input('Method');
 
     	//当请求左侧时
-    	if($Method=='PostLeft')return view('left');
+    	if($Method=='PostLeft'){
+            $arr=[
+                '首页'=>['Url'=>'/hom','Param'=>['hom']],
+                '收藏集'=>['Url'=>'/col','Param'=>['col']],
+                '社群'=>['Url'=>'/com','Param'=>['com']],
+                '个人资料'=>['Url'=>'/pro','Param'=>['pro']],
+                '人脉'=>['Url'=>'/peo','Param'=>['peo']],
+                '通知'=>['Url'=>'/not','Param'=>['not']],
+                '设置'=>['Url'=>'/set','Param'=>['set']]
+            ];
+            return $arr;
+        }
 
     	//实例化类
     	$C=new $C;
 
     	//当请求顶部时
-    	if($Method=='PostTop')return view('search').$C->$Method($request);
+    	if($Method=='PostTop'){
+            $arr=['Search'=>'搜索框'];
+            return array_merge($arr,$C->$Method($request));
+        }
 
     	return $C->$Method($request);
 

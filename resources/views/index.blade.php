@@ -2,58 +2,53 @@
 <html>
 <head>
 	<title>加载中</title>
-	{{-- CSRF保护 --}}
-	<meta name="csrf-token" content="{{ csrf_token() }}" url="/ajax">
-
-	{{-- 引入jQuery --}}
-	<script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
-
-	{{-- 引入Bootstrap --}}
-	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-
-	{{-- 引入我首页的js、css逻辑 --}}
-	<link rel="stylesheet" type="text/css" href="/css/index.css">
-	<script type="text/javascript" src="/js/index.js"></script>
+	{{-- 引入公共文件 --}}
+	@include('public')
 
 	{{-- 首次加载自动发送ajax --}}
 	<script type="text/javascript">
 		$(function(){
-			index('{{$U1}}','{{$U2}}','{{$U3}}');
+			index('{{$Action}}','{{$Param}}');
 		});
 	</script>
-
-	{{-- 禁止缩放 --}}
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-	{{-- IE兼容性模式 --}}
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 </head>
 <body>
 	{{-- 全宽容器 --}}
 	<div class="container-fluid">
-  		<div class="row">
 
-  			{{-- 顶部 --}}
-			<div id="top">
-     			
-     			{{-- 搜索框等 --}}
-				<div id="search">
+		{{-- 顶部 --}}
+		<div id="Top">
+				
+			{{-- 搜索框等 --}}
+			<div id="N_S_S">
+				{{-- 导航按钮 --}}
+				<div id="NavBut">
+					<i class="fa fa-bars fa-lg" aria-hidden="true"></i>
 				</div>
 
-				{{-- 一些子类别 --}}
-				<div id="subclass">
+				{{-- 网站名 --}}
+				<div id="SiteName" >
+					<a href="/">Google+</a>
+					<div id="CatName" ></div>
 				</div>
 
-    		</div>
-    	</div>
+				{{-- 搜索框 --}}
+				<div id="Search">
+				</div>
+				
+			</div>
 
-    	<div id="contents" class="row">
+			{{-- 一些子类别 --}}
+			<div id="SubClass">
+			</div>
+
+		</div>
+
+    	<div id="Contents" class="row">
     		
     	</div>
   		
 	</div>
 </body>
-<!--djjdifjsifis-->
 </html>

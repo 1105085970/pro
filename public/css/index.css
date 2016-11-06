@@ -22,27 +22,79 @@
 body{
 	background-color: rgba(0,0,0,0.2);
 }
+a:hover{
+	text-decoration: none;
+}
 
 /*顶部*/
-#top{
-	background: #db4437;
+#Top{
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
 	padding: 0 0 0 8px;
 	box-shadow: 0 1px 8px rgba(0,0,0,.3);
 	color: #fff;
+	line-height: 48px;
+	transition: all .5s;
 }
 
 /*顶部搜索*/
-#search{
+#N_S_S{
 	height:64px;
+	margin-left:8px;
+	padding-top:8px;
 }
 
+/*导航按钮*/
+#NavBut{
+	width:48px;
+	height:48px;
+	float:left;
+	text-align: center;
+	cursor:pointer;
+	border-radius:50%;
+}
+
+/*网站名*/
+#SiteName{
+	float:left;
+	color:#fff;
+	font-size:1.5em;
+	margin-left:12px;
+}
+#SiteName a{
+	color:#fff;
+}
+
+/*类别名*/
+#CatName{
+	float:right;
+	padding-left: 24px;
+    margin-left: 24px;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    font-weight:100;
+}
+
+/*搜索框*/
+#Search{
+	float:left;
+}
+
+
 /*顶部子类别*/
-#subclass{
-	
+#SubClass{
+	text-align:center;
+}
+#SubClass a{
+	width:160px;
+	height:48px;
+	display:inline-block;
+	color: rgba(255,255,255,0.56);
 }
 
 /*主内容*/
-#contents{
+#Contents{
 	height:1000px;
 	margin-left: 210px;
 	background: #fff;
