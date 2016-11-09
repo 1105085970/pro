@@ -14,7 +14,7 @@ $(function(){	//当文档加载完成时
 });
 
 //首页ajax逻辑
-function index(Action='hom',Param=''){
+function index(Action='hom',Param='',fun){
 	
 	//判断参数
 	var U={Action:Action,Param:Param},UU;
@@ -53,10 +53,13 @@ function index(Action='hom',Param=''){
 						}
 					}
 
-					var a=$('<a onclick="return index(\''+((A)?A:'')+'\',\''+(pp.slice(1))+'\')" href="'+N[n]['Url']+'" >'+n+'</a>');
+					var a=$('<a onclick="return index(\''+((A)?A:'')+'\',\''+(pp.slice(1))+'\','+Action+'Contents)" href="'+N[n]['Url']+'" >'+n+'</a>');
 					SubClass.append(a);
 
 				}
+				$("#Contents").css('margin-top','112px');
+			}else{
+				$("#Contents").css('margin-top','64px');
 			}
 			
 		},
@@ -94,9 +97,7 @@ function index(Action='hom',Param=''){
 			//请求失败时
 			if(!data){alert('主内容请求失败'); return;};
 			//当请求成功时
-			var Fun=Action+'Contents';
-			eval(Fun+'(\''+JSON.stringify(data)+'\',\''+Param+'\')');
-			//eval("data="+data+";");
+			fun(data,Param);
 			
 		},
 		error:function(){

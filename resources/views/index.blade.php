@@ -8,7 +8,7 @@
 	{{-- 首次加载自动发送ajax --}}
 	<script type="text/javascript">
 		$(function(){
-			index('{{$Action}}','{{$Param}}');
+			index('{{$Action}}','{{$Param}}',{{$Action}}Contents);
 		});
 	</script>
 
