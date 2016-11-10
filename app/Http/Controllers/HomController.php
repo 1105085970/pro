@@ -26,7 +26,8 @@ class HomController extends Controller
     	//Fun 			请求主内容成功时要执行的函数 
     	$arr=[
     		'Background'=>'#db4437',
-    		'CatName'=>'Home'
+    		'CatName'=>'Home',
+            'Nav'=>['导航1'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
     	];
     	return $arr;
 
