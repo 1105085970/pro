@@ -25,8 +25,8 @@ class SeaController extends Controller
             //例 'Nav'=>['导航1'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
         //Fun           请求主内容成功时要执行的函数 
         $arr=[
-            'Background'=>'#db4437',
-            'CatName'=>'Home'
+            'Background'=>'#455a64',
+            'CatName'=>'搜索'
         ];
         return $arr;
 

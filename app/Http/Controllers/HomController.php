@@ -27,7 +27,8 @@ class HomController extends Controller
     	$arr=[
     		'Background'=>'#db4437',
     		'CatName'=>'Home',
-            'Nav'=>['导航1'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
+            'Title'=>'Google+'
+            
     	];
     	return $arr;
 

@@ -8,7 +8,7 @@
 	{{-- 首次加载自动发送ajax --}}
 	<script type="text/javascript">
 		$(function(){
-			index('{{$Action}}','{{$Param}}',{{$Action}}Contents);
+			index('{{$Action}}','{{$Param}}','{{$Url}}');
 		});
 	</script>
 
@@ -29,21 +29,27 @@
 
 				{{-- 网站名 --}}
 				<div id="SiteName" >
-					<a href="/">Google+</a>
-					<div id="CatName" ></div>
+					<a href="/" class="hidden-xs-down">Google+</a>
+					<div id="CatName" class="hidden-xs-down" ></div>
+					<div id="CatName2" class="hidden-sm-up" ></div>
 				</div>
 
 				{{-- 搜索框 --}}
-				<div id="Search">
+				<div id="Search" class="hidden-md-down col-sm-6 Search" >
 				</div>
+				{{-- 搜索图标 --}}
+				<i id="Searchmin" class="fa fa-search fa-lg hidden-lg-up Search" aria-hidden="true" onclick="index('sea','','/sea')"></i>
 				
 			</div>
 
 			{{-- 一些子类别 --}}
-			<div id="SubClass">
+			<div id="SubClass" class="row">
 			</div>
 
 		</div>
+
+		{{-- 左侧导航 --}}
+		<div id="Navigation" class="hidden-sm-down"></div>
 
     	<div id="Contents" class="row">
     		

@@ -1,26 +1,9 @@
-/*
-首页css样式
-*/
-
-/*三列
-@media (min-width: 1920px) { ... }
-
-二列
-@media (min-width: 1280px) { ... }
-
-一列
-@media (min-width: 1070px) { ... }
-
-一列隐藏类别
-@media (min-width: 750px) { ... }
-
-*/
 
 *{
 	font-family:微软雅黑;
 }
 body{
-	background-color: rgba(0,0,0,0.2);
+	background-color:#eee;
 }
 a:hover{
 	text-decoration: none;
@@ -37,6 +20,15 @@ a:hover{
 	color: #fff;
 	line-height: 48px;
 	transition: all .5s;
+	z-index: 100;
+}
+
+/*如果顶部是白色背景*/
+.text-muted #SiteName,.text-muted #SiteName a,.text-muted #Search,.text-muted #SubClass a{
+	color: #818a91!important;
+}
+.text-muted #Search{
+	background: rgba(0,0,0,.1);
 }
 
 /*顶部搜索*/
@@ -60,7 +52,7 @@ a:hover{
 #SiteName{
 	float:left;
 	color:#fff;
-	font-size:1.5em;
+	font-size:1.3em;
 	margin-left:12px;
 }
 #SiteName a{
@@ -72,13 +64,47 @@ a:hover{
 	float:right;
 	padding-left: 24px;
     margin-left: 24px;
+    margin-top: 7px;
     border-left: 1px solid rgba(255,255,255,0.2);
     font-weight:100;
+    line-height: 34px;
+}
+#CatName2{
+	float:right;
+	font-weight:100;
 }
 
 /*搜索框*/
 #Search{
 	float:left;
+	background: rgba(255,255,255,.15);
+	cursor: text;
+	max-width: 720px;
+	border-radius: 3px;
+	margin-left: 48px;
+    margin-right: 36px;
+    color: rgba(255,255,255,0.75);
+    font-size: 16px;
+}
+#Search i{
+	margin: auto 8px;
+}
+#Search input{
+	background-color: transparent;
+	border:0;
+	width:90%;
+	color:#fff;
+	outline: none;
+}
+
+#Searchmin{
+	width: 50px;
+	float:right;
+	height:48px;
+	line-height: 48px;
+	display: block;
+	text-align:center;
+	cursor: pointer;
 }
 
 
@@ -87,11 +113,48 @@ a:hover{
 	text-align:center;
 }
 #SubClass a{
-	width:160px;
 	height:48px;
 	display:inline-block;
 	color: rgba(255,255,255,0.56);
 }
+
+/*左侧导航*/
+#Navigation{
+	width:210px;
+	position:fixed;
+	top:64px;
+	left:0;
+	color: rgba(0,0,0,0.87);
+	padding-top: 16px;
+}
+
+#Navigation a{
+	color: rgba(0,0,0,0.87);
+	font-size: 14px;
+	height: 48px;
+    font-weight: 500;
+    opacity: .85;
+    line-height: 50px;
+    overflow: hidden;
+    display: flex;
+    padding: 0 12px 0 20px;
+}
+#Navigation a:hover{
+	background: #e7e7e7;
+}
+#Navigation i{
+	display: block;
+	line-height: 50px;
+	font-weight: 300;
+    width: 50px;
+    height:50px;
+    padding-right: 22px;
+    color:#757575;
+}
+#Navigation_now{
+	background: #e7e7e7;
+}
+
 
 /*主内容*/
 #Contents{

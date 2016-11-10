@@ -45,7 +45,8 @@ class IndexController extends Controller
     	//存在返回主页视图
     	$arr=[
     		'Action'=>$U1,
-    		'Param'=>((count($Param))?implode(',',$Param):'')
+    		'Param'=>((count($Param))?implode(',',$Param):''),
+            'Url'=>$_SERVER['REQUEST_URI']
     	];
     	return view('index',$arr);
 
@@ -68,13 +69,13 @@ class IndexController extends Controller
     	//当请求左侧时
     	if($Method=='PostLeft'){
             $arr=[
-                '首页'=>['Url'=>'/hom','Param'=>['hom']],
-                '收藏集'=>['Url'=>'/col','Param'=>['col']],
-                '社群'=>['Url'=>'/com','Param'=>['com']],
-                '个人资料'=>['Url'=>'/pro','Param'=>['pro']],
-                '人脉'=>['Url'=>'/peo','Param'=>['peo']],
-                '通知'=>['Url'=>'/not','Param'=>['not']],
-                '设置'=>['Url'=>'/set','Param'=>['set']]
+                '首页'=>['Icon'=>'fa-home','Url'=>'/hom','Param'=>['hom']],
+                '收藏集'=>['Icon'=>'fa-podcast','Url'=>'/col','Param'=>['col']],
+                '社群'=>['Icon'=>'fa-th-large','Url'=>'/com','Param'=>['com']],
+                '个人资料'=>['Icon'=>'fa-user-circle','Url'=>'/pro','Param'=>['pro']],
+                '人脉'=>['Icon'=>'fa-users','Url'=>'/peo','Param'=>['peo']],
+                '通知'=>['Icon'=>'fa-bell','Url'=>'/not','Param'=>['not']],
+                '设置'=>['Icon'=>'fa-cog','Url'=>'/set','Param'=>['set']]
             ];
             return $arr;
         }
@@ -84,7 +85,7 @@ class IndexController extends Controller
 
     	//当请求顶部时
     	if($Method=='PostTop'){
-            $arr=['Search'=>'搜索框'];
+            $arr=['Search'=>''];
             return array_merge($arr,$C->$Method($request));
         }
 
