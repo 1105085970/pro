@@ -51,8 +51,12 @@
 		{{-- 左侧导航 --}}
 		<div id="Navigation" class="hidden-sm-down"></div>
 
-    	<div id="Contents" class="row">
-    		
+		<div id="Contentsbox" class="row">
+			<div class="col-sm-3 col-lg-2 col-xl-2 hidden-sm-down"></div>
+			<div class="col-md-9 col-sm-12 col-lg-10 col-xl-10">
+		    	<div id="Contents" class="row">	
+		    	</div>
+	    	</div>
     	</div>
   		
 	</div>

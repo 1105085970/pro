@@ -168,9 +168,9 @@ function Top(data,Action){
 	}
 
 	//横向导航条
+	var N=data.Nav,SubClass=$('#SubClass');
+	SubClass.empty();
 	if(data.Nav){
-		var N=data.Nav,SubClass=$('#SubClass');
-		SubClass.empty();
 		SubClass.html('<div class="col-md-3"></div>');
 		for(n in N){
 			var p=N[n]['Param'],
@@ -196,8 +196,10 @@ function Top(data,Action){
 
 		}
 		$("#Contents").css('margin-top','112px');
+		$("#Navigation").css('top','112px');
 	}else{
 		$("#Contents").css('margin-top','64px');
+		$("#Navigation").css('top','64px');
 	}
 
 }
@@ -219,6 +221,7 @@ function Left(data,Action){
 window.onpopstate=function(event){
 	//alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
 	var s=event.state;
+	if(!s.Action)return;
 	Left(s.Leftdata,s.Action);
 	Top(s.Topdata,s.Action);
 	$('#Top').css('background',s.Topdata.Background);
