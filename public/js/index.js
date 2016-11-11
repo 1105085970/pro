@@ -210,7 +210,7 @@ function Left(data,Action){
 		a='';
 	for(v in data){
 		var i='<i class="fa '+data[v]['Icon']+' fa-fw fa-lg" aria-hidden="true"></i>';
-		var on="index('"+data[v]['Param']+"','','"+data[v]['Url']+"')";
+		var on="return index('"+data[v]['Param']+"','','"+data[v]['Url']+"')";
 		a+='<a id="'+((data[v]['Param']==Action)?'Navigation_now':'')+'" href="'+data[v]['Url']+'" onclick="'+on+'">'+i+v+'</a>';
 	}
 	//覆盖
