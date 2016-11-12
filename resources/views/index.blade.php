@@ -29,7 +29,7 @@
 
 				{{-- 网站名 --}}
 				<div id="SiteName" >
-					<a href="/" class="hidden-xs-down">Google+</a>
+					<a href="/" onclick="return index('hom','','/hom')" class="hidden-xs-down">Google+</a>
 					<div id="CatName" class="hidden-xs-down" ></div>
 					<div id="CatName2" class="hidden-sm-up" ></div>
 				</div>
@@ -55,10 +55,20 @@
 			<div class="col-sm-3 col-lg-2 col-xl-2 hidden-sm-down"></div>
 			<div class="col-md-9 col-sm-12 col-lg-10 col-xl-10">
 		    	<div id="Contents" class="row">	
+		    		
 		    	</div>
 	    	</div>
     	</div>
+
+    	{{-- 保存弹出的框 --}}
+    	<div id="Eject">
+    	</div>
+
   		
 	</div>
+
+	{{-- 添加帖子按钮，右下角 --}}
+	<i id="Newpost" onclick="Popup({Action:'hom',Method:'addpost',Id:'yu'},postform)" class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+
 </body>
 </html>

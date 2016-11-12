@@ -5,8 +5,8 @@
 body{
 	background-color:#eee;
 }
-a:hover{
-	text-decoration: none;
+a,a:hover,a:active{
+	text-decoration: none !important;
 }
 
 /*顶部*/
@@ -161,3 +161,87 @@ a:hover{
 	
 }
 
+/*发表新帖安钮，右下角*/
+#Newpost{
+	position: fixed;
+	bottom: 32px;
+    right: 32px;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.3);
+    cursor: pointer;
+    height: 56px;
+    width: 56px;
+    z-index: 2;
+    border-radius: 50%;
+    line-height: 56px;
+    text-align: center;
+    color:#FFF;
+    transition: all .5s;
+    display: none;
+}
+
+/*弹出框*/
+/*黑背景色*/
+.Black_bg{
+	position: fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background: rgba(0,0,0,0.12);
+	z-index: 200;
+
+}
+/*中间透明行*/
+.Transparent_row{
+	margin-top:0px;
+}
+/*中间白盒子*/
+.White_box{
+	background: #fff;
+	height:0px;
+	border-radius: 4px;
+	box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.4);
+	overflow: hidden;
+	opacity: 0;
+}
+.White_box_row1{
+	color: #444;
+}
+.White_box_row1 i{
+	height: 48px;
+	width:48px;
+	text-align:center;
+	line-height: 48px;
+	border-radius: 50%;
+    cursor: pointer;
+}
+
+/*提示框*/
+.Prompt{
+	max-height:80px;
+	background-color:#323232;
+	box-shadow:0 6px 10px 0 rgba(0,0,0,0.14),0 1px 18px 0 rgba(0,0,0,0.12),0 3px 5px -1px rgba(0,0,0,0.2);
+	color:#fff;
+	font-size:14px;
+	left:24px;
+	min-height:48px;
+	position:fixed;
+	border-radius:2px;
+	padding:14px 24px;
+	bottom:-48px;
+	opacity:0;
+}
+
+/*当浏览器宽度小于576px时*/
+@media (max-width: 576px) {
+	/*中间透明行*/
+	.Transparent_row{
+		margin-top:0px !important;
+		height: 100% !important;
+	}
+	/*中间白盒子*/
+	.White_box{
+		height: 100% !important;
+	}
+
+}

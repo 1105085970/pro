@@ -20,6 +20,8 @@ function bg(background){
 	var nav_now=$('#Navigation_now');
 	nav_now.css('color',background);
 	$('#Navigation_now > i').css('color',background);
+	//设置新帖按钮背景色
+	$('#Newpost').css('background',background);
 }
 
 //首页ajax逻辑
@@ -45,31 +47,19 @@ function index(Action='hom',Param='',Url=''){
 		data:UU,
 		success:function(data){
 			//请求失败时
-			if(!data){alert('头部请求失败'); return;};
+			if(!data){Prompt('头部请求失败'); return;};
 			//当请求成功时
 			Topdata=data;	//存数据
 			State++;		//加状态
 			if(State==3)Re(); //如果三个ajax都完成就存储数据
 			Top(data,Action);
-			//背景色
-			if(data.Background){
-				$('#Top').css('background',data.Background);
-				background=data.Background;
-				//如果是白色背景
-				if(background=='#FFF')
-					$('#Top').addClass('text-muted');
-				else
-					$('#Top').removeClass('text-muted');
-				//设置左侧导航被选中的颜色
-				bg(background);
-				
-			}
-	
+			//设置左侧导航被选中的颜色
+			bg(data.Background);
 			
 		},
 		error:function(){
 			//请求失败时
-			alert('头部请求失败');
+			Prompt('头部请求失败');
 		}
 
 	});
@@ -81,19 +71,22 @@ function index(Action='hom',Param='',Url=''){
 		data:UU,
 		success:function(data){
 			//请求失败时
-			if(!data){alert('左侧导航请求失败'); return;};
+			if(!data){Prompt('左侧导航请求失败'); return;};
 			//当请求成功时
 			Leftdata=data;	//存数据
 			State++;		//加状态
 			if(State==3)Re(); //如果三个ajax都完成就存储数据
 			Left(data,Action);
 			//设置左侧导航被选中的颜色
-			bg(background);
+			if(data.Background){
+				background=data.Background;
+				bg(background);
+			}
 			
 		},
 		error:function(){
 			//请求失败时
-			alert('左侧导航请求失败');
+			Prompt('左侧导航请求失败');
 		}
 
 	});
@@ -105,7 +98,7 @@ function index(Action='hom',Param='',Url=''){
 		data:UU,
 		success:function(data){
 			//请求失败时
-			if(!data){alert('主内容请求失败'); return;};
+			if(!data){Prompt('主内容请求失败'); return;};
 			//当请求成功时
 			Contentsdata=data;	//存数据
 			State++;	//加状态
@@ -116,14 +109,14 @@ function index(Action='hom',Param='',Url=''){
 		},
 		error:function(){
 			//请求失败时
-			alert('主内容请求失败');
+			Prompt('主内容请求失败');
 		}
 
 	});
 
 	//保存数据
 	function Re(){
-		if(Action=='hom')Url='';
+		if(Action=='hom'&&!Param)Url='/';
 		var Data={
 			Action:Action,
 			Param:Param,
@@ -146,6 +139,9 @@ function Top(data,Action){
 		$("#CatName").html(data.CatName);
 		$("#CatName2").html(data.CatName);
 	}
+	//新帖按钮右下角
+	$('#Newpost').css('display','none');
+	if(data.Newpost)$('#Newpost').css('display','block');
 	//标题
 	if(data.Title)$("title").html(data.Title);
 	//搜索框
@@ -202,6 +198,18 @@ function Top(data,Action){
 		$("#Navigation").css('top','64px');
 	}
 
+	//背景色
+	if(data.Background){
+		$('#Top').css('background',data.Background);
+		background=data.Background;
+		//如果是白色背景
+		if(background=='#FFF')
+			$('#Top').addClass('text-muted');
+		else
+			$('#Top').removeClass('text-muted');
+		
+	}
+
 }
 
 //处理左侧导航函数
@@ -221,11 +229,113 @@ function Left(data,Action){
 window.onpopstate=function(event){
 	//alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
 	var s=event.state;
+	//如果没保存数据，就返回
 	if(!s.Action)return;
+	//左侧导航
 	Left(s.Leftdata,s.Action);
+	//顶部
 	Top(s.Topdata,s.Action);
-	$('#Top').css('background',s.Topdata.Background);
+	//设置头部和左侧导航背景色
 	bg(s.Topdata.Background);
+	//主内容
 	fun=eval(s.Action+'Contents');
 	fun(s.Contentsdata,s.Param);
 }
+
+//中间弹出框
+function Popup(arr,fun){
+	//Id
+	//Action	主类别
+	//Method	方法名
+	//Param		参数
+	//Noajax	取消ajax
+	//Height	框的高度
+
+	var height=(arr.Height)?arr.Height:400;
+
+	//黑背景
+	var Black_bg=$('<div class="Black_bg"></div>');
+	Black_bg.bind('click',function(e){
+		//删除弹出框时 调用函数 data值为remove
+		e.stopPropagation();	//阻止事件冒泡
+		var t=$(this);
+		//修改距离顶部距离动画
+		Transparent_row.animate({'margin-top':0},200);
+		//修改背景透明度动画
+		row2.animate({'opacity':0},200,function(){t.remove();});
+		//回调函数
+		fun('remove');
+		
+	});
+
+	//中间透明行
+	var Transparent_row=$('<div class="row Transparent_row"></div>');
+	//修改距离顶部距离动画
+	Transparent_row.animate({'margin-top':($(window).height()-height)/2+"px"},200);
+
+	//中间白盒子
+	var row1=$('<div class="col-sm-1 col-md-2 col-lg-3 col-xl-3 hidden-xs-down"></div>');
+	var row2=$('<div class="White_box col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-6"></div>');
+	row2.css('height',height+'px');
+
+	//移动端顶部框 按钮
+	var row3=$('<div class="row White_box_row1 hidden-sm-up"></div>');
+	var row3_1=$('<div class="col-md-12" id="'+arr.Id+'_top" ></div>');
+	var row3_1_1=$('<i class="fa fa-times fa-lg" aria-hidden="true"></i>');
+	row3_1_1.click(function(){Black_bg.click();})
+	row3_1.append(row3_1_1);
+	row3.append(row3_1);
+
+	var row4=$('<div class="row White_box_row2"><div id="'+arr.Id+'" class="col-md-12"></div></div>');
+	
+	row2.bind('click',function(e){
+		return false;
+	});
+
+	//追加
+	row2.append(row3).append(row4);
+	Transparent_row.append(row1).append(row2);
+	Black_bg.append(Transparent_row);
+	$("#Eject").append(Black_bg);
+	//修改背景透明度动画
+	row2.animate({'opacity':1});
+
+	if(arr.Id && $("#Eject").data(arr.Id)){
+		//如果缓存过
+		fun($("#Eject").data(arr.Id),arr);
+
+	}else if(!arr.Noajax){
+		var dat={
+			Action:arr.Action,
+			Method:arr.Method,
+			Param:arr.Param
+		};
+
+		//ajax请求数据
+		$.ajax({
+			data:dat,
+			success:function(data){
+				if(arr.Id)$("#Eject").data(arr.Id,data);
+				fun(data,arr);
+			}
+		});
+
+	}else{
+		fun('',arr);
+	}
+
+
+}
+
+
+//底部提示框
+function Prompt(data){
+	var p=$('<div class="Prompt">'+data+'</div>');
+	$('body').append(p);
+	var x=$('.Prompt').length*74;
+	p.animate({'opacity':1,'bottom':"+="+x+"px"},200).delay(3000).animate({'opacity':0},200);
+	p.queue(function(){
+		$(this).remove();
+	});
+}
+

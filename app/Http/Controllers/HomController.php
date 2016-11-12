@@ -27,7 +27,8 @@ class HomController extends Controller
     	$arr=[
     		'Background'=>'#db4437',
     		'CatName'=>'Home',
-            'Title'=>'Google+'
+            'Title'=>'Google+',
+            'Newpost'=>'1'
             
     	];
     	return $arr;
@@ -38,6 +39,11 @@ class HomController extends Controller
     public function PostContents(Request $request){
     	//
     	return ['key'=>'Value','key2'=>'Value2'];
+    }
+
+    //Post添加动态
+    public function Postaddpost(Request $request){
+        return 123;
     }
 
 }
