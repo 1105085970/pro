@@ -238,6 +238,7 @@ window.onpopstate=function(event){
 	//设置头部和左侧导航背景色
 	bg(s.Topdata.Background);
 	//主内容
+	$("#Contents").html('');
 	fun=eval(s.Action+'Contents');
 	fun(s.Contentsdata,s.Param);
 }
