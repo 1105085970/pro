@@ -8,7 +8,8 @@
 */
 
 namespace App\Http\Controllers;
-
+use DB;
+use App\Posts;
 use Illuminate\Http\Request;
 
 class ColController extends Controller
@@ -25,8 +26,9 @@ class ColController extends Controller
             //例 'Nav'=>['导航1'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
         //Fun           请求主内容成功时要执行的函数 
         $arr=[
-            'Background'=>'#db4437',
-            'CatName'=>'Home'
+            'Background'=>'#03A9F4',
+            'CatName'=>'Home',
+            'Nav'=>['导航1'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']],'导航2'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']],'导航3'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
         ];
         return $arr;
 
@@ -34,8 +36,38 @@ class ColController extends Controller
 
     //Post请求主内容
     public function PostContents(Request $request){
-        //
-        return ['key'=>'Value','key2'=>'Value2'];
+        //跳转至后带的值
+        if(!empty($request->Param)){
+            $arr=DB::table('collections')->where('id',$request->Param)->get();
+            $arr1=Posts::where('userid',$request->Param)->get();
+            return ['key'=>$arr,'key2'=>$arr1,'panduan'=>'tiao'];
+        }
+        //主页面返回时所带的值，第一次加载
+        $arr=DB::table('collections')->get();
+        $arr1=DB::table('files')->get();
+        return ['key'=>$arr,'key2'=>$arr1];
+    }
+    public function Postguanzhu(Request $request){
+        $i=0;
+        $arr=DB::table('collections')->where('id',$request->input('id'))->first();
+        $panduan=explode(',',$arr->fans);
+        $n=count($panduan);
+        //!!!!!!!此时添加的fans路径下的id不是用户的id，后期要修改！！！！！！！！！！！！！！！！！！！！！！
+        foreach($panduan as $k=>$v){
+            if($v==$request->input('id')){
+                unset($panduan[0]);
+                $fansnum=$arr->fansnum-1;
+                $fans=implode(',',$panduan);
+                $arr1=DB::table('collections')->where('id',$request->input('id'))->update(['fansnum'=>$fansnum,'fans'=>$fans]);
+                return ['id'=>'no'];
+            }else{
+                $fansnum=$arr->fansnum+1;
+                $fans=$request->id.',';
+                $arr1=DB::table('collections')->where('id',$request->input('id'))->update(['fansnum'=>$fansnum,'fans'=>$fans]);
+                return ['id'=>'yes'];
+            }
+        }
+        
     }
 
 }
