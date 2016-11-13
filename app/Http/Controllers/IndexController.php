@@ -11,6 +11,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
@@ -42,12 +43,22 @@ class IndexController extends Controller
         if($U3)$Param[]=$U3;
         if($U4)$Param[]=$U4;
 
-    	//存在返回主页视图
+    	//
     	$arr=[
     		'Action'=>$U1,
     		'Param'=>((count($Param))?implode(',',$Param):''),
             'Url'=>$_SERVER['REQUEST_URI']
     	];
+
+
+        if (Auth::check()){
+            //如果用户登录了
+            $arr['login']=1;
+        }else{
+            $arr['login']=0;
+        }
+
+        //存在返回主页视图
     	return view('index',$arr);
 
     }

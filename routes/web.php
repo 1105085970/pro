@@ -19,6 +19,9 @@ Route::get('/admin',function(){
 //登录页GET路由
 Route::get('/log','LogController@Index');
 
+//注销GET路由
+Route::get('/logout','LogController@Logout');
+
 //首页GET路由
 Route::get('/{U1?}/{U2?}/{U3?}/{U4?}', 'IndexController@Index');
 

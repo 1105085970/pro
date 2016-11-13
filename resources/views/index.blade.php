@@ -37,6 +37,24 @@
 				{{-- 搜索框 --}}
 				<div id="Search" class="hidden-md-down col-sm-6 Search" >
 				</div>
+
+				@if($login)
+
+				{{-- 注销图标 --}}
+				<a href="/logout" style="color: #fff;">
+				<i id="Logout" class="fa fa-sign-out fa-lg" aria-hidden="true"></i>
+				</a>
+
+				@else
+
+				{{-- 登录图标 --}}
+				<a href="/log" style="color: #fff;">
+				<i id="Logout" class="fa fa-sign-in fa-lg" aria-hidden="true"></i>
+				</a>
+
+				@endif
+				
+
 				{{-- 搜索图标 --}}
 				<i id="Searchmin" class="fa fa-search fa-lg hidden-lg-up Search" aria-hidden="true" onclick="index('sea','','/sea')"></i>
 				

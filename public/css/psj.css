@@ -130,6 +130,19 @@
     cursor: pointer;
     display: block;
 }
+#back_create{
+	color: rgba(64, 64, 64, 0.76);
+	position: relative;
+    top: -10px;
+    left:10px;
+    float:right;
+    width: 32px;
+    height: 32px;
+    text-align:center;
+    line-height: 32px;
+    cursor: pointer;
+    display: block;
+}
 
 /*登录页用户名*/
 #password_username,#password_email{

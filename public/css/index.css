@@ -96,7 +96,7 @@ a,a:hover,a:active{
 	outline: none;
 }
 
-#Searchmin{
+#Searchmin,#Logout{
 	width: 50px;
 	float:right;
 	height:48px;
