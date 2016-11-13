@@ -52,6 +52,10 @@ class LogController extends Controller
 
     	if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('pass')],$request->input('remember'))) {
             // 如果验证通过
+            if(Auth::user()->state==0){
+            	//如果状态是禁用
+            	return 2;
+            }
             return 1;
         }
         //验证失败时

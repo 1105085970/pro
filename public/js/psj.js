@@ -138,9 +138,13 @@ var login={
 						//如果登录成功 跳到首页
 						location.href="/";
 						return;
+					}else if(data==2){
+						ts.html('账号被禁用。');
+					}else{
+						ts.html('密码错误。');
 					}
+
 					//如果登录失败
-					ts.html('密码错误。');
 					ts.slideDown();
 					//添加红色边框 红色叉
 					login.add_danger(pass);

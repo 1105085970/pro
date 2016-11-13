@@ -230,6 +230,7 @@ a,a:hover,a:active{
 	padding:14px 24px;
 	bottom:-48px;
 	opacity:0;
+	z-index: 200;
 }
 
 /*当浏览器宽度小于576px时*/
@@ -242,6 +243,19 @@ a,a:hover,a:active{
 	/*中间白盒子*/
 	.White_box{
 		height: 100% !important;
+	}
+
+}
+
+/*当浏览器宽度小于770px时*/
+@media (max-width: 770px) {
+	/*搜索框*/
+	#Search{
+		margin-left: 18px;
+	    margin-right:0;
+	}
+	#Search input{
+		width:80%;
 	}
 
 }

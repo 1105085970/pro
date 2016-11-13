@@ -26,6 +26,8 @@ function bg(background){
 
 //首页ajax逻辑
 function index(Action='hom',Param='',Url=''){
+
+	if(!Action)return;
 	
 	//判断参数
 	var U={Action:Action,Param:Param},
@@ -151,6 +153,8 @@ function Top(data,Action){
 		var on="index('sea','','/sea')";
 		//覆盖
 		$("#Search").html('<div onclick="'+on+'" ><i class="fa fa-search" aria-hidden="true"></i>Search</div>');
+		$("#Search").addClass('hidden-md-down');
+		$("#Searchmin").removeAttr('hidden');
 	}else{
 		//是搜索页
 		//事件
@@ -161,6 +165,9 @@ function Top(data,Action){
 		var inp='<input type="text" placeholder="Search" autocomplete="off" autofocus value="'+data.Search+'">';
 		//覆盖
 		$("#Search").html('<form onsubmit="'+on+'">'+i+inp+'</form>');
+		$("#Search").removeClass('hidden-md-down');
+		$("#Searchmin").attr('hidden','1');
+		$('#Search input').focus();
 	}
 
 	//横向导航条

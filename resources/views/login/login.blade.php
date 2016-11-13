@@ -13,7 +13,7 @@
 		{{-- LOGO --}}
 		<div class="row">
 			<div class="col-sm-12">
-				<img id="login_logo" src="/images/logo.png" class="rounded mx-auto d-block" >
+				<a href="/"><img id="login_logo" src="/images/logo.png" class="rounded mx-auto d-block" ></a>
 			</div>
 		</div>
 

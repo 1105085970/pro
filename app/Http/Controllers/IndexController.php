@@ -30,13 +30,20 @@ class IndexController extends Controller
 	*/
 	public $Category=['log','hom','pos','sea','col','com','pro','peo','not','set'];
 
+    /*
+    游客的类别
+    log login 登录页
+    hom home 首页
+    sea search 搜索
+    col Collections 收藏集
+    */
+    public $Category_Tourist=['log','hom','sea','col'];
+
     //首页控制器
     public function Index($U1='hom',$U2='',$U3='',$U4=''){
-    	
-    	$arr=$this->Category;
 
     	//判断用户访问的url中有没有这个预定类别，没有返回404。
-    	if(!in_array($U1, $arr))return view('errors.404');
+    	if(!in_array($U1, $this->Category))return view('errors.404');
 
         $Param=[];
         if($U2)$Param[]=$U2;
@@ -50,12 +57,14 @@ class IndexController extends Controller
             'Url'=>$_SERVER['REQUEST_URI']
     	];
 
-
         if (Auth::check()){
             //如果用户登录了
             $arr['login']=1;
         }else{
+            //用户没登录
             $arr['login']=0;
+            //如果访问的是登录后可见的分类 跳转到登录页
+            if(!in_array($U1, $this->Category_Tourist))return redirect('/log');
         }
 
         //存在返回主页视图
@@ -72,13 +81,8 @@ class IndexController extends Controller
     	if(!in_array($request->input('Action'), $arr))
     		return;
 
-    	//拼接命名空间和类名准备实例化
-    	$C='\App\Http\Controllers\\'.ucfirst($request->input('Action')).'Controller';
-    	//准备要调用的方法
-    	$Method='Post'.$request->input('Method');
-
-    	//当请求左侧时
-    	if($Method=='PostLeft'){
+        if (Auth::check()){
+            //如果用户登录了
             $arr=[
                 '首页'=>['Icon'=>'fa-home','Url'=>'/hom','Param'=>['hom']],
                 '收藏集'=>['Icon'=>'fa-podcast','Url'=>'/col','Param'=>['col']],
@@ -88,6 +92,26 @@ class IndexController extends Controller
                 '通知'=>['Icon'=>'fa-bell','Url'=>'/not','Param'=>['not']],
                 '设置'=>['Icon'=>'fa-cog','Url'=>'/set','Param'=>['set']]
             ];
+
+        }else{
+            //用户没登录
+            $arr=[
+                '首页'=>['Icon'=>'fa-home','Url'=>'/hom','Param'=>['hom']],
+                '收藏集'=>['Icon'=>'fa-podcast','Url'=>'/col','Param'=>['col']],
+                '登录'=>['Icon'=>'fa-sign-in','Url'=>'/log','Param'=>['']]
+            ];
+            //如果访问的是登录后可见的分类 返回空
+            if(!in_array($request->input('Action'), $this->Category_Tourist))
+                return;
+        }
+
+    	//拼接命名空间和类名准备实例化
+    	$C='\App\Http\Controllers\\'.ucfirst($request->input('Action')).'Controller';
+    	//准备要调用的方法
+    	$Method='Post'.$request->input('Method');
+
+    	//当请求左侧时
+    	if($Method=='PostLeft'){
             return $arr;
         }
 

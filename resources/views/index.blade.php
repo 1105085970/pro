@@ -30,12 +30,12 @@
 				{{-- 网站名 --}}
 				<div id="SiteName" >
 					<a href="/" onclick="return index('hom','','/hom')" class="hidden-xs-down">Google+</a>
-					<div id="CatName" class="hidden-xs-down" ></div>
+					<div id="CatName" class="hidden-sm-down" ></div>
 					<div id="CatName2" class="hidden-sm-up" ></div>
 				</div>
 
 				{{-- 搜索框 --}}
-				<div id="Search" class="hidden-md-down col-sm-6 Search" >
+				<div id="Search" class="@if($Action!='sea')hidden-md-down @endif col-xs-6 col-sm-7 col-md-6 col-lg-5 col-xl-5 Search" >
 				</div>
 
 				@if($login)
@@ -56,7 +56,7 @@
 				
 
 				{{-- 搜索图标 --}}
-				<i id="Searchmin" class="fa fa-search fa-lg hidden-lg-up Search" aria-hidden="true" onclick="index('sea','','/sea')"></i>
+				<i id="Searchmin" @if($Action=='sea')hidden @endif class="fa fa-search fa-lg hidden-lg-up Search" aria-hidden="true" onclick="index('sea','','/sea')"></i>
 				
 			</div>
 
