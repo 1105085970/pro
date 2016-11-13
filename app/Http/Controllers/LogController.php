@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class LogController extends Controller
@@ -79,7 +80,7 @@ class LogController extends Controller
     	$user=new User;
     	$user->username=$request->input('name');
     	$user->email=$request->input('email');
-    	$user->password=$request->input('pass');
+    	$user->password=Hash::make($request->input('pass'));
     	$user->token=str_random(50);
 
     	if($user->save()){

@@ -65,7 +65,7 @@
 						<img src="/images/toux.png" class="login_box_toux rounded mx-auto d-block" >
 						{{-- 表单 --}}
 						<div class="input-group">
-							<input id="email" type="text" class="form-control" placeholder="输入您的电子邮件地址" aria-describedby="basic-addon1" autofocus>
+							<input id="email" type="text" class="form-control" placeholder="输入您的电子邮件地址" aria-describedby="basic-addon1" autocomplete="off" autofocus>
 						</div>
 						{{-- 提示 --}}
 						<div class="login_box_tishi"></div>

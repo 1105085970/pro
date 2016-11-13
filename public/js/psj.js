@@ -48,6 +48,8 @@ var login={
 					if(!data){
 						ts.html('邮箱不存在。');
 						ts.slideDown();
+						//添加红色边框 红色叉
+						login.add_danger(email);
 						//让按钮可以被点击
 						t.removeAttr('disabled');
 						//获得焦点
@@ -62,6 +64,14 @@ var login={
 					$('#password_username').html(data.name);
 					//设置邮箱
 					$('#password_email').html(email.val());
+					//清空密码框
+					$('#password').val('');
+					//移除密码框红色边框
+					$('#password').parent().removeClass("has-danger");
+					//移除密码框红色叉
+					$('#password').removeClass("form-control-danger");
+					//密码框获得焦点
+					$('#password').focus();
 					//滚动到第三屏
 					$("#login_box_dbox").animate({'margin-left':"-200%"},200);
 					//隐藏当前的框
@@ -75,6 +85,8 @@ var login={
 					//如果请求失败
 					ts.html('与服务器通信失败。');
 					ts.slideDown();
+					//添加红色边框 红色叉
+					login.add_danger(email);
 					//让按钮可以被点击
 					t.removeAttr('disabled');
 					//获得焦点
@@ -130,6 +142,8 @@ var login={
 					//如果登录失败
 					ts.html('密码错误。');
 					ts.slideDown();
+					//添加红色边框 红色叉
+					login.add_danger(pass);
 					//让按钮可以被点击
 					t.removeAttr('disabled');
 					//获得焦点
@@ -139,6 +153,8 @@ var login={
 					//如果请求失败
 					ts.html('与服务器通信失败。');
 					ts.slideDown();
+					//添加红色边框 红色叉
+					login.add_danger(pass);
 					//让按钮可以被点击
 					t.removeAttr('disabled');
 					//获得焦点
@@ -158,6 +174,8 @@ var login={
 			$(".login_box_mbox").animate({'opacity':'0'},200);
 			//显示创建账号屏
 			$(".login_box_mbox:eq(0)").animate({'opacity':'1'},200);
+			//用户名框获得焦点
+			$('#zc_name').focus();
 			//取消链接跳转
 			return false;
 		});
@@ -244,6 +262,11 @@ var login={
 			var email=$('#zc_email').val();	//邮箱
 			var pass=$('#zc_pass').val();	//密码
 
+			
+			//隐藏提示框
+			ts.slideUp();
+
+			//清空提示框
 			ts.html('');
 
 			//禁止提交按钮被点击
@@ -280,18 +303,31 @@ var login={
 					$(".login_box_mbox").animate({'opacity':'0'},200);
 					//显示创建账号屏
 					$(".login_box_mbox:eq(2)").animate({'opacity':'1'},200);
+					//清空密码框
+					$('#password').val('');
+					//移除密码框红色边框
+					$('#password').parent().removeClass("has-danger");
+					//移除密码框红色叉
+					$('#password').removeClass("form-control-danger");
+					//密码框获得焦点
+					$('#password').focus();
 
 				},
 				error:function(data){
 					//出现错误
 					var cuo=data.responseJSON;
 					var ti='';
-					//如果name有错
-					if(cuo.name)ti+='用户名不合法。';
-					//如果eamil有错
-					if(cuo.email)ti+='必须是一个有效的电子邮件地址。';
-					//如果pass有错
-					if(cuo.pass)ti+='密码至少6位，字母数字下划线';
+					if(cuo){
+						//如果name有错
+						if(cuo.name)ti+='用户名不合法。';
+						//如果eamil有错
+						if(cuo.email)ti+='必须是一个有效的电子邮件地址。';
+						//如果pass有错
+						if(cuo.pass)ti+='密码至少6位，字母数字下划线';
+					}else{
+						ti='连接服务器失败。';
+					}
+					
 					ts.html(ti);
 					ts.slideDown();
 					//允许提交按钮被点击
@@ -300,6 +336,12 @@ var login={
 
 			});
 
+		});
+
+		//给三个滚动屏绑定事件
+		$('.login_box_mbox').keydown(function(e){
+			//如果按下键盘回车键 自动点击确认按钮
+			if(e.keyCode==13)$(this).children('button').click();
 		});
 
 	},
@@ -316,6 +358,10 @@ var login={
 	},
 
 	add_danger:function(t){
+		//移除绿色边框
+		t.parent().removeClass("has-success");
+		//移除绿色对号
+		t.removeClass("form-control-success");
 		//添加红色边框
 		t.parent().addClass("has-danger");
 		//添加红色叉
