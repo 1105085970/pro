@@ -55,6 +55,7 @@ function index(Action='hom',Param='',Url=''){
 			Top(data,Action);
 			//设置左侧导航被选中的颜色
 			bg(data.Background);
+			background=data.Background;
 			
 		},
 		error:function(){
@@ -78,8 +79,7 @@ function index(Action='hom',Param='',Url=''){
 			if(State==3)Re(); //如果三个ajax都完成就存储数据
 			Left(data,Action);
 			//设置左侧导航被选中的颜色
-			if(data.Background){
-				background=data.Background;
+			if(background){
 				bg(background);
 			}
 			

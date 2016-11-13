@@ -1,0 +1,173 @@
+
+/*登录页LOGO*/
+#login_logo{
+	margin-top:40px;
+	margin-bottom:30px;
+}
+
+/*登录页h1标题*/
+#login_h1{
+	text-align:center;
+	color: #555;
+	font-size: 38px;
+    margin-bottom: 15px;
+    font-weight: 300;
+}
+
+/*登录页h2标题*/
+#login_h2{
+	text-align:center;
+	color: #555;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+/*登录页登录大框*/
+#login_box{
+	background: #f7f7f7;
+	padding: 0;
+	border-radius: 2px;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	transition: all .2s;
+	min-width: 300px;
+	overflow:hidden;
+}
+
+#login_box_dbox{
+	height:100%;
+	width:300%;
+	margin-left: -100%;
+}
+
+.login_box_mbox{
+	height:100%;
+	background:rgba(255,255,255,0.5);
+	float:left;
+	width:33.33%;
+	padding:40px;
+	opacity: 0;
+}
+
+.login_box_mbox input[type="password"],.login_box_mbox input[type="text"]{
+	height: 44px;
+	font-size: 16px;
+	width: 100%;
+	display: block;
+	
+}
+.login_box_mbox input[type="password"]:focus,.login_box_mbox input[type="text"]:focus{
+	box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
+
+/*登录页头像*/
+.login_box_toux{
+	border-radius:50%;
+	margin-bottom: 30px;
+	width:96px;
+	height:96px;
+}
+
+/*登录页提示框*/
+.login_box_tishi{
+	max-height: 3.5em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #dd4b39;
+    line-height: 17px;
+    font-size: 13px;
+    display: none;
+}
+
+/*登录页按钮*/
+.login_box_mbox button{
+	margin-bottom: 10px;
+	background-color: #4d90fe;
+	border: 1px solid #3079ed;
+	color: #fff;
+	text-shadow: 0 1px rgba(0,0,0,0.1);
+	min-width: 46px;
+    text-align: center;
+    font-weight: 700;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 3px;
+    width: 100%;
+    display: block;
+    font-size: 13px;
+    margin-top: 10px;
+    background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+}
+
+.login_box_mbox button:hover{
+	border: 1px solid #2f5bb7;
+    color: #fff;
+    text-shadow: 0 1px rgba(0,0,0,0.3);
+    background-color: #357ae8;
+}
+.login_box_mbox button[disabled]{
+	opacity: .5;
+    cursor: default;
+    pointer-events: none;
+}
+
+/*登录页链接*/
+#login a{
+	color: #427fed;
+	font-size: 14px;
+}
+
+/*登录页返回按钮*/
+#back_email{
+	color: rgba(64, 64, 64, 0.76);
+	position: absolute;
+    top: 37px;
+    width: 32px;
+    height: 32px;
+    text-align:center;
+    line-height: 32px;
+    cursor: pointer;
+    display: block;
+}
+
+/*登录页用户名*/
+#password_username,#password_email{
+	font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    min-height: 1em;
+}
+#password_email{
+	color: rgb(64, 64, 64);
+    line-height: 2;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media (max-width:576px){
+
+	/*登录页LOGO*/
+	#login_logo{
+   	 	margin: 25px auto 20px;
+	}
+
+	/*登录页h1标题*/
+	#login_h1{
+		font-size: 22px;
+	}
+
+	.login_box_mbox{
+		padding:20px;
+	}
+
+	/*登录页头像*/
+	.login_box_toux{
+		width:72px;
+		height:72px;
+		margin-bottom: 20px;
+	}
+
+}

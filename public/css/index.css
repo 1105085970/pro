@@ -79,7 +79,6 @@ a,a:hover,a:active{
 	float:left;
 	background: rgba(255,255,255,.15);
 	cursor: text;
-	max-width: 720px;
 	border-radius: 3px;
 	margin-left: 48px;
     margin-right: 36px;
@@ -126,6 +125,7 @@ a,a:hover,a:active{
 	left:0;
 	color: rgba(0,0,0,0.87);
 	padding-top: 16px;
+	z-index: 50;
 }
 
 #Navigation a{
