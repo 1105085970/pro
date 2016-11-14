@@ -33,45 +33,54 @@
 }
 /*  点击收藏集跳转后的div样式 */
 .tiao{
-	width:1020px;height:2000px;position:absolute;margin-top:-25px;
+	width:1020px;height:2000px;position:absolute;margin-top:-25px;margin-left:97px;
 }
 .tleft{
-	background: #A900FF;width:330px;height:600px;margin-top:-25px;position:fixed;left:0px;top:86px;
+	background: #EEE;margin-top:-25px;position:fixed;left:0px;top:86px;bottom:0px;z-index:51;margin-left:-15px;
 }
 .tleft img{
-	width:330px;
+    display: block;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin-right: -15px;
+    width: 100%;
+    height: auto;
+    margin: auto;
 }
 .share,.duo{
-	font-size: 20px;color:white;position:absolute;line-height:50px;margin-left:251px;
+	font-size: 20px;color:white;position:absolute;line-height:50px;right:80px;
 }
 .duo{
-	margin-left:301px;
+	width:50px;height:50px;position:absolute;right:15px;text-align:center;border-radius: 50px;top:4px;
+}
+.duo1{
+	background: #8799B4;
 }
 .tou{
-	width:50px;height:50px;border-radius:50px;overflow:hidden;position:absolute;left:25px;top:161px;
+	width:50px;height:50px;border-radius:50px;overflow:hidden;position:absolute;margin-top:-25px;margin-left: 20px;
 }
 .tou img{
 	width:50px;
 }
 .user{
-	margin-left: 22px;margin-top:40px;font-size: 12px;color:white;
+	margin-left: 22px;font-size: 12px;color:white;
 }
 .title2{
 	font-size: 30px;color:white;font-weight: 700px;margin-left: 22px;line-height: 36px;
 }
 .xuanyan{
 	color: rgba(255,255,255,1);
-	width:270px;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-    margin-top: 14px;margin-left: 22px;margin-bottom: 60px;
+    margin-top: 14px;margin-left: 22px;margin-bottom: 60px;margin-right: 20px;
 }
 .guan{
 	height:36px;line-height:36px;text-align:center;background: #ffffff;border-radius:2px;margin-left: 22px;margin-top:60px;padding:8px 20px;
 }
 .tmain{
-	width:420px;height:700px;margin-left: 25px;float:left;border: 1px solid #BFBFBF;background: #FFFFFF;
+	width:420px;height:700px;float:left;background: #EEEEEE;
 }
 .tmtop{
 	width:100%;height:65px;
@@ -80,14 +89,48 @@
 	width:36px;height:36px;border-radius:36px;overflow:hidden;float:left;margin-left:15px;margin-top:15px;
 }
 .name{
-	width:240px;height:36px;margin-top:15px;line-height:36px;float:left;margin-left: 10px;font-size: 14px;
+	width:160px;height:36px;margin-top:15px;line-height:36px;float:left;margin-left: 10px;font-size: 14px;
 }
 .biao{
-	margin-top: 25px;margin-left: 90px;
+	margin-top: 25px;position:absolute;right:30px;
 }
-.tmain img{
-	width:100%;
+.img{
+	width:100%;margin-top: 20px;
 }
 .tmain1{
-	margin-left: 145px;
+	
+}
+.wen{
+	line-height: 6px;margin:15px;
+}
+/* 小方块 */
+.fang{
+	width:192px;height:110px;border-radius: 2px;background:#FFF;position:absolute;top:55px;right:-112px;border:1px solid #D8D8D8;
+}
+.jia1{
+	width:40px;height:40px;border-radius: 40px;text-align:center;line-height:40px;margin-left:20px;background:#E0E0E0;color:#646464;margin-top:20px;float:left;
+}
+.jnum{
+	height:40px;line-height:40px;margin-left:10px;color:#646464;margin-top:20px;float:left;
+}
+.plan{
+	width:40px;height:40px;border-radius: 40px;text-align:center;line-height:40px;margin-right:20px;background:#E0E0E0;color:#646464;margin-top:20px;float:right;
+}
+.pl{
+	width:100%;
+	height:56px;
+	border-top:1px solid #D1D1D1;margin-top:14px;float:left;
+}
+.tx2{
+	width:36px;height:36px;border-radius: 36px;overflow: hidden;margin-top:10px;margin-left: 20px;float:left;
+}
+.tx2 img{
+	width:36px;height:36px;
+}
+.nr{
+	float:left;
+	width: 80%;
+    margin-left: 10px;
+    line-height: 17px;
+    margin-top: 10px;
 }

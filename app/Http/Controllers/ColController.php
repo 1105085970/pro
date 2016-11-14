@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Posts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ColController extends Controller
 {
@@ -48,6 +49,11 @@ class ColController extends Controller
         return ['key'=>$arr,'key2'=>$arr1];
     }
     public function Postguanzhu(Request $request){
+        if(Auth::check()){
+
+        
+
+
         $i=0;
         $arr=DB::table('collections')->where('id',$request->input('id'))->first();
         $panduan=explode(',',$arr->fans);
@@ -67,7 +73,9 @@ class ColController extends Controller
                 return ['id'=>'yes'];
             }
         }
-        
+        }else{
+            return ['login'=>'login'];
+        }
     }
 
 }
