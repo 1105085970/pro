@@ -39,9 +39,14 @@ class ColController extends Controller
     public function PostContents(Request $request){
         //跳转至后带的值
         if(!empty($request->Param)){
-            $arr=DB::table('collections')->where('id',$request->Param)->get();
-            $arr1=Posts::where('userid',$request->Param)->get();
-            return ['key'=>$arr,'key2'=>$arr1,'panduan'=>'tiao'];
+            $id=explode(',',$request->Param);
+            $arr=DB::table('collections')->where('id',$id[0])->first();
+            $arru=DB::table('users')->where('id',$arr->userid)->first();
+            $arrf=DB::table('files')->where('id',$arru->picid)->first();
+            $arrb=DB::table('files')->where('id',$arr->picid)->first();
+
+            $arr1=Posts::where('userid',$id[0])->get();
+            return ['key'=>$arr,'key2'=>$arr1,'panduan'=>'tiao','tx'=>$arrf->path,'bg'=>$arrb->path];
         }
         //主页面返回时所带的值，第一次加载
         $arr=DB::table('collections')->get();
@@ -61,17 +66,20 @@ class ColController extends Controller
         //!!!!!!!此时添加的fans路径下的id不是用户的id，后期要修改！！！！！！！！！！！！！！！！！！！！！！
         foreach($panduan as $k=>$v){
             if($v==$request->input('id')){
-                unset($panduan[0]);
-                $fansnum=$arr->fansnum-1;
-                $fans=implode(',',$panduan);
-                $arr1=DB::table('collections')->where('id',$request->input('id'))->update(['fansnum'=>$fansnum,'fans'=>$fans]);
-                return ['id'=>'no'];
-            }else{
-                $fansnum=$arr->fansnum+1;
-                $fans=$request->id.',';
-                $arr1=DB::table('collections')->where('id',$request->input('id'))->update(['fansnum'=>$fansnum,'fans'=>$fans]);
-                return ['id'=>'yes'];
+                $i=$k;
             }
+        }
+        if($i!=0){
+            unset($panduan[$i]);
+            $fansnum=$arr->fansnum-1;
+            $fans=implode(',',$panduan);
+            $arr1=DB::table('collections')->where('id',$request->input('id'))->update(['fansnum'=>$fansnum,'fans'=>$fans]);
+            return ['id'=>'no'];
+        }else{
+            $fansnum=$arr->fansnum+1;
+            $fans=$arr->fans.$request->id.',';
+            $arr1=DB::table('collections')->where('id',$request->input('id'))->update(['fansnum'=>$fansnum,'fans'=>$fans]);
+            return ['id'=>'yes'];
         }
         }else{
             return ['login'=>'login'];
