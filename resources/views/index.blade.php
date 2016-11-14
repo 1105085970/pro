@@ -70,8 +70,8 @@
 		<div id="Navigation" class="hidden-sm-down"></div>
 
 		<div id="Contentsbox" class="row">
-			<div class="col-sm-3 col-lg-2 col-xl-2 hidden-sm-down"></div>
-			<div class="col-md-9 col-sm-12 col-lg-10 col-xl-10">
+			<div class="col-sm-3 col-lg-2 col-xl-1 hidden-sm-down"></div>
+			<div class="col-md-9 col-sm-12 col-lg-10 col-xl-11">
 		    	<div id="Contents" class="row">	
 		    		
 		    	</div>
@@ -86,7 +86,7 @@
 	</div>
 
 	{{-- 添加帖子按钮，右下角 --}}
-	<i id="Newpost" onclick="Popup({Action:'hom',Method:'addpost',Id:'yu'},postform)" class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+	<i id="Newpost" onclick="Popup({Action:'pos',Method:'addpost',Id:'Post_form'},postform)" class="fa fa-pencil fa-lg" aria-hidden="true"></i>
 
 </body>
 </html>

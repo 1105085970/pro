@@ -215,6 +215,9 @@ a,a:hover,a:active{
 	border-radius: 50%;
     cursor: pointer;
 }
+.White_box_row2{
+	height:100%;
+}
 
 /*提示框*/
 .Prompt{

@@ -355,6 +355,8 @@ var login={
 		t.parent().removeClass("has-danger");
 		//移除红色叉
 		t.removeClass("form-control-danger");
+		//如果下一步和登录界面 直接返回
+		if(t.attr('id')=='email'||t.attr('id')=='password')return;
 		//添加绿色边框
 		t.parent().addClass("has-success");
 		//添加绿色对号

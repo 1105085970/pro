@@ -28,6 +28,21 @@ function bg(background){
 function index(Action='hom',Param='',Url=''){
 
 	if(!Action)return;
+
+	//找已经存过的数据
+	if(Action=='hom'&&!Param)
+		var dat=$(window).data('/');
+	else
+		var dat=$(window).data(Url);
+
+	if(dat){
+		//如果缓存过当前的数据
+		//恢复数据
+		reduction(dat);
+		//存到历史记录
+		Re(dat);
+		return false;
+	}
 	
 	//判断参数
 	var U={Action:Action,Param:Param},
@@ -117,17 +132,26 @@ function index(Action='hom',Param='',Url=''){
 	});
 
 	//保存数据
-	function Re(){
+	function Re(Data=''){
 		if(Action=='hom'&&!Param)Url='/';
-		var Data={
+		//准备数据
+		if(!Data){
+			var Data={
 			Action:Action,
 			Param:Param,
 			Topdata:Topdata,
 			Leftdata:Leftdata,
 			Contentsdata:Contentsdata,
 			Url:Url
-		};
+			};
+		}
+
+		//存数据
+		$(window).data(Url,Data);
+
+		//存到历史记录
 		history.pushState(Data,'',Url);
+
 	}
 
 	return false;
@@ -235,19 +259,25 @@ function Left(data,Action){
 //当浏览器前进后退
 window.onpopstate=function(event){
 	//alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
-	var s=event.state;
+	var data=event.state;
+	reduction(data);
+}
+
+//还原数据
+function reduction(data){
 	//如果没保存数据，就返回
-	if(!s.Action)return;
+	if(!data)return;
+	if(!data.Action)return;
 	//左侧导航
-	Left(s.Leftdata,s.Action);
+	Left(data.Leftdata,data.Action);
 	//顶部
-	Top(s.Topdata,s.Action);
+	Top(data.Topdata,data.Action);
 	//设置头部和左侧导航背景色
-	bg(s.Topdata.Background);
+	bg(data.Topdata.Background);
 	//主内容
 	$("#Contents").html('');
-	fun=eval(s.Action+'Contents');
-	fun(s.Contentsdata,s.Param);
+	fun=eval(data.Action+'Contents');
+	fun(data.Contentsdata,data.Param);
 }
 
 //中间弹出框
