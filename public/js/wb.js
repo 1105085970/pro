@@ -50,7 +50,9 @@ function homContents(data,param){
 
 	 		+'<div class="col-sm-12 post_box_bott">'
 
-	 			+'<div class="post_box_like" postid="'+data[i]['id']+'">+1</div>'
+	 			+'<div class="post_box_like '
+	 				+((data[i]['my_like'])?'post_box_like_red':'')
+	 				+'" postid="'+data[i]['id']+'">+1</div>'
 
 	 			+'<div class="post_box_likes">'+((data[i]['likes'])?data[i]['likes']:'')+'</div>'
 
@@ -83,7 +85,7 @@ function homContents(data,param){
 
 	}else if(con.width()<=1690){
 		//两列
-		var col1=$('<div class="post_box_col post_box_col_right col-xs-6 col-sm-6 col-md-6 col-lg-6" style="z-index:60" ></div>');
+		var col1=$('<div class="post_box_col post_box_col_right col-xs-6 col-sm-6 col-md-6 col-lg-6" ></div>');
 		var col2=$('<div class="post_box_col post_box_col_left col-xs-6 col-sm-6 col-md-6 col-lg-6" ></div>');
 
 		var num=0;
@@ -105,8 +107,8 @@ function homContents(data,param){
 
 	}else{
 		//三列
-		var col1=$('<div class="post_box_col post_box_col_right col-xs-4 col-sm-4 col-md-4 col-lg-4" style="z-index:60" ></div>');
-		var col2=$('<div class="post_box_col col-xs-4 col-sm-4 col-md-4 col-lg-4" ></div>');
+		var col1=$('<div class="post_box_col post_box_col_right col-xs-4 col-sm-4 col-md-4 col-lg-4" style="margin: 0 0 0 auto;" ></div>');
+		var col2=$('<div style="max-width:530px;" class="post_box_col col-xs-4 col-sm-4 col-md-4 col-lg-4" ></div>');
 		var col3=$('<div class="post_box_col post_box_col_left col-xs-4 col-sm-4 col-md-4 col-lg-4" ></div>');
 
 		var num=3;
@@ -129,6 +131,61 @@ function homContents(data,param){
 		con.append(col1).append(col2).append(col3);
 
 	}
+
+	//如果 +1 按钮被点击
+	$('.post_box_like').click(function(){
+
+		//获得保存 +1 数量的节点
+		var links=$(this).siblings('.post_box_likes');
+		//获得当前被 +1 的数量
+		var s=Number(links.html());
+
+		//检查是否有被选中变红的类
+		if($(this).hasClass('post_box_like_red')){
+			//如果有 移除变红的类
+			$(this).removeClass('post_box_like_red');
+			//改变后面被 +1 数量 减1
+			links.html(--s);
+		}else{
+			//如果没有 添加变红的类
+			$(this).addClass('post_box_like_red');
+			//改变后面被 +1 数量 加1
+			links.html(++s);
+		}
+
+		//发送ajax
+		$.ajax({
+			data:{
+				Action:'pos',
+				Method:'_set_like',
+				post:$(this).attr('postid')
+			},
+			success:function(data){
+
+				if(data==1){
+					//+1 成功
+
+					//添加变红的类
+					$(this).addClass('post_box_like_red');
+					return;
+
+				}else if(data==2){
+					//-1 成功
+
+					//移除变红的类
+					$(this).removeClass('post_box_like_red');
+					return;
+
+				}
+
+				//失败时
+				Prompt('与服务器通信失败。');
+
+			}
+
+		});
+
+	});
 
 	
 }

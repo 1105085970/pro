@@ -37,36 +37,53 @@ class PosController extends Controller
     //Post请求主内容
     public function PostContents(Request $request){
         //
-        $rows=DB::table('posts')->get();
+        $rows=DB::table('posts')
+            ->select(
+                'posts.id as id',       //帖子id
+                'users.username as name',   //用户名
+                'files.path as toux',       //用户头像
+                'posts.addtime as time',    //发帖时间的时间戳
+                'posts.content as cont',    //帖子主内容
+                'posts.likes as likes',     //+1 的数量
+                'posts.likeuserid as likesid',  //+1 的用户编号列表
+                'posts.shares as shares'    //分享的数量
+            )
+            ->leftjoin('users', 'posts.userid', '=', 'users.id')
+            ->leftjoin('files', 'users.picid', '=', 'files.id')
+            ->get();
 
+        if(Auth::check()){
+            //用户登录了
+            $uid=Auth::id();
+        }else{
+            //没登录
+            $uid='';
+        }
+            
         foreach($rows as $k=>$v){
-            //查询发表当前帖子的用户
-            $Puser=DB::table('users')->where('id',$v->userid)->first();
 
-            //id
-            $new[$k]['id']=$v->id;
-
-            //用户名
-            $new[$k]['name']=$Puser->username;
-
-            //头像
-            $new[$k]['toux']=(($Puser->picid)?$Puser->picid:'/images/toux.png');
+            //如果没有头像 设置默认头像
+            if($v->toux)
+                $v->toux='/images/toux.png';
 
             //时间
-            $new[$k]['time']=$this->timep($v->addtime);
+            $v->time=$this->timep($v->time);
 
-            //主内容
-            $new[$k]['cont']=(($v->content)?$v->content:'');
+            //如果没有主内容
+            if(!$v->cont)
+                $v->cont='';
 
-            //加一数量
-            $new[$k]['likes']=$v->likes;
+            //处理 +1 的用户编号 判断当登录用户是不是 +1 过
+            if($uid && in_array($uid,explode(',',$v->likesid))){
+                $v->my_like=1;
+            }
 
-            //分享数量
-            $new[$k]['shares']=$v->shares;
+            //删除 +1 的用户编号列表
+            unset($v->likesid);
 
         }
 
-        return $new;
+        return $rows;
     }
 
     //Ajax帖子表单
@@ -74,10 +91,19 @@ class PosController extends Controller
 
         //获得当前登录用户数据库
         $user=Auth::user();
+
+        //查找头像
+        if($user->picid)
+            $pic=DB::table('files')
+                ->where('id',$user->picid)
+                ->first()->path;
+        else
+            $pic='/images/toux.png';
+
         //准备返回的数组
         $arr=[
             'name'=>$user->username,
-            'pic'=>(($user->picid)?$user->picid:'/images/toux.png'),
+            'pic'=>$pic,
             'nickname'=>(($user->nickname)?$user->nickname:'')
         ];
 
@@ -103,6 +129,65 @@ class PosController extends Controller
         if($id)return $id;
         return;
 
+    }
+
+    //ajax 设置 +-1 
+    public function Post_set_like(Request $request){
+        //返回值  1 加一 2 减一
+
+        //查到这条帖子数据
+        $post=DB::table('posts')->where('id',$request->input('post'))->first();
+
+        //如果没找到，直接返回
+        if(!$post)return;
+
+        //+1 过的用户编号列表 数组
+        $likesid=explode(',',$post->likeuserid);
+
+        //+1 的总数量
+        $likes=$post->likes;
+
+        //用户id
+        $uid=Auth::id();
+
+        //判断该用户是否 +1 过
+        if(in_array($uid,$likesid)){
+            //加过    删除
+            unset($likesid[array_search($uid,$likesid)]);
+
+            //喜欢数量减一
+            $likes--;
+
+            //返回值
+            $retur=2;
+
+        }else{
+            //没加过 添加
+            if(!$likesid[0])$likesid=[$uid];
+            else $likesid[]=$uid;
+
+            //喜欢数量加一
+            $likes++;
+
+            //返回值
+            $retur=1;
+        }
+
+        //准备要更新的数据
+        $arr=[
+            'likes'=>$likes,
+            'likeuserid'=>implode(',',$likesid)
+        ];
+        
+        //更新数据库
+        $ok=DB::table('posts')
+            ->where('id',$request->input('post'))
+            ->update($arr);
+
+        //如果更新成功
+        if($ok)return $retur;
+
+        return;
     }
 
     //返回时间偏移

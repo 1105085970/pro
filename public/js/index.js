@@ -210,10 +210,12 @@ function Top(data,Action){
 				}
 			}
 			
-			//onclick事件
-			var on="return index('"+((A)?A:'')+"','"+(pp.slice(1))+"',"+Action+"Contents)";
 			//a链接
 			var href=N[n]['Url'];
+
+			//onclick事件
+			var on="return index('"+((A)?A:'')+"','"+(pp.slice(1))+"','"+href+"')";
+			
 			//class类
 			var cla='col-xs-4 col-md-2';
 			//创建节点
@@ -288,6 +290,7 @@ function Popup(arr,fun){
 	//Param		参数
 	//Noajax	取消ajax
 	//Height	框的高度
+	//Width		相对宽度的偏移 1 或 -1
 
 	var height=(arr.Height)?arr.Height:400;
 
@@ -311,9 +314,13 @@ function Popup(arr,fun){
 	//修改距离顶部距离动画
 	Transparent_row.animate({'margin-top':($(window).height()-height)/2+"px"},200);
 
+	var p=0;
+	if(arr.Width)
+		p=2*arr.Width;
+
 	//中间白盒子
-	var row1=$('<div class="col-sm-1 col-md-2 col-lg-3 col-xl-3 hidden-xs-down"></div>');
-	var row2=$('<div class="White_box col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-6"></div>');
+	var row1=$('<div class="col-sm-'+(1+(-p/2))+' col-md-'+(2+(-p/2))+' col-lg-'+(3+(-p/2))+' col-xl-'+(3+(-p/2))+' hidden-xs-down"></div>');
+	var row2=$('<div class="White_box col-xs-12 col-sm-'+(10+p)+' col-md-'+(8+p)+' col-lg-'+(6+p)+' col-xl-'+(6+p)+'"></div>');
 	row2.css('height',height+'px');
 
 	//移动端顶部框 按钮

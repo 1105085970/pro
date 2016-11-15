@@ -32,9 +32,12 @@ class LogController extends Controller
     //ajax查找邮箱是否存在
     public function Post_find_email(Request $request){
     	//从数据库查询
-    	$find=DB::table('users')->where('email',$request->input('email'))->first();
+    	$find=DB::table('users')
+            ->where('users.email',$request->input('email'))
+            ->leftjoin('files', 'users.picid', '=', 'files.id')
+            ->first();
     	//如果存在返回用户名和头像
-    	if($find)return ['name'=>$find->username,'pic'=>$find->picid];
+    	if($find)return ['name'=>$find->username,'pic'=>$find->path];
     	return;
     }
 

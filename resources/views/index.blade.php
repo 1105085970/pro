@@ -69,11 +69,21 @@
 		{{-- 左侧导航 --}}
 		<div id="Navigation" class="hidden-sm-down"></div>
 
+		{{-- 主内容 --}}
 		<div id="Contentsbox" class="row">
 			<div class="col-sm-3 col-lg-2 col-xl-1 hidden-sm-down"></div>
 			<div class="col-md-9 col-sm-12 col-lg-10 col-xl-11">
-		    	<div id="Contents" class="row">	
-		    		
+				<div class="row" id="max1900">
+
+					<div class="hidden-md-down col-md-1 col-lg-1 col-xl-1">
+					</div>
+
+					<div class="col-md-12 col-lg-11 col-xl-11">
+		    			<div id="Contents" class="row">	
+		    			
+		    			</div>
+		    		</div>
+
 		    	</div>
 	    	</div>
     	</div>
