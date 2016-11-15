@@ -37,8 +37,18 @@ class ComController extends Controller
         if(!empty($request->Param)){
             $id=explode(',',$request->Param);
             $arr=DB::table('communities')->where('id',$id[0])->get();
+            $arru=DB::table('users')->where('id',$arr[0]->userid)->first();
             foreach($arr as $k=>$v){
+                $cun='加入';
+                $id=explode(',',$arr[$k]->members);
+                foreach($id as $kk=>$vv){
+                    if(Auth::id()==$vv){
+                        $cun='已加入';
+                    }
+                }
+                $arr[$k]->cun=$cun;
                 $list=array();
+                $bg=DB::table('files')->where('id',$arr[$k]->picid)->first();
                 $admin=explode(',',$arr[$k]->admins);
                 if(count($admin)!=1){
                     foreach($admin as $kk=>$vv){
@@ -48,13 +58,22 @@ class ComController extends Controller
                     }
                     $arr[$k]->img=$list;
                 }
-                
             }
-            return ['key'=>$arr,'key2'=>$request->Param,'shequ'=>'shequ'];
+            return ['key'=>$arr,'key2'=>$request->Param,'user'=>$arru->username,'bg'=>$bg->path,'shequ'=>'shequ'];
         }
         $arr=DB::table('communities')->get();
         foreach($arr as $k=>$v){
+            $cun='加入';
+            $id=explode(',',$arr[$k]->members);
+            foreach($id as $kk=>$vv){
+                if(Auth::id()==$vv){
+                    $cun='已加入';
+                }
+            }
+            $arr[$k]->cun=$cun;
             $list=array();
+            $bg=DB::table('files')->where('id',$arr[$k]->picid)->first();
+            $arr[$k]->bg=$bg->path;
             $admin=explode(',',$arr[$k]->admins);
             if(count($admin)!=1){
                 foreach($admin as $kk=>$vv){
@@ -66,30 +85,40 @@ class ComController extends Controller
             }
             
         }
-        return ['key'=>$arr,'key2'=>'Value2','list'=>$list];
+        return ['key'=>$arr,'bg'=>$bg->path,'list'=>$list];
     }
     public function Postjiaru(Request $request){
         if(Auth::check()){
-            $i=0;
+            $k=-1;
             $arr=DB::table('communities')->where('id',$request->input('id'))->first();
+            if($arr->members==null){
+                $membernum=$arr->membernum+1;
+               $members=$arr->members.Auth::id().',';
+               $arr1=DB::table('communities')->where('id',$request->input('id'))->update(['members'=>$members,'membernum'=>$membernum]);
+                return ['id'=>'yes','key'=>$arr];
+            }else{
             $panduan=explode(',',$arr->members);
-            $n=count($panduan);
-            //!!!!!!!此时添加的fans路径下的id不是用户的id，后期要修改！！！！！！！！！！！！！！！！！！！！！！
-            foreach($panduan as $k=>$v){
-                if($v==$request->input('id')){
-                    $i=$k;
+            $count=count($panduan);
+            for($i=0;$i<$count-1;$i++){
+                if($panduan[$i]==Auth::id()){
+                    $k=$i;break;
                 }
             }
-            if($i!=0){
-                unset($panduan[$k]);
-                $members=implode(',',$panduan);
-                $arr1=DB::table('communities')->where('id',$request->input('id'))->update(['members'=>$members]);
-                return ['id'=>'no'];
+
+            if($k==-1){
+                $membernum=$arr->membernum+1;
+                $members=$arr->members.Auth::id().',';
+                $arr1=DB::table('communities')->where('id',$request->input('id'))->update(['membernum'=>$membernum,'members'=>$members]);
+                return ['id'=>'yes','members'=>$k,'k'=>'增加'];
+                
             }else{
-                $members=$arr->members.$request->id.',';
-                $arr1=DB::table('communities')->where('id',$request->input('id'))->update(['members'=>$members]);
-                return ['id'=>'yes'];
+                unset($panduan[$k]);
+                $membernum=$arr->membernum-1;
+                $members=implode(',',$panduan);
+                $arr1=DB::table('communities')->where('id',$request->input('id'))->update(['membernum'=>$membernum,'members'=>$members]);
+                return ['id'=>'no','members'=>$count,'k'=>'删除'];
             }
+        }
         }else{
             return ['login'=>'login'];
         }
