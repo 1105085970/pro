@@ -90,6 +90,29 @@ class ComController extends Controller
     public function Postjiaru(Request $request){
         if(Auth::check()){
             $k=-1;
+            $m=-1;
+            $followcoll=DB::table('users')->where('id',Auth::id())->first();
+            if($followcoll->followcomm==null){
+                $foll=$followcoll->followcomm.$request->input('id').',';
+                $followcoll1=DB::table('users')->where('id',Auth::id())->update(['followcomm'=>$foll]);
+            }else{
+                $foll=explode(',',$followcoll->followcomm);
+                $count1=count($foll);
+                for($n=0;$n<$count1-1;$n++){
+                    if($foll[$n]==$request->input('id')){
+                        $m=$n;break;
+                    }
+                }
+                if($m==-1){
+                    $foll=$followcoll->followcomm.$request->input('id').',';
+                    $followcoll1=DB::table('users')->where('id',Auth::id())->update(['followcomm'=>$foll]);
+                    
+                }else{
+                    unset($foll[$m]);
+                    $follw=implode(',',$foll);
+                    $arr1=DB::table('users')->where('id',Auth::id())->update(['followcomm'=>$follw]);
+                }
+            }
             $arr=DB::table('communities')->where('id',$request->input('id'))->first();
             if($arr->members==null){
                 $membernum=$arr->membernum+1;

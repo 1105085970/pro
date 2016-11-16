@@ -1,10 +1,53 @@
 var scj="";
 var leftmargin=360;//距离左侧的距离
 function colContents(data,param){
-	if(param=='daohang2,123'){
+	if(param=='yours'){
 		$('#Contents').empty();
-		console.log(param);
-		alert(123);
+		var div=createScj();
+		var smalldiv='';
+	
+		var leftdiv="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
+		smalldiv="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian chuang' onclick='chuangjian()'><div class='fa fa-plus-circle jc'></div><div class='shou'>创建收藏集</div></div></div>";
+		
+		var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
+		
+		scj=leftdiv+maindiv;
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+scj+'</div>');
+		return;
+	}
+	if(param=='daohang2'){
+		$('#Contents').empty();
+		console.log(data['key']);
+		//没有关注的时候
+		if(data['key']=='你还没有关注'){
+			var div=createScj();
+			var mei="<div style='width:100%;line-height:100px;font-size:40px;text-align:center;color:#7A7A7A;margin-top:50px;'>暂无收藏集</div>";
+			var mpic="<div style='margin:0px auto;'><img src='/meiyou.jpg' /></div>";
+			var wenzi1="<div style='width:100%;line-height:30px;font-size:20px;text-align:center;color:#7A7A7A;'>你关注的收藏集会在此处显示。</div>";
+			var wenzi2="<div style='width:100%;line-height:30px;font-size:20px;text-align:center;color:#7A7A7A;'>还没有头绪吗？请查看“精选”标签。</div>";
+			div.html(mei+mpic+wenzi1+wenzi2);
+			div.appendTo("#Contents");
+			return;
+		}
+		
+		//console.log(data['bg']);
+		var div=createScj();
+		var smalldiv='';
+	
+		var leftdiv="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
+		for(k in data['key']){
+			var title="<div class='title'>"+data['key'][k].title+"</div>";
+			var biaoyu="<div class='biaoyu'>"+((data['key'][k].slogan)?data['key'][k].slogan:'')+"</div>";
+			var guanzhu="<div class='gz guanzhu"+data['key'][k].id+"' onclick='click1("+data['key'][k].id+")' onmouseover='over("+data['key'][k].id+")' onmouseout='out("+data['key'][k].id+")'>已关注</div>";
+			var on="return index('col','"+data['key'][k].id+",导航2','/col/"+data['key'][k].id+"')";
+			var img="<a href='#' onclick=\""+on+"\"><img src='"+data['pic'][k].bg+"' class='img1'/></a>";
+			var circle="<div class='circle' style='margin-left:-20px;'><img src='"+data['pic'][k].tx+"' class='img1'/></div>";
+			smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
+		}
+		var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
+		
+		scj=leftdiv+maindiv;
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+scj+'</div>');
 		return;
 	}
 	
@@ -215,7 +258,7 @@ function sqMain(data2){
 		smalldiv1+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img1+"<div class='col-md-12 down'>"+circle1+title1+biaoyu1+guanzhu1+"</div></div></div>";
 	}
 	var maindiv1="<div class='row col-md-11 maindiv'>"+smalldiv1+"</div>";//主div
-	console.log(data2);
+	
 	sq=leftdiv1+maindiv1;
 	return sq;
 }
@@ -241,4 +284,72 @@ function over2(w){
 }
 function out2(w){
 	$('.jiaru'+w).removeClass('hover');
+}
+function chuangjian(){
+	var div=bd();
+	var cjscj="<div class='cjscj'>创建收藏集</div>";
+	var name="<div class='name'><input type='text'  placeholder='名称' class='iname'/></div>";
+	var gkfw="<div class='gkfw'>公开范围：<select><option>公开</option></select></div>";
+	var wfgg="<div class='wfgg'>设定后无法更改</div>";
+	var gxxy="<div class='gxxy'><input type='text' placeholder='个性宣言' class='igxxy'/></div>";
+	var quxiao="<div class='quxiao' onclick='haha()'>取消</div>";
+	var mingcheng=$('iname').val();
+	var xuanyan=$('igxxy').val();
+	var cjjh="<div class='cjjh' onclick='createjh()'>创建</div>";
+	var hj=cjscj+name+gkfw+wfgg+gxxy+quxiao+cjjh;
+	div.html("<div class='col-lg-5 col-md-8 col-sm-10 col-xs-12 fabiao'>"+hj+"</div>");
+	div.appendTo('body');
+}
+function bd(){
+	var div=$("<div class='row haha' style='width:100%;height:100%;background:rgba(210,210,210,0.3);position:absolute;margin-top:120px;float:left;margin-top:-367px;margin-left:1px;z-index:101;'></div>");
+	
+	return div;
+}
+function haha(){
+	$('.haha').remove();
+}
+function createjh(){
+	var a=$('.iname').val();
+	var b=$('.igxxy').val();
+	var c=$('.igxxy').val().length;
+	$(".fabiao").remove();
+	var div=bd();
+	var ctop="<div class='ctop'><div class='fa fa-remove remove' onclick='haha()'></div><div class='xiugai'>修改收藏集</div><div class='bc'>保存</div></div>";
+	var tupian="<div class='tupian'><img src='/2.jpg'></div>";
+	var mc="<div class='mc'><input type='text' class='tjmc' value='"+a+"'/></div>";
+	var xy="<div class='xy'><input type='text' class='tjxy' value='"+b+"'/></div>";
+	var num="<div class='num'>"+c+"/80</div>";
+	var hh="<div class='hh'>"+mc+xy+num+"</div>";
+	
+	var yanse="<div class='yanse'>"+
+				"<div class='cl1' ys='#E53935' onclick='bianse(1)' onmouseover='ysover(1)'></div>"+
+				"<div class='cl2' ys='#EB3F79' onclick='bianse(2)' onmouseover='ysover(2)'></div>"+
+				"<div class='cl3' ys='#A900FF' onclick='bianse(3)' onmouseover='ysover(3)'></div>"+
+				"<div class='cl4' ys='#7D56C1' onclick='bianse(4)' onmouseover='ysover(4)'></div>"+
+				"<div class='cl5' ys='#5B6ABF' onclick='bianse(5)' onmouseover='ysover(5)'></div>"+
+				"<div class='cl6' ys='#1D87E4' onclick='bianse(6)' onmouseover='ysover(6)'></div>"+
+				"<div class='cl7' ys='#029AE4' onclick='bianse(7)' onmouseover='ysover(7)'></div>"+
+				"<div class='cl8' ys='#00ABC0' onclick='bianse(8)' onmouseover='ysover(8)'></div>"+
+				"<div class='cl9' ys='#00887A' onclick='bianse(9)' onmouseover='ysover(9)'></div>"+
+				"<div class='cl10' ys='#378D3B' onclick='bianse(10)' onmouseover='ysover(10)'></div>"+
+				"<div class='cl11' ys='#679E37' onclick='bianse(11)' onmouseover='ysover(11)'></div>"+
+				"<div class='cl12' ys='#F8A724' onclick='bianse(12)' onmouseover='ysover(12)'></div>"+
+				"<div class='cl13' ys='#FF6F42' onclick='bianse(13)' onmouseover='ysover(13)'></div>"+
+				"<div class='cl14' ys='#8C6D62' onclick='bianse(14)' onmouseover='ysover(14)'></div>"+
+				"<div class='cl15' ys='#778F9B' onclick='bianse(15)' onmouseover='ysover(15)'></div>"+
+				"<div class='cl16' ys='#414141' onclick='bianse(16)' onmouseover='ysover(16)'></div>"+
+			   "</div>";
+	var fw="<div class='fw'>公开范围：公开</div>";
+	var nrtc="<div class='baocun1'>"+ctop+tupian+hh+yanse+fw+"</div>";
+	div.html("<div class='baocun'>"+nrtc+"</div>");
+	div.appendTo('body');
+}
+function bianse(n){
+	var jj=$('.cl'+n).attr('ys');
+	$('.hh').css('background',jj);
+	$('.tjmc').css('background',jj);
+	$('.tjxy').css('background',jj);
+}
+function ysover(n){
+	$('.cl'+n).css('cursor','pointer');
 }

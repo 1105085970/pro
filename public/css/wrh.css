@@ -4,6 +4,18 @@
 .smalldiv{
 	margin-top:25px;
 }
+.chuang{
+	border:1px solid #D1D1D1;min-height:230px;background:#FFF;border-radius:2px;
+}
+.chuang:hover{
+	cursor:pointer;
+}
+.jc{
+	font-size: 60px;color:#B2B2B2;width:100%;text-align:center;margin-top:50px;
+}
+.shou{
+	color:#A2A2A2;width:100%;text-align:center;margin-top:10px;
+}
 .img1{
 	width:100%;height:120px;
 }
@@ -114,7 +126,7 @@
 }
 /* 小方块 */
 .fang{
-	width:192px;height:110px;border-radius: 2px;background:#FFF;position:absolute;top:55px;right:-112px;border:1px solid #D8D8D8;
+	width:192px;height:110px;border-radius: 2px;background:#FFF;position:absolute;top:55px;right:-112px;border:1px solid #D8D8D8;padding:20px 0;
 }
 .jia1{
 	width:40px;height:40px;border-radius: 40px;text-align:center;line-height:40px;margin-left:20px;background:#E0E0E0;color:#646464;margin-top:20px;float:left;
@@ -144,5 +156,169 @@
     margin-top: 10px;
 }
 .fspan{
-	width:100%;height:30px;
+	width:100%;height:30px;line-height: 30px;padding-left:20px;
+}
+.fspan:hover{
+	background:#E5E5E5;
+}
+.fabiao{
+	height:380px;background: #FFF;margin:0 auto;margin-top:140px;border-radius: 5px;box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2);min-width: 200px;
+}
+.cjscj{
+	font-size:20px;margin-top:30px;margin-left:10px;
+}
+.name{
+	font-size:16px;margin-top:10px;width:100%;height:30px;
+}
+.name input{
+	width:100%;height:30px;outline:none;font-size:16px;border:0px;border-bottom: 1px solid #A9A9A9;
+}
+.gkfw{
+	height:30px;width:100%;margin-top:40px;
+    padding-top: 60px;
+    padding-left: 10px;
+}
+.gkfw select{
+	outline:none;margin-left:10px;border:0px;width:60px;
+}
+.gkfw select option{
+	background:#FFF;
+}
+.wfgg{
+	margin-top:30px;font-size:12px;margin-left:10px;
+}
+.gxxy{
+	font-size:16px;margin-top:20px;width:100%;height:30px;
+}
+.gxxy input{
+	width:100%;height:30px;outline:none;font-size:16px;border:0px;border-bottom: 1px solid #A9A9A9;
+}
+.quxiao,.cjjh{
+	width:60px;height:30px;line-height: 30px;text-align:center;float:left;position:absolute;right:120px;bottom:15px;font-size:14px;background:#EEE;border-radius: 3px;
+}
+.quxiao:hover{
+	background:#BFBFBF;cursor:pointer;
+}
+.cjjh{
+	right:20px;bottom:15px;font-size:14px;
+}
+.cjjh:hover{
+	background:#BFBFBF;cursor:pointer;
+}
+.baocun{
+	margin:0 auto;width:400px;overflow:hidden;
+}
+.baocun1{
+	height:610px;background: #FFF;margin:0 auto;margin-top:20px;border-radius:4px;box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2);min-width: 200px;overflow:hidden;    position: absolute;
+}
+.ctop{
+	width:420px;height:56px;background:rgba(0,137,154,0.6);top:0px;position:absolute;
+}
+.remove,.xiugai,.bc{
+	font-size:16px;line-height:56px;color:#FFF;float:left;position:absolute;
+}
+.remove{
+	font-size:20px;left:20px;
+}
+.remove:hover{
+	cursor:pointer;color:#F02929;
+}
+.xiugai{
+	left:50px;
+}
+.bc{
+	right:30px;font-weight: 700;font-size:15px;
+}
+.bc:hover{
+	cursor:pointer;color:#F02929;
+}
+.tupian{
+	width:100%;max-height:260px;overflow:hidden;
+}
+.tupian img{
+	width:100%;
+}
+.mc,.xy{
+	width:420px;height:40px;margin-top: 10px;
+}
+.mc input{
+	width:380px;
+	color: #fff;
+    font-size: 34px;
+    height: 40px;
+    line-height: 40px;margin-left:20px;border:0px;border-bottom: 1px solid #E5E5E5;background:  #00ABC0;
+}
+.xy{
+	margin-top:30px;
+}
+.xy input{
+	width:380px;
+	color: #fff;
+    font-size: 16px;
+    height: 24px;
+    line-height: 24px;margin-left:20px;border:0px;border-bottom: 1px solid #E5E5E5;background:  #00ABC0;
+}
+.num{
+	width:380px;margin-left:20px;text-align:right;font-size: 13px;
+    margin-top: -15px;color:#FFF;
+}
+.hh{
+	width:420px;height:150px;background: #00ABC0;overflow:hidden;
+}
+.yanse{
+	width:420px;height:110px;
+}
+.cl1,.cl2,.cl3,.cl4,.cl5,.cl6,.cl7,.cl8,.cl9,.cl10,.cl11,.cl12,.cl13,.cl14,.cl15,.cl16{
+	width:25px;height:25px;border-radius: 25px;margin-left:23px;float:left;margin-top:20px;
+}
+.cl1{
+	background:#E53935;
+}
+.cl2{
+	background:#EB3F79;
+}
+.cl3{
+	background:#A900FF;
+}
+.cl4{
+	background:#7D56C1;
+}
+.cl5{
+	background:#5B6ABF;
+}
+.cl6{
+	background:#1D87E4;
+}
+.cl7{
+	background:#029AE4;
+}
+.cl8{
+	background:#00ABC0;
+}
+.cl9{
+	background:#00887A;
+}
+.cl10{
+	background:#378D3B;
+}
+.cl11{
+	background:#679E37;
+}
+.cl12{
+	background:#F8A724;
+}
+.cl13{
+	background:#FF6F42;
+}
+.cl14{
+	background:#8C6D62;
+}
+.cl15{
+	background:#778F9B;
+}
+.cl16{
+	background:#414141;
+}
+.fw{
+	width:380px;height:24px;margin-left:20px;
 }

@@ -26,20 +26,15 @@ class ColController extends Controller
         //Nav           横向导航链接数组
             //例 'Nav'=>['导航1'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
         //Fun           请求主内容成功时要执行的函数 
-        if(empty($request->Param)){
+        
             $arr=[
                 'Background'=>'#03A9F4',
                 'CatName'=>'Home',
-                'Nav'=>['精选'=>['Url'=>'/ts','Action'=>'hom','Param'=>[]],
-                        '已关注'=>['Url'=>'/col/daohang2','Action'=>'col','Param'=>['daohang2','123']],
-                        '你的'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
+                'Nav'=>['精选'=>['Url'=>'/col','Action'=>'col','Param'=>[]],
+                        '已关注'=>['Url'=>'/col/daohang2','Action'=>'col','Param'=>['daohang2']],
+                        '你的'=>['Url'=>'/col/yours','Action'=>'col','Param'=>['yours']]]
             ];
-        }else{
-             $arr=[
-                'Background'=>'#03A9F4',
-                'CatName'=>'Home'
-            ];
-        }
+        
         return $arr;
 
     }
@@ -47,8 +42,30 @@ class ColController extends Controller
     //Post请求主内容
     public function PostContents(Request $request){
         //跳转至后带的值
-        if($request->Param=='daohang2,123'){
-            return ['key'=>789];
+        if($request->Param=='yours'){
+            $chuang='你还没有创建收藏集';
+            return ['key'=>$chuang];
+        }
+        if($request->Param=='daohang2'){
+            $arr=DB::table('users')->where('id',Auth::id())->get();
+            $tx=DB::table('files')->where('id',$arr[0]->picid)->first();
+            $arr['tx']=$tx->path;
+            if($arr[0]->followcoll==null){
+                $key='你还没有关注';
+                return ['key'=>$key];
+            }else{
+                $id=explode(',',$arr[0]->followcoll);
+                $num=count($id);
+                for($n=0;$n<$num-1;$n++){
+                    $key[$n]=DB::table('collections')->where('id',$id[$n])->first();
+                    $bg=DB::table('files')->where('id',$key[$n]->picid)->first();
+                    $upic=DB::table('users')->where('id',$key[$n]->userid)->first();
+                    $tx=DB::table('files')->where('id',$upic->picid)->first();
+                    $key1[$n]['bg']=$bg->path;
+                    $key1[$n]['tx']=$tx->path;
+                }
+            }
+            return ['key'=>$key,'pic'=>$key1];
         }
         if(!empty($request->Param)){
             $id=explode(',',$request->Param);
@@ -96,13 +113,37 @@ class ColController extends Controller
     public function Postguanzhu(Request $request){
         if(Auth::check()){
         $k=-1;
+        $m=-1;
         $arr=DB::table('collections')->where('id',$request->input('id'))->first();
         
         //!!!!!!!此时添加的fans路径下的id不是用户的id，后期要修改！！！！！！！！！！！！！！！！！！！！！！
+        $followcoll=DB::table('users')->where('id',Auth::id())->first();
+        if($followcoll->followcoll==null){
+            $foll=$followcoll->followcoll.$request->input('id').',';
+            $followcoll1=DB::table('users')->where('id',Auth::id())->update(['followcoll'=>$foll]);
+        }else{
+            $foll=explode(',',$followcoll->followcoll);
+            $count1=count($foll);
+            for($n=0;$n<$count1-1;$n++){
+                if($foll[$n]==$request->input('id')){
+                    $m=$n;break;
+                }
+            }
+            if($m==-1){
+                $foll=$followcoll->followcoll.$request->input('id').',';
+                $followcoll1=DB::table('users')->where('id',Auth::id())->update(['followcoll'=>$foll]);
+                
+            }else{
+                unset($foll[$m]);
+                $follw=implode(',',$foll);
+                $arr1=DB::table('users')->where('id',Auth::id())->update(['followcoll'=>$follw]);
+            }
+        }
         if($arr->fans==null){//判断是否等于空
             $fansnum=$arr->fansnum+1;
             $fans=$arr->fans.Auth::id().',';
             $arr1=DB::table('collections')->where('id',$request->input('id'))->update(['fansnum'=>$fansnum,'fans'=>$fans]);
+
             return ['id'=>'yes','fans'=>$arr->fans];
         }else{
             $panduan=explode(',',$arr->fans);
