@@ -379,3 +379,44 @@ var login={
 $(function(){
 	if($("#login").length)login.index();
 });
+
+
+//个人资料页
+function proContents(data,param){
+
+	var con=$("#Contents");		//主内容节点
+	var col=$('<div id="pro_col" class="col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-11"></div>');
+
+	//背景图
+	var bg='<div class="row">'
+		  +'<div id="pro_bgbox" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+
+		  		//背景图
+		  		+'<img id="pro_bg" src="'+data.bg+'" class="img-fluid" >'
+
+		  		//头像，关注等
+		  		+'<div class="row">'
+		  		+'<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+		  		+'<div id="pro_toux_row">'
+
+		  			//用户头像
+		  			+'<img id="pro_toux" src="'+data.toux+'">'
+
+		  			//用户姓名
+		  			+'<div id="pro_namebox" >'
+		  				+'<div id="pro_name">'+data.name+'</div>'
+		  			+'</div>'
+
+		  		+'</div>'
+		  		+'</div>'
+		  		+'</div>'
+
+		  +'</div>'
+		  +'</div>';
+
+	col.append(bg);
+
+	//追加到主内容
+	con.append(col);
+
+}

@@ -24,7 +24,7 @@ a,a:hover,a:active{
 }
 
 /*如果顶部是白色背景*/
-.text-muted #SiteName,.text-muted #SiteName a,.text-muted #Search,.text-muted #SubClass a{
+.text-muted #SiteName,.text-muted #SiteName a,.text-muted #Search,.text-muted #SubClass a,.text-muted #Logout{
 	color: #818a91!important;
 }
 .text-muted #Search{
