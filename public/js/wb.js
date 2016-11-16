@@ -36,33 +36,65 @@ function homContents(data,param){
 
 	//循环data对象得到数组
 	for(var i=0;i<data.length;i++){
+
+		//帖子评论大box
+		var comm='';
+		if(data[i]['comm']){
+			//如果有评论
+			var com=data[i]['comm'];
+			comm='<div class="col-sm-12 post_box_commbox">';
+			comm+=forcomm(com);
+	 		comm+='</div>';
+		}
+	 
+
 	 da='<div class="row post_box">'
 
 	 		+'<div class="col-sm-12 post_box_top">'
+
+	 			//用户头像
 	 			+'<img src="'+data[i]['toux']+'">'
+
+	 			//用户名
 	 			+data[i]['name']
+
+	 			//帖子发布时间
 	 			+'<div class="post_box_time">'+data[i]['time']+'</div>'
+
 	 		+'</div>'
 
+	 		//帖子主内容
 	 		+'<div class="col-sm-12 post_box_cont">'
 	 			+data[i]['cont']
 	 		+'</div>'
 
+	 		//帖子底部
 	 		+'<div class="col-sm-12 post_box_bott">'
 
+	 			// +1 按钮
 	 			+'<div class="post_box_like '
 	 				+((data[i]['my_like'])?'post_box_like_red':'')
 	 				+'" postid="'+data[i]['id']+'">+1</div>'
 
+	 			// +1 数量
 	 			+'<div class="post_box_likes">'+((data[i]['likes'])?data[i]['likes']:'')+'</div>'
 
+	 			//分享数量
 	 			+'<div class="post_box_shares">'+((data[i]['shares'])?data[i]['shares']:'')+'</div>'
 
-	 			+'<i class="fa fa-share-alt post_box_share" aria-hidden="true" postid="'+data[i]['id']+'"></i>'
+	 			//分享按钮
+	 			+((data[i]['noshare']==1)?'<i class="fa fa-share-alt post_box_share" aria-hidden="true" postid="'+data[i]['id']+'"></i>':'')
 
-	 			+'<i class="fa fa-commenting post_box_comm" aria-hidden="true" postid="'+data[i]['id']+'"></i>'	
+	 			//评论数量
+	 			+'<div class="post_box_comments">'+((data[i]['comms'])?data[i]['comms']:'')+'</div>'
+
+	 			//评论按钮
+	 			+((data[i]['nocomm']==1)?'<i class="fa fa-commenting post_box_comm" aria-hidden="true" postid="'+data[i]['id']+'"></i>':'')
 
 	 		+'</div>'
+
+	 		//帖子评论
+	 		+((data[i]['nocomm']==1)?comm:'')
 
 		+'</div>';
 
@@ -188,6 +220,33 @@ function homContents(data,param){
 	});
 
 	
+}
+
+//帖子评论循环
+function forcomm(com){
+	var comm='';
+	for(k in com){
+
+	comm+='<div class="commbox_row">'
+
+			//用户头像
+			+'<img class="commbox_toux" src="'+com[k]['toux']+'">'
+
+			//顶部窄的框
+			+'<div class="commbox_top">'
+
+				//用户名
+				+com[k]['name']+': '
+
+				//帖子内容
+				+com[k]['cont']
+
+			+'</div>'
+
+		 +'</div>';
+	}
+
+	return comm;
 }
 
 //搜索页

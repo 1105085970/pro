@@ -46,7 +46,10 @@ class PosController extends Controller
                 'posts.content as cont',    //帖子主内容
                 'posts.likes as likes',     //+1 的数量
                 'posts.likeuserid as likesid',  //+1 的用户编号列表
-                'posts.shares as shares'    //分享的数量
+                'posts.shares as shares',    //分享的数量
+                'posts.noshare as noshare',  //是否禁止分享
+                'posts.comments as comms',   //评论的数量
+                'posts.nocomment as nocomm'  //是否禁止评论
             )
             ->leftjoin('users', 'posts.userid', '=', 'users.id')
             ->leftjoin('files', 'users.picid', '=', 'files.id')
@@ -80,6 +83,42 @@ class PosController extends Controller
 
             //删除 +1 的用户编号列表
             unset($v->likesid);
+
+            //如果禁止分享
+            if($v->noshare==0)
+                $v->shares=0;   //返回空的分享数量
+
+            //默认没有评论
+            $v->comm='';
+
+            //如果允许评论
+            if($v->nocomm==1){
+                //查询几条最新评论
+                $comms=DB::table('comments')
+                    ->select(
+                        'comments.id as id',        //评论id
+                        'users.username as name',    //用户名
+                        'files.path as toux',        //用户头像
+                        'comments.content as cont',    //评论内容
+                        'comments.likes as likes',      // +1 的数量
+                        'comments.likeuserid as likesid',  //+1 的用户编号列表
+                        'comments.addtime as time'    //评论发布时间的时间戳
+                    )
+                    ->where('postid',$v->id)
+                    ->leftjoin('users', 'comments.userid', '=', 'users.id')
+                    ->leftjoin('files', 'users.picid', '=', 'files.id')
+                    ->orderBy('comments.id','desc')
+                    ->take(3)   //返回的条数
+                    ->get();
+
+                //如果有评论 把评论放到要返回的对象中
+                if(count($comms))
+                    $v->comm=$comms;
+
+            }else{
+                //禁止评论时 返回空的评论数量
+                $v->comms=0;
+            }
 
         }
 
