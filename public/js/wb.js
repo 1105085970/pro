@@ -8,29 +8,35 @@ $(window).resize(function(){
 	//如果没找到直接返回
 	if(!col)return;
 
+	var parent=$('.post_box_col').parent();
+
 	//获得以前保存的数据
 	var data=$(window).data(location.pathname);
+	//帖子列表
+	var posts=(data.Contentsdata.posts)?data.Contentsdata.posts:data.Contentsdata;
+	//要追加的id
+	var id={id:parent.attr('id')};
 
-	if(col!=1 && $("#Contents").width()<=830){
+	if(col!=1 && parent.width()<=830){
 		//一列
-		homContents(data.Contentsdata,data.Param);
+		homContents(posts,data.Param,id);
 
-	}else if(col!=2 && $("#Contents").width()<=1690){
+	}else if(col!=2 && parent.width()<=1690){
 		//两列
-		homContents(data.Contentsdata,data.Param);
+		homContents(posts,data.Param,id);
 
 	}else if(col!=3){
 		//三列
-		homContents(data.Contentsdata,data.Param);
+		homContents(posts,data.Param,id);
 	}
 
 });
 
 
 //首页
-function homContents(data,param){
+function homContents(data,param,arr={}){
 
-	var con=$("#Contents");		//主内容节点
+	var con=((arr.id)?$("#"+arr.id):$("#Contents"));		//主内容节点
 	var arr=new Array();
 	var da='';
 
@@ -163,6 +169,13 @@ function homContents(data,param){
 		con.append(col1).append(col2).append(col3);
 
 	}
+
+	//底部自动加载框
+	var auto='<div class="auto_jj col-xs-12 col-sm-12 col-md-12 col-lg-12" >'
+				+'<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>'
+			+'</div>';
+	//追加底部加载框到主内容区
+	con.append(auto);
 
 	//如果 +1 按钮被点击
 	$('.post_box_like').click(function(){
@@ -362,6 +375,12 @@ function postform(data,arr){
 				Prompt('发布成功');
 				//隐藏添加帖子表单
 				t.parents('.Black_bg').click();
+				//获取缓存
+				var data=$(window).data(location.pathname);
+				//清除当前链接的缓存
+				Clear_cache();
+				//刷新该页
+				index(data.Action,data.Param,data.Url);
 
 			},
 			error:function(data){

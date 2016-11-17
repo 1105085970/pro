@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use \App\Http\Controllers\PosController;
 
 class ProController extends Controller
 {
@@ -97,8 +98,129 @@ class ProController extends Controller
             $user->bg='/images/bg.png';
         }
 
-        //用户姓名
+        //要展示的用户的姓名
         $name=($user->nickname)?$user->nickname:$user->username;
+
+        //要展示的用户创建的收藏集
+        $coll=DB::table('collections')
+                ->select(
+                    'collections.id as collid',         //收藏集id
+                    'collections.title as title',       //标题
+                    'files.path as pic',            //背景图片地址
+                    'collections.background as bg',      //背景色
+                    'collections.userid as uid'         //所属用户id
+                )
+                ->where(['collections.userid'=>$user->id,'collections.hide'=>0])
+                ->leftjoin('files', 'collections.picid', '=', 'files.id')
+                ->get();
+
+        //如果要展示的用户创建的收藏集小于4个 并且 要展示的用户允许显示关注的收藏集
+        if(count($coll)<4 && $user->showcoll==1 && $user->followcoll){
+            $coll2=DB::table('collections')
+                    ->select(
+                        'collections.id as collid',         //收藏集id
+                        'collections.title as title',       //标题
+                        'files.path as pic',            //背景图片地址
+                        'collections.background as bg',      //背景色
+                        'collections.userid as uid'         //所属用户id
+                    )
+                    ->whereIn('collections.id',explode(',',$user->followcoll))
+                    ->leftjoin('files', 'collections.picid', '=', 'files.id')
+                    ->get();
+            //循环合并
+            foreach($coll2 as $v){
+                $coll[]=$v;
+            }
+        }
+
+        //如果要展示的用户创建的收藏集小于4个
+        if(count($coll)<4){
+            //查找要展示的用户创建的社区
+            $comm=DB::table('communities')
+                    ->select(
+                        'communities.id as commid',         //收藏集id
+                        'communities.title as title',       //标题
+                        'files.path as pic',            //背景图片地址
+                        'communities.admins as admins',      //管理员编号列表
+                        'communities.membernum as members',      //成员数量
+                        'communities.userid as uid'         //所属用户id
+                    )
+                    ->where(['communities.userid'=>$user->id,'communities.hide'=>0])
+                    ->leftjoin('files', 'communities.picid', '=', 'files.id')
+                    ->get();
+            //如果要展示的用户创建的社区加收藏集小于4个
+            if(count($coll)+count($comm)<4){
+                $comm2=DB::table('communities')
+                        ->select(
+                            'communities.id as commid',         //收藏集id
+                            'communities.title as title',       //标题
+                            'files.path as pic',            //背景图片地址
+                            'communities.admins as admins',      //管理员编号列表
+                            'communities.membernum as members',      //成员数量
+                            'communities.userid as uid'         //所属用户id
+                        )
+                        ->whereIn('communities.id',explode(',',$user->showcomm))
+                        ->leftjoin('files', 'communities.picid', '=', 'files.id')
+                        ->get();
+                //循环合并
+                foreach($comm2 as $v){
+                    $comm[]=$v;
+                }
+            }
+
+            //循环合并
+            foreach($comm as $v){
+                $coll[]=$v;
+            }
+
+        }
+
+        //循环收藏集、社区数组 得到返回数组
+        foreach($coll as $v){
+
+            //创建者头像
+            $toux=DB::table('users')
+                    ->select('files.path as path')
+                    ->where('users.id',$v->uid)
+                    ->leftjoin('files','users.picid','=','files.path')
+                    ->first();
+
+            //判断头像是否存在
+            if($toux->path)
+                $v->touxs=[$toux->path];
+            else
+                $v->touxs=['/images/toux.png'];     //默认头像
+
+            if(isset($v->commid)){
+                //社区
+                //头像
+                if($v->admins){
+                    //如果有管理员头像列表
+                    $touxs=DB::table('users')
+                            ->select('files.path as path')
+                            ->whereIn('users.id',explode(',',$v->admins))
+                            ->leftjoin('files','users.picid','=','files.id')
+                            ->get();
+                    //循环合并
+                    foreach($touxs as $vv){
+                        if($vv->path)
+                            $v->touxs[]=$vv->path;
+                        else
+                            $v->touxs[]='/images/toux.png';     //默认头像
+                    }
+                }
+
+            }
+
+        }
+
+        $num=0;
+        $coll2='';
+        foreach($coll as $v){
+            $num++;
+            if($num>4)break;
+            $coll2[]=$v;
+        }
 
         //关注、取消关注、修改资料按钮
         // 1 关注 2 取消关注 3 修改资料 4 未登录
@@ -125,6 +247,15 @@ class ProController extends Controller
             }
         }
 
+        //查找用户的帖子列表
+        $posts=new PosController;
+
+        $arr=[
+            'where'=>['users.id'=>$param[0]]
+        ];
+
+        $posts=$posts->PostContents($request,$arr);
+
         //准备返回的数组
         $arr=[
             'bg'=>$user->bg,         //背景图片地址
@@ -133,7 +264,9 @@ class ProController extends Controller
             'fans'=>count(explode(',',$user->followusers)),     //粉丝数量
             'user'=>((Auth::check())?Auth::id():0),      //登录用户id
             'guanz'=>$guanz,         //关注、取消关注、修改资料按钮
-            'uid'=>$param[0]        //要展示的用户id
+            'uid'=>$param[0],        //要展示的用户id
+            'coll'=>$coll2,          //要展示的用户创建的收藏集
+            'posts'=>$posts         //要展示的用户的帖子列表
         ];
 
         return $arr;
@@ -172,13 +305,13 @@ class ProController extends Controller
             //更新数据库
             DB::table('users')
                 ->where('id',$user->id)
-                ->update(['ignore'=>implode(',', $ignores)]);
+                ->update(['ignore'=>trim(implode(',', $ignores),',')]);
 
             //给传过来的用户减少粉丝
-            unset($followusers[array_search($uid,$followusers)]);
+            unset($followusers[array_search($user->id,$followusers)]);
             DB::table('users')
                 ->where('id',$uid)
-                ->update(['followusers'=>implode(',',$followusers)]);
+                ->update(['followusers'=>trim(implode(',',$followusers),',')]);
 
             //返回 1
             return 1;
@@ -192,13 +325,13 @@ class ProController extends Controller
             //更新数据库
             DB::table('users')
                 ->where('id',$user->id)
-                ->update(['ignore'=>implode(',', $ignores)]);
+                ->update(['ignore'=>trim(implode(',', $ignores),',')]);
 
             //给传过来的用户添加粉丝
-            $followusers[]=$uid;
+            $followusers[]=$user->id;
             DB::table('users')
                 ->where('id',$uid)
-                ->update(['followusers'=>implode(',',$followusers)]);
+                ->update(['followusers'=>trim(implode(',',$followusers),',')]);
 
             //返回 2
             return 2;

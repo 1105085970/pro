@@ -320,7 +320,7 @@
 }
 
 /*个人资料页 用户兴趣*/
-#pro_xqname{
+#pro_xqname,#pro_postname{
 	margin: 32px 0 0;
 	color: rgba(0,0,0,0.54);
     font-size: 16px;
@@ -329,5 +329,96 @@
 
 /*个人资料页 查看全部*/
 #pro_xqqb{
+	color: #4285f4;
+    line-height: 1em;
+    margin: 0 8px -20px auto;
+    padding: 8px;
+    float:right;
+    cursor: pointer;
+}
 
+/*个人资料页 用户兴趣列表*/
+.pro_xqlist{
+	margin-top: 16px;
+	position: relative;
+    cursor: pointer;
+    border-radius: 2px;
+    background-color: #fff;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+    display: block;
+    background: #fff;
+}
+
+/*个人资料页 用户兴趣列表 收藏集*/
+.pro_xqlist_coll .pro_toutitle{
+	color: rgba(255,255,255,1);
+}
+.pro_xqlist_coll .pro_toufu{
+	color: rgba(255,255,255,.54);
+}
+
+/*个人资料页 背景图片*/
+.pro_imgbox{
+    width: 100%;
+    overflow: hidden;
+}
+
+.pro_imgbox img{
+    width: 100%;
+    height: auto;
+    margin: auto;
+}
+
+/*个人资料页 头像等box*/
+.pro_toubox{
+	height: 102px;
+}
+
+/*个人资料页 头像box*/
+.pro_touxbox{
+	height: 24px;
+    position: relative;
+    margin-top: -12px;
+    margin-left: 25px;
+}
+
+/*个人资料页 头像*/
+.pro_touxbox img{
+	background: #fff;
+    border: 1px solid #fff;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    margin-left: -10px;
+    position: relative;
+    width: 24px;
+}
+
+/*个人资料页 标题*/
+.pro_toutitle{
+	font-size: 16px;
+    line-height: 20px;
+    max-height: 40px;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    color: rgba(0,0,0,.87);
+    margin-left:-10px;
+    margin-right: 15px;
+}
+
+/*个人资料页 副标题*/
+.pro_toufu{
+	font-size: 12px;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+    color: rgba(0,0,0,.54);
 }

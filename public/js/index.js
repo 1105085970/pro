@@ -147,6 +147,8 @@ function index(Action='hom',Param='',Url=''){
 			funa=eval(Action+'Contents');
 			funa(data,Param);
 			$("#Contents").animate({opacity:1,top:"0%"});
+			//滚动条滚动到顶部
+			scrollTo(0,0);
 		},
 		error:function(){
 			//请求失败时
@@ -309,6 +311,7 @@ function reduction(data){
 		fun=eval(data.Action+'Contents');
 		fun(data.Contentsdata,data.Param);
 	}).animate({opacity:1,top:"0%"});
+
 
 }
 

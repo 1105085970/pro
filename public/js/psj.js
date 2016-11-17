@@ -441,6 +441,76 @@ function proContents(data,param){
 		  +'</div>';
 
 	//用户兴趣
+	var coll=data.coll;
+	var xqlist='';	//兴趣列表
+	for(var i=0;i<4;i++){
+
+		var colm=coll[i];
+
+		if(!colm)break;
+
+		if(colm.collid){
+			//是收藏集
+			//点击事件
+			var on="return index('col','"+colm.collid+"','/col/"+colm.collid+"')";
+			//a 链接
+			var a='<a class="pro_xqlist pro_xqlist_coll" href="/col/'+colm.collid+'" onclick="'+on+'">';
+			//副标题
+			var fu=data.name;
+			//背景色
+			var bgc='style="background:'+colm.bg+'"';
+
+		}else{
+			//是社区
+			//点击事件
+			var on="return index('com','"+colm.commid+"','/com/"+colm.commid+"')";
+			//a 链接
+			var a='<a class="pro_xqlist" href="/com/'+colm.commid+'" onclick="'+on+'">';
+			//副标题
+			var fu=colm.members+' 个成员';
+			//背景色
+			var bgc='';
+
+		}
+
+		//头像循环
+		var touxs='';
+		var num=4;
+		for(t in colm.touxs){
+			touxs+='<img style="z-index:'+num+'" src="'+colm.touxs[t]+'">';
+			num--;
+		}
+
+		xqlist+='<div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">'
+			  //链接
+			  +a
+			  //图片
+			  +'<div class="pro_imgbox">'
+			  	+'<img src="'+colm.pic+'">'
+			  +'</div>'
+
+			  //头像等
+			  +'<div '+bgc+' class="pro_toubox">'
+			  	+'<div class="pro_touxbox">'
+			  		//头像
+			  		+touxs
+			  		//标题
+			  		+'<div class="pro_toutitle">'
+			  			+colm.title
+			  		+'</div>'
+			  		//副标题
+			  		+'<div class="pro_toufu">'
+			  			+fu
+			  		+'</div>'
+
+			  	+'</div>'
+			  +'</div>'
+
+			  +'</a>'
+			  +'</div>';
+
+	}
+
 	var interests='<div class="row">'
 		+'<div id="pro_xqbox" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
 
@@ -448,19 +518,46 @@ function proContents(data,param){
 			+'<div id="pro_xqname" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
 
 				+data.name+'的兴趣主题'
-				+'<a id="pro_xqqb" href="">查看全部</a>'
+				+'<div id="pro_xqqb" href="">查看全部</div>'
 
 			+'</div>'
+			+'</div>'
+
+			//兴趣列表
+			+'<div class="row">'
+			+xqlist
+			+'</div>'
+
+		+'</div>'
+		+'</div>';
+
+	//用户帖子列表
+	var postlist='<div class="row">'
+		+'<div id="pro_postlist" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+			+'<div class="row">'
+			+'<div id="pro_postname" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+
+				+data.name+'的信息'
+
+			+'</div>'
+			+'</div>'
+
+			//帖子列表
+			+'<div id="pro_posts" class="row">'
+			
 			+'</div>'
 
 		+'</div>'
 		+'</div>';
 
 
-	col.append(bg+interests);
+	col.append(bg+interests+postlist);
 
 	//追加到主内容
 	con.append(col);
+
+	//追加帖子列表
+	homContents(data.posts,'',{id:'pro_posts'});
 
 	//关注、取消关注按钮被点击
 	$('#pro_guanz').click(function(){

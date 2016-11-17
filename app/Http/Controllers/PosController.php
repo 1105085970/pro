@@ -35,8 +35,17 @@ class PosController extends Controller
     }
 
     //Post请求主内容
-    public function PostContents(Request $request){
-        //
+    public function PostContents(Request $request ,$arr=[]){
+        //如果设置了查询条件
+        if(isset($arr['where'])){
+            //设置了where
+            $where=$arr['where'];
+        }else{
+            //没设置where
+            $where=[];
+        }
+
+        //查询数据
         $rows=DB::table('posts')
             ->select(
                 'posts.id as id',       //帖子id
@@ -53,6 +62,8 @@ class PosController extends Controller
             )
             ->leftjoin('users', 'posts.userid', '=', 'users.id')
             ->leftjoin('files', 'users.picid', '=', 'files.id')
+            ->where($where)
+            ->orderBy('id','desc')
             ->get();
 
         if(Auth::check()){
@@ -66,7 +77,7 @@ class PosController extends Controller
         foreach($rows as $k=>$v){
 
             //如果没有头像 设置默认头像
-            if($v->toux)
+            if(!$v->toux)
                 $v->toux='/images/toux.png';
 
             //时间
