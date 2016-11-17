@@ -29,6 +29,8 @@ function index(Action='hom',Param='',Url=''){
 
 	if(!Action)return;
 
+	$("#Contents").animate({opacity:-1,top:"10%"},500);
+
 	//找已经存过的数据
 	if(Action=='hom'&&!Param)
 		var dat=$(window).data('/');
@@ -83,30 +85,51 @@ function index(Action='hom',Param='',Url=''){
 	});
 
 	//左侧导航
-	UU=U;
-	UU.Method='Left';
-	$.ajax({
-		data:UU,
-		success:function(data){
-			//请求失败时
-			if(!data){Prompt('左侧导航请求失败'); return;};
-			//当请求成功时
-			Leftdata=data;	//存数据
-			State++;		//加状态
-			if(State==3)Re(); //如果三个ajax都完成就存储数据
-			Left(data,Action);
-			//设置左侧导航被选中的颜色
-			if(background){
-				bg(background);
-			}
-			
-		},
-		error:function(){
-			//请求失败时
-			Prompt('左侧导航请求失败');
+	var old_leftdata=$(window).data('LeftData');	//查找左侧导航的缓存
+	if(old_leftdata){
+		//缓存过左侧导航
+
+		Leftdata=old_leftdata;	//存数据
+		State++;		//加状态
+		if(State==3)Re(); //如果三个ajax都完成就存储数据
+		Left(old_leftdata,Action);
+		//设置左侧导航被选中的颜色
+		if(background){
+			bg(background);
 		}
 
-	});
+	}else{
+		//没有缓存过左侧导航
+		UU=U;
+		UU.Method='Left';
+		$.ajax({
+			data:UU,
+			success:function(data){
+				//请求失败时
+				if(!data){Prompt('左侧导航请求失败'); return;};
+				//当请求成功时
+				Leftdata=data;	//存数据
+				State++;		//加状态
+				if(State==3)Re(); //如果三个ajax都完成就存储数据
+				Left(data,Action);
+				//设置左侧导航被选中的颜色
+				if(background){
+					bg(background);
+				}
+
+				//把数据存到缓存中
+				$(window).data('LeftData',data);
+				
+			},
+			error:function(){
+				//请求失败时
+				Prompt('左侧导航请求失败');
+			}
+
+		});
+
+	}
+	
 
 	//主内容
 	UU=U;
@@ -120,9 +143,10 @@ function index(Action='hom',Param='',Url=''){
 			Contentsdata=data;	//存数据
 			State++;	//加状态
 			if(State==3)Re(); //如果三个ajax都完成就存储数据
+			$("#Contents")[0].innerHTML='';
 			funa=eval(Action+'Contents');
 			funa(data,Param);
-
+			$("#Contents").animate({opacity:1,top:"0%"});
 		},
 		error:function(){
 			//请求失败时
@@ -276,10 +300,16 @@ function reduction(data){
 	Top(data.Topdata,data.Action);
 	//设置头部和左侧导航背景色
 	bg(data.Topdata.Background);
-	//主内容
-	$("#Contents").html('');
-	fun=eval(data.Action+'Contents');
-	fun(data.Contentsdata,data.Param);
+
+	
+	//动画
+	$("#Contents").animate({opacity:-1,top:"10%"},500,function(){
+		//主内容
+		$("#Contents")[0].innerHTML='';
+		fun=eval(data.Action+'Contents');
+		fun(data.Contentsdata,data.Param);
+	}).animate({opacity:1,top:"0%"});
+
 }
 
 //中间弹出框
@@ -384,3 +414,8 @@ function Prompt(data){
 	});
 }
 
+//清除缓存
+function Clear_cache(Url){
+	if(!Url)Url=location.pathname;
+	$(window).removeData(Url);
+}

@@ -386,6 +386,26 @@ function proContents(data,param){
 
 	var con=$("#Contents");		//主内容节点
 	var col=$('<div id="pro_col" class="col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-11"></div>');
+	var guanz='';
+
+	//关注、取消关注、修改资料按钮
+	if(data.guanz==1){
+		//关注
+		guanz='<div state="1" uid="'+data.uid+'" id="pro_guanz">关注</div>';
+
+	}else if(data.guanz==2){
+		//取消关注
+		guanz='<div state="2" uid="'+data.uid+'" id="pro_guanz" class="pro_guanz">取消关注</div>';
+
+	}else if(data.guanz==3){
+		//修改资料
+		guanz='<div state="3" uid="'+data.uid+'" id="pro_xiug">修改资料</div>';
+
+	}else if(data.guanz==4){
+		//未登录
+		guanz='';
+	}
+
 
 	//背景图
 	var bg='<div class="row">'
@@ -402,10 +422,16 @@ function proContents(data,param){
 		  			//用户头像
 		  			+'<img id="pro_toux" src="'+data.toux+'">'
 
-		  			//用户姓名
+		  			
 		  			+'<div id="pro_namebox" >'
+		  				//用户姓名
 		  				+'<div id="pro_name">'+data.name+'</div>'
+		  				//粉丝数量
+		  				+'<div id="pro_fans">'+data.fans+' 位关注者</div>'
 		  			+'</div>'
+
+		  			//关注、取消关注、修改资料按钮
+		  			+guanz
 
 		  		+'</div>'
 		  		+'</div>'
@@ -414,9 +440,90 @@ function proContents(data,param){
 		  +'</div>'
 		  +'</div>';
 
-	col.append(bg);
+	//用户兴趣
+	var interests='<div class="row">'
+		+'<div id="pro_xqbox" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+
+			+'<div class="row">'
+			+'<div id="pro_xqname" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+
+				+data.name+'的兴趣主题'
+				+'<a id="pro_xqqb" href="">查看全部</a>'
+
+			+'</div>'
+			+'</div>'
+
+		+'</div>'
+		+'</div>';
+
+
+	col.append(bg+interests);
 
 	//追加到主内容
 	con.append(col);
+
+	//关注、取消关注按钮被点击
+	$('#pro_guanz').click(function(){
+		//状态 关注、取消关注
+		var state=$(this).attr('state');
+		var t=$(this);
+
+		if(state==1){
+			//关注
+			$(this).html('取消关注');
+			//添加背景变透明的类
+			$(this).addClass('pro_guanz');
+			//把状态改成 2
+			$(this).attr('state',2);
+
+		}else if(state==2){
+			//取消关注
+			$(this).html('关注');
+			//移除背景变透明的类
+			$(this).removeClass('pro_guanz');
+			//把状态改成 1
+			$(this).attr('state',1);
+
+		}
+
+		//发送ajax
+		$.ajax({
+
+			data:{
+				Action:'pro',
+				Method:'_follow_do',
+				uid:$(this).attr('uid')
+			},
+			success:function(data){
+				if(data==1){
+					//取消关注
+					t.html('关注');
+					//移除背景变透明的类
+					t.removeClass('pro_guanz');
+					//把状态改成 1
+					t.attr('state',1);
+					return;
+				}else if(data==2){
+					//关注
+					t.html('取消关注');
+					//添加背景变透明的类
+					t.addClass('pro_guanz');
+					//把状态改成 2
+					t.attr('state',2);
+					return;
+				}
+
+				//失败时
+				Prompt('与服务器通信失败。');
+
+			},
+			error:function(data){
+				//失败时
+				Prompt('与服务器通信失败。');
+			}
+
+		});
+
+	});
 
 }

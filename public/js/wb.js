@@ -194,6 +194,9 @@ function homContents(data,param){
 			},
 			success:function(data){
 
+				//清除当前链接的缓存
+				Clear_cache();
+
 				if(data==1){
 					//+1 成功
 

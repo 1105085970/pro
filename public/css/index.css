@@ -30,6 +30,9 @@ a,a:hover,a:active{
 .text-muted #Search{
 	background: rgba(0,0,0,.1);
 }
+.text-muted #CatName{
+	border-left: 1px solid rgba(0,0,0,0.2);
+}
 
 /*顶部搜索*/
 #N_S_S{
@@ -158,7 +161,9 @@ a,a:hover,a:active{
 
 /*主内容*/
 #Contents{
-	
+	position: relative;;
+	top:10%;
+	opacity: -1;
 }
 
 /*发表新帖安钮，右下角*/

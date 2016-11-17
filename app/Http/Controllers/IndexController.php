@@ -37,7 +37,7 @@ class IndexController extends Controller
     sea search 搜索
     col Collections 收藏集
     */
-    public $Category_Tourist=['log','hom','sea','col'];
+    public $Category_Tourist=['log','hom','sea','col','pro'];
 
     //首页控制器
     public function Index($U1='hom',$U2='',$U3='',$U4=''){
@@ -65,6 +65,8 @@ class IndexController extends Controller
             $arr['login']=0;
             //如果访问的是登录后可见的分类 跳转到登录页
             if(!in_array($U1, $this->Category_Tourist))return redirect('/log');
+            //如果访问的是个人资料页 要求必须带id
+            if($U1=='pro'&&!$U2)return redirect('/log');
         }
 
         //存在返回主页视图

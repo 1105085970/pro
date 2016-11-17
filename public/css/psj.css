@@ -211,13 +211,12 @@
     box-align: center;
     align-items: center;
     background-color: rgba(0,0,0,0);
-    background-image: -webkit-linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.46));
     background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.46));
 }
 
 /*个人资料页 头像*/
 #pro_toux{
-	margin-top: 0;
+	margin-top:5px;
 	background-color: #fff;
     border: 2px solid #fff;
     -webkit-border-radius: 50%;
@@ -245,4 +244,90 @@
 	font-size: 30px;
     font-weight: 500;
     
+}
+
+/*个人资料页 粉丝数量*/
+#pro_fans{
+	font-size: 14px;
+}
+
+/*个人资料页 关注按钮 取消关注按钮 修改资料按钮*/
+#pro_guanz,#pro_xiug{
+	margin-left: 8px;
+    margin-top: 20px;
+    background-color: #fff;
+    color: #000;
+    padding: 0 10px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.4);
+    line-height: 40px;
+    min-width: 88px;
+    transition: background .2s .1s;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    text-align: center;
+    height:40px;
+    float: right;
+}
+
+/*取消关注按钮样式*/
+.pro_guanz{
+	color: #fff !important;
+    border: 1px solid #fff;
+    background-color: transparent !important;
+}
+
+@media (max-width:1070px){
+	/*个人资料页 包含头像等信息的行*/
+	#pro_toux_row{
+		margin-top:0;
+		background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0));
+		text-align:center;
+		padding: 0 16px;
+		margin-top:-35px;
+		height:auto;
+	}
+	/*个人资料页 头像*/
+	#pro_toux{
+		float:none;
+	}
+	/*个人资料页 姓名，关注者数量*/
+	#pro_namebox{
+		float:none;
+		color: rgba(0,0,0,0.87);
+		margin-left: 0;
+		margin-top: 16px;
+	}
+
+	/*个人资料页 关注按钮 取消关注按钮 修改资料按钮*/
+	#pro_guanz,#pro_xiug{
+		float:none;
+		margin:0 auto;
+		max-width:100px;
+		margin-top: 24px;
+		background-color: #4285f4;
+		color:#FFF;
+	}
+
+	/*取消关注按钮样式*/
+	.pro_guanz{
+		color: #4285f4 !important;
+		border-color: #4285f4;
+	}
+
+}
+
+/*个人资料页 用户兴趣*/
+#pro_xqname{
+	margin: 32px 0 0;
+	color: rgba(0,0,0,0.54);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/*个人资料页 查看全部*/
+#pro_xqqb{
+
 }
