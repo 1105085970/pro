@@ -11,11 +11,34 @@
 |
 */
 
-//网站后台GET路由
 
-Route::get('/admin',function(){
-	return '后台';
+//后台登录
+Route::get('/admin/login','admin\AdminController@login');
+Route::post('/admin/logindo','admin\AdminController@logindo');
+//注销
+Route::get('/admin/logout','admin\AdminController@logout');
+
+
+Route::group(['prefix'=>'admin','middleware'=>'login'],function(){ //网站后台GET路由
+//后台主页 
+Route::get('/','admin\AdminController@index'); //用户模块（新增管理员）
+Route::get('/user','admin\user\UserController@add');
+Route::post('/user','admin\user\UserController@insert'); 
+//更改用户状态ajax接口
+Route::post('/user/editstate','admin\user\UserController@editState'); 
+
+//用户列表
+Route::get('/user/index','admin\user\UserController@index'); 
+//用户详情
+Route::get('/user/xiangqing/{targetid}','admin\user\UserController@xiangqing'); 
+//圈子列表
+Route::get('/circles/index','admin\circles\CirclesController@index'); 
+
+ 
 });
+
+
+
 
 //登录页GET路由
 Route::get('/log','LogController@Index');
