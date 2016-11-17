@@ -44,7 +44,28 @@ class ColController extends Controller
         //跳转至后带的值
         if($request->Param=='yours'){
             $chuang='你还没有创建收藏集';
-            return ['key'=>$chuang];
+            $arr=DB::table('collections')->where('userid',Auth::id())->get();
+            $pic=DB::table('users')->where('id',Auth::id())->first();
+            $pictx=DB::table('files')->where('id',$pic->picid)->first();
+            foreach($arr as $k=>$v){
+                $cun='关注';
+                $arr1=DB::table('files')->where('id',$arr[$k]->picid)->first();
+                //$arr2=DB::table('files')->where('id',$arr[$k]->userid)->first();
+                $id=explode(',',$arr[$k]->fans);
+                foreach($id as $kk=>$vv){
+                    if(Auth::id()==$vv&&Auth::id()!=''){
+                        $cun='已关注';
+                    }
+                }
+                $arr[$k]->bg=$arr1->path;
+                $arr[$k]->cun=$cun;
+            }
+            if(count($arr)==0){
+                $sf='没有';
+            }else{
+                $sf='有';
+            }
+            return ['key'=>$chuang,'sf'=>$sf,'key'=>$arr,'tx'=>'123','touxiang'=>$pictx->path];
         }
         if($request->Param=='daohang2'){
             $arr=DB::table('users')->where('id',Auth::id())->get();
@@ -96,6 +117,7 @@ class ColController extends Controller
         foreach($arr as $k=>$v){
             $cun='关注';
             $arr1=DB::table('files')->where('id',$arr[$k]->picid)->first();
+           // $arr3=DB::table('users')->where('id',$arr[$k]->userid)->first();
             $arr2=DB::table('files')->where('id',$arr[$k]->userid)->first();
             $id=explode(',',$arr[$k]->fans);
             foreach($id as $kk=>$vv){
@@ -172,6 +194,41 @@ class ColController extends Controller
         }else{
             return ['login'=>'login'];
         }
+    }
+    public function PostcharuColl(Request $request){
+        $this->validate($request,[
+                'title'=>'required|unique:collections',
+                'slogan'=>'required',
+            ],[
+                'title.required'=>'请填写收藏集名称',
+                'title.unique'=>'收藏集名称已存在',
+                'slogan.required'=>'请填写个性宣言',
+            ]);
+            $arr['title']=$request->title;
+            $arr['slogan']=$request->slogan;
+            $arr['addtime']=time();
+            $arr['userid']=Auth::id();
+            $arr['background']=$request->background;
+            $arr1=DB::table('collections')->insert($arr);
+        return ['cg'=>'cg','background'=>$request->background];
+    }
+    public function Postcaozuo(Request $request){
+        $arr=DB::table('collections')->where('id',$request->scid)->first();
+        if($arr->userid==Auth::id()){
+            $sbs='自己的';
+        }else{
+            $sbs='别人的';
+        }
+        return ['sbs'=>$sbs];
+    }
+    public function Postdelete(Request $request){
+        $arr=DB::table('collections')->where('id',$request->id)->delete();
+        if($arr){
+            $del='成功';
+        }else{
+            $del='失败';
+        }
+        return ['del'=>$del];
     }
 
 }

@@ -12,6 +12,7 @@
 */
 
 //网站后台GET路由
+
 Route::get('/admin',function(){
 	return '后台';
 });

@@ -9,15 +9,27 @@ function colContents(data,param){
 		var leftdiv="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
 		smalldiv="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian chuang' onclick='chuangjian()'><div class='fa fa-plus-circle jc'></div><div class='shou'>创建收藏集</div></div></div>";
 		
-		var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
+		//var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
 		
+		console.log(data['key']);
+		if(data['sf']=='有'){
+			for(k in data['key']){
+				var title="<div class='title'>"+data['key'][k].title+"</div>";
+				var biaoyu="<div class='biaoyu'>"+((data['key'][k].slogan)?data['key'][k].slogan:'')+"</div>";
+				var guanzhu="<div class='gz guanzhu"+data['key'][k].id+"' onclick='click1("+data['key'][k].id+")' onmouseover='over("+data['key'][k].id+")' onmouseout='out("+data['key'][k].id+")'>"+data['key'][k].cun+"</div>";
+				var on="return index('col','"+data['key'][k].id+",导航2','/col/"+data['key'][k].id+"')";
+				var img="<a href='#' onclick=\""+on+"\"><img src='"+data['key'][k].bg+"' class='img1'/></a>";
+				var circle="<div class='circle' style='margin-left:-20px;'><img src='"+data['touxiang']+"' class='img1'/></div>";
+				smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down' style='background:"+data['key'][k].background+";'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
+			}
+			var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
+		}
 		scj=leftdiv+maindiv;
 		$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+scj+'</div>');
 		return;
 	}
 	if(param=='daohang2'){
 		$('#Contents').empty();
-		console.log(data['key']);
 		//没有关注的时候
 		if(data['key']=='你还没有关注'){
 			var div=createScj();
@@ -30,7 +42,6 @@ function colContents(data,param){
 			return;
 		}
 		
-		//console.log(data['bg']);
 		var div=createScj();
 		var smalldiv='';
 	
@@ -54,7 +65,7 @@ function colContents(data,param){
 	if(data['panduan']=='tiao'){
 		$('.bigdiv').remove();
 		var div=createT();
-		var duo="<div class='fa fa-ellipsis-v duo' onclick='fang()' onmouseover='dmouse()'></div>";
+		var duo="<div class='fa fa-ellipsis-v duo' onclick='fang("+data['key']['id']+")' onmouseover='dmouse()'></div>";
 		var tou="<div class='tou'><img src='"+data['tx']+"' /></div>";
 		var zw="<div style='height:36px;width:100%;'></div>";
 		var user="<div class='user'>"+data['user']+"</div>";
@@ -68,8 +79,8 @@ function colContents(data,param){
 		var title2="<div class='title2'>"+data['key']['title']+"</div>";
 		var xuanyan="<div class='xuanyan'>"+((data['key']['slogan'])?data['key']['slogan']:'这个人很懒，没有写任何东西')+"</div>";
 		var guan="<span class='guan guan"+data['key'].id+"' onclick='gclick1("+data['key'].id+")' onmouseover='gover("+data['key'].id+")' onmouseout='gout("+data['key'].id+")'>"+data['key'].cun+"</span>";
-		//var guanzhu="<div class='gz guanzhu"+data['key'].id+"' onclick='click1("+data['key'].id+")' onmouseover='over("+data['key'].id+")' onmouseout='out("+data['key'].id+")'>"+data['key'].cun+"</div>";
-		var tleft="<div class='col-lg-3 col-sm-7 col-xs-7 tleft'>"+duo+"<img src='"+data['bg']+"' class='timg'><div style='width:100%;height:100%;background:#A900FF;'>"+tou+zw+user+title2+xuanyan+guan+"</div></div>";//跳转至后的左侧div
+		
+		var tleft="<div class='col-lg-3 col-sm-7 col-xs-7 tleft'>"+duo+"<img src='"+data['bg']+"' class='timg'><div style='width:100%;height:100%;background:"+data['key'].background+";'>"+tou+zw+user+title2+xuanyan+guan+"</div></div>";//跳转至后的左侧div
 
 		var tx="<div class='tx'><img src='/photo.jpg' /></div>";//头像
 		var name="<div class='name'>Meici Tail</div>";//名字
@@ -88,7 +99,7 @@ function colContents(data,param){
 		return;
 	}
 	var div=createScj();
-	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+scjMain(data)+'</div>');
+	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+scjMain(data)+'</div>');//此处调用了scjMain(data2)方法
 }
 //鼠标悬浮效果
 
@@ -104,23 +115,67 @@ function createX(){
 	return div;
 }
 //当三个点被点击时出现的方块
+//当三个点被点击时出现的方块
+//当三个点被点击时出现的方块
 var dian=0;
-function fang(){
-	if(dian==0){
-		var div=createX();
-		var hang1="<span class='fspan'>123123</span>";
-		var hang2="<span class='fspan'>456456</span>";
-		var nei=hang1+hang2;
-		div.html(nei);
-		div.appendTo('.tleft');
-		$('.duo').addClass('duo1');
-		
-		dian=1;
-	}else{
-		$('.fang').remove();
-		$('.duo').removeClass('duo1');
-		dian=0;
-	}
+function fang(scid){//传过来要操作的id
+	$.ajax({
+		data:{Action:'col',Method:'caozuo',scid:scid},
+		success:function(data){
+			if(data['sbs']=='自己的'){
+				if(dian==0){
+					var div=createX();
+					var hang1="<span class='fspan' onclick='del("+scid+")'>删除收藏集</span>";
+					var hang2="<span class='fspan' onclick='bangzhu()'>帮助</span>";
+					var nei=hang1+hang2;
+					div.html(nei);
+					div.appendTo('.tleft');
+					$('.duo').addClass('duo1');
+					
+					dian=1;
+				}else{
+					$('.fang').remove();
+					$('.duo').removeClass('duo1');
+					dian=0;
+				}
+			}else{
+				if(dian==0){
+					var div=createX();
+					var hang1="<span class='fspan'>举报滥用行为</span>";
+					var hang2="<span class='fspan'>帮助</span>";
+					var nei=hang1+hang2;
+					div.html(nei);
+					div.appendTo('.tleft');
+					$('.duo').addClass('duo1');
+					
+					dian=1;
+				}else{
+					$('.fang').remove();
+					$('.duo').removeClass('duo1');
+					dian=0;
+				}
+			}
+		},
+		error:function(){}
+	})
+	
+}
+function del(id){
+	$.ajax({
+		data:{Action:'col',Method:'delete',id:id},
+		success:function(data){
+			if(data['del']=='成功'){
+				Clear_cache('/col/yours');
+				index('col','yours','/col/yours');
+			}else{
+				alert("删除失败");
+			}
+		},
+		error:function(){}
+	})
+}
+function bangzhu(){
+	alert("这么简单你还看帮助,你咋不去幼儿园呢");
 }
 function dmouse(){
 	document.title='ooooo';
@@ -133,7 +188,9 @@ function jia1(){
 
 
 
-//社区的内容
+//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function comContents(data2,Param){
 	$('#Contents').empty();
 
@@ -163,13 +220,16 @@ function comContents(data2,Param){
 		div.appendTo('#Contents');
 		return;
 	}
-	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sqMain(data2)+'</div>');
+	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sqMain(data2)+'</div>');//此处调用了sqMain(data2)方法
 }
 
 
 
 
 //主内容区块
+//收藏集的相关方法开始！！！！！！！！！！！！！！
+//收藏集的相关方法开始！！！！！！！！！！！！！！
+//收藏集的相关方法开始！！！！！！！！！！！！！！
 function createScj(){
 	var div=$('<div class="row bigdiv col-md-11" style=""></div>');
 	return div;
@@ -185,7 +245,7 @@ function scjMain(data){
 		var on="return index('col','"+data['key'][k].id+",导航2','/col/"+data['key'][k].id+"')";
 		var img="<a href='#' onclick=\""+on+"\"><img src='"+data['key'][k].bg+"' class='img1'/></a>";
 		var circle="<div class='circle' style='margin-left:-20px;'><img src='"+data['key'][k].tx+"' class='img1'/></div>";
-		smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
+		smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down' style='background:"+data['key'][k].background+";'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
 	}
 	var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
 	
@@ -236,6 +296,14 @@ function gover(w){
 function gout(w){
 	$('.guan'+w).removeClass('hover');
 }
+
+//收藏集的方法结束！！！！！！！！！！！！
+//收藏集的方法结束！！！！！！！！！！！！
+//收藏集的方法结束！！！！！！！！！！！！
+
+
+//社区的方法！！！！！！！！！！！！！！！
+//社区的方法！！！！！！！！！！！！！！！
 //社区的方法！！！！！！！！！！！！！！！
 function createSq(){
 	var div=$('<div class="row bigdiv col-md-11" style=""></div>');
@@ -285,6 +353,21 @@ function over2(w){
 function out2(w){
 	$('.jiaru'+w).removeClass('hover');
 }
+
+//社区相关的方法结束!!!!!!!!!!!!!!!
+//社区相关的方法结束!!!!!!!!!!!!!!!
+//社区相关的方法结束!!!!!!!!!!!!!!!
+//社区相关的方法结束!!!!!!!!!!!!!!!
+//社区相关的方法结束!!!!!!!!!!!!!!!
+//社区相关的方法结束!!!!!!!!!!!!!!!
+
+
+
+//创建收藏集的方法开始！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//创建收藏集的方法开始！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//创建收藏集的方法开始！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//创建收藏集的方法开始！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//创建收藏集的方法开始！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 function chuangjian(){
 	var div=bd();
 	var cjscj="<div class='cjscj'>创建收藏集</div>";
@@ -301,36 +384,62 @@ function chuangjian(){
 	div.appendTo('body');
 }
 function bd(){
-	var div=$("<div class='row haha' style='width:100%;height:100%;background:rgba(210,210,210,0.3);position:absolute;margin-top:120px;float:left;margin-top:-367px;margin-left:1px;z-index:101;'></div>");
+	var div=$("<div class='row haha' style='width:100%;height:100%;background:rgba(210,210,210,0.3);position:absolute;margin-top:120px;float:left;top:-127px;margin-left:1px;z-index:101;'></div>");
 	
 	return div;
 }
 function haha(){
-	$('.haha').remove();
+	$('.haha').remove();//移除创建搜藏集的div
 }
+//无刷新上传图片！！！！！！！！！！
+//无刷新上传图片！！！！！！！！！！
+//无刷新上传图片！！！！！！！！！！
+function getFileUrl(sourceId) {
+    var url;
+    if (navigator.userAgent.indexOf("MSIE") >= 1) { // IE
+        url = document.getElementById(sourceId).value;
+    } else if (navigator.userAgent.indexOf("Firefox") > 0) { // Firefox
+        url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0));
+    } else if (navigator.userAgent.indexOf("Chrome") > 0) { // Chrome
+        url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0));
+    }
+    return url;
+}
+
+function preImg(sourceId, targetId) {
+    var url = getFileUrl(sourceId);
+    var imgPre = document.getElementById(targetId);
+    imgPre.src = url;
+    alert(url);
+}
+//无刷新上传图片！！！！！！！！！！
+//无刷新上传图片！！！！！！！！！！
+//无刷新上传图片！！！！！！！！！！
 function createjh(){
 	var a=$('.iname').val();
 	var b=$('.igxxy').val();
 	var c=$('.igxxy').val().length;
 	$(".fabiao").remove();
 	var div=bd();
-	var ctop="<div class='ctop'><div class='fa fa-remove remove' onclick='haha()'></div><div class='xiugai'>修改收藏集</div><div class='bc'>保存</div></div>";
-	var tupian="<div class='tupian'><img src='/2.jpg'></div>";
+	var ctop="<div class='ctop'><div class='fa fa-remove remove' onclick='haha()'></div><div class='xiugai'>修改收藏集</div><div class='bc' onclick='charuColl()'>保存</div></div>";
+	var tupian="<div class='tupian'><img id='imgPre' src='/images/1.jpg'></div>";
+	var shang="<label><div class='fa fa-camera shang'><input type='file' value='' id='imgUp' onchange=\"preImg(this.id,'imgPre');\" class='scpic'></div></label>";
 	var mc="<div class='mc'><input type='text' class='tjmc' value='"+a+"'/></div>";
-	var xy="<div class='xy'><input type='text' class='tjxy' value='"+b+"'/></div>";
+	var xy="<div class='xy'><input type='text' id='tjxy' class='tjxy' value='"+b+"'/></div>";
+	
 	var num="<div class='num'>"+c+"/80</div>";
 	var hh="<div class='hh'>"+mc+xy+num+"</div>";
 	
 	var yanse="<div class='yanse'>"+
-				"<div class='cl1' ys='#E53935' onclick='bianse(1)' onmouseover='ysover(1)'></div>"+
-				"<div class='cl2' ys='#EB3F79' onclick='bianse(2)' onmouseover='ysover(2)'></div>"+
-				"<div class='cl3' ys='#A900FF' onclick='bianse(3)' onmouseover='ysover(3)'></div>"+
-				"<div class='cl4' ys='#7D56C1' onclick='bianse(4)' onmouseover='ysover(4)'></div>"+
-				"<div class='cl5' ys='#5B6ABF' onclick='bianse(5)' onmouseover='ysover(5)'></div>"+
-				"<div class='cl6' ys='#1D87E4' onclick='bianse(6)' onmouseover='ysover(6)'></div>"+
-				"<div class='cl7' ys='#029AE4' onclick='bianse(7)' onmouseover='ysover(7)'></div>"+
-				"<div class='cl8' ys='#00ABC0' onclick='bianse(8)' onmouseover='ysover(8)'></div>"+
-				"<div class='cl9' ys='#00887A' onclick='bianse(9)' onmouseover='ysover(9)'></div>"+
+				"<div class='cl1'  ys='#E53935' onclick='bianse(1)'  onmouseover='ysover(1)' ></div>"+
+				"<div class='cl2'  ys='#EB3F79' onclick='bianse(2)'  onmouseover='ysover(2)' ></div>"+
+				"<div class='cl3'  ys='#A900FF' onclick='bianse(3)'  onmouseover='ysover(3)' ></div>"+
+				"<div class='cl4'  ys='#7D56C1' onclick='bianse(4)'  onmouseover='ysover(4)' ></div>"+
+				"<div class='cl5'  ys='#5B6ABF' onclick='bianse(5)'  onmouseover='ysover(5)' ></div>"+
+				"<div class='cl6'  ys='#1D87E4' onclick='bianse(6)'  onmouseover='ysover(6)' ></div>"+
+				"<div class='cl7'  ys='#029AE4' onclick='bianse(7)'  onmouseover='ysover(7)' ></div>"+
+				"<div class='cl8'  ys='#00ABC0' onclick='bianse(8)'  onmouseover='ysover(8)' ></div>"+
+				"<div class='cl9'  ys='#00887A' onclick='bianse(9)'  onmouseover='ysover(9)' ></div>"+
 				"<div class='cl10' ys='#378D3B' onclick='bianse(10)' onmouseover='ysover(10)'></div>"+
 				"<div class='cl11' ys='#679E37' onclick='bianse(11)' onmouseover='ysover(11)'></div>"+
 				"<div class='cl12' ys='#F8A724' onclick='bianse(12)' onmouseover='ysover(12)'></div>"+
@@ -340,12 +449,55 @@ function createjh(){
 				"<div class='cl16' ys='#414141' onclick='bianse(16)' onmouseover='ysover(16)'></div>"+
 			   "</div>";
 	var fw="<div class='fw'>公开范围：公开</div>";
-	var nrtc="<div class='baocun1'>"+ctop+tupian+hh+yanse+fw+"</div>";
+	var cuowu="<div class='cuowu'></div>";
+	var nrtc="<div class='baocun1'>"+ctop+tupian+shang+hh+yanse+fw+cuowu+"</div>";//内容填充
 	div.html("<div class='baocun'>"+nrtc+"</div>");
 	div.appendTo('body');
+	var tjxy=document.getElementById('tjxy');
+	//显示剩余字数的方法
+	$('.scpic').on('focus',function(){
+		document.title=999;
+	})
+	$('.scpic').on('blur',function(){
+		document.title=$('#imgPre').attr('src');
+	})
+	var t1;
+	tjxy.onfocus=function(){
+		t1=setInterval(function(){
+			if((80-tjxy.value.length)<=0){
+				tjxy.onkeydown=function(e){
+					if(e.keyCode==8){
+						return true;
+					}else{
+						return false;
+					}
+				}
+			}else{
+				tjxy.onkeydown=function(){
+					return true;
+				}
+			}
+			$('.num').html(tjxy.value.length+"/80");
+		},30);
+		document.title='123456789';
+	}
+	tjxy.onblur=function(){
+		clearInterval(t1);
+	}
 }
+//个性宣言的长度
+//个性宣言的长度
+//个性宣言的长度
+function xycd(){
+	$('.tjxy').on('change',function(){
+		var c=$('.tjxy').val().length;
+		return c;
+	})
+	
+}
+var jj='#00ABC0';
 function bianse(n){
-	var jj=$('.cl'+n).attr('ys');
+	jj=$('.cl'+n).attr('ys');
 	$('.hh').css('background',jj);
 	$('.tjmc').css('background',jj);
 	$('.tjxy').css('background',jj);
@@ -353,3 +505,56 @@ function bianse(n){
 function ysover(n){
 	$('.cl'+n).css('cursor','pointer');
 }
+function charuColl(){
+	$.ajax({
+		data:{Action:'col',Method:'charuColl',title:$('.tjmc').val(),slogan:$('.tjxy').val(),background:jj},
+		success:function(data){
+			if(data['cg']=='cg'){
+				haha();
+			}
+			console.log(data);
+		},
+		error:function(data){
+			var cuo=data.responseJSON;
+			console.log(cuo);
+			
+			var i=0;
+			var t=setInterval(function(){
+				if(i%2==0){
+					$('.cuowu').empty();
+					if(cuo['title']=='请填写收藏集名称'){
+						var tt="<span class='fa fa-exclamation-circle'>&nbsp;&nbsp;"+cuo['title']+"</div>";
+					}else if(cuo['title']=='收藏集名称已存在'){
+						var tt="<span class='fa fa-exclamation-circle'>&nbsp;&nbsp;"+cuo['title']+"</div>";
+					}else{
+						var tt='';
+					}
+					if(cuo['slogan']=='请填写个性宣言'){
+						var sl="<span class='fa fa-exclamation-circle'>&nbsp;&nbsp;"+cuo['slogan']+"</div>";
+					}else{
+						var sl='';
+					}
+					var cuowu1="<span class='cuowu1'>"+tt+"</span>";
+					var cuowu2="<span class='cuowu2'>"+sl+"</span>";
+					$('.cuowu').html(cuowu1+cuowu2);
+					i++;
+				}else{
+					$('.cuowu').empty();
+					var cuowu1="<span class='cuowu1'></span>";
+					var cuowu2="<span class='cuowu2'></span>";
+					$('.cuowu').html(cuowu1+cuowu2);
+					i++;
+				}
+				if(i==8){
+					$('.cuowu').empty();
+					clearInterval(t);
+				}
+			},500);
+		}
+	});
+}
+//创建收藏集的方法结束！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//创建收藏集的方法结束！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//创建收藏集的方法结束！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//创建收藏集的方法结束！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//创建收藏集的方法结束！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
