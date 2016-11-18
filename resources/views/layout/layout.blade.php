@@ -113,10 +113,30 @@
                         
                     </li>
                     <li>
-                        <a href="#"><i class="icon-user"></i>圈子管理</a>
+                        <a href="#"><i class="icon-planet"></i>圈子管理</a>
                         <ul>
                             <li><a href='/admin/circles/index'>圈子列表</a></li>
-                            
+                        </ul>
+                        
+                    </li>
+                     <li>
+                        <a href="#"><i class="icon-share"></i>收藏集管理</a>
+                        <ul>
+                            <li><a href='/admin/collections/index'>收藏集列表</a></li>
+                        </ul>
+                        
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-home"></i>社区管理</a>
+                        <ul>
+                            <li><a href='/admin/communities/index'>社区列表</a></li>
+                        </ul>
+                        
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-list-2"></i>帖子管理</a>
+                        <ul>
+                            <li><a href='/admin/posts/index'>帖子列表</a></li>
                         </ul>
                         
                     </li>

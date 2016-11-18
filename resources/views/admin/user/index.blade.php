@@ -51,10 +51,10 @@
 <form action='/admin/user/index' method="get">
 
     <div id="DataTables_Table_1_length" class="dataTables_length"><label>显示<select name='show' size="1" name="DataTables_Table_1_length" aria-controls="DataTables_Table_1">
+                <option value="5" @if($request->input('show')==5)selected="selected" @endif>5</option>
                 <option value="10" @if($request->input('show')==10)selected="selected" @endif>10</option>
-                <option value="25" @if($request->input('show')==10)selected="selected" @endif>25</option>
-                <option value="50" @if($request->input('show')==10)selected="selected" @endif>50</option>
-                <option value="100"@if($request->input('show')==10)selected="selected" @endif>100</option>
+                <option value="15" @if($request->input('show')==15)selected="selected" @endif>15</option>
+                <option value="20"@if($request->input('show')==20)selected="selected" @endif>20</option>
                 </select>条</label>
                 </div>
                 <div class="dataTables_filter" id="DataTables_Table_1_filter"><label>关键字: <input type="text" name='search' aria-controls="DataTables_Table_1"></label>
@@ -70,7 +70,7 @@
         
      <tbody role="alert" aria-live="polite" aria-relevant="all">
            @foreach($list as $k=>$v)
-                 <tr class="odd">
+                 <tr class="odd" style='text-align: center;'>
                         <td >{{$v->id}}</td>
                         <td class=" ">{{$v->username}}</td>
                         <td class=" ">{{$v->email}}</td>
@@ -91,7 +91,7 @@
                    <div class="dataTables_paginate paging_full_numbers" id="DataTables_Table_1_paginate">
 
             <!-- 原分页 -->
-            <div class="dataTables_paginate paging_full_numbers" id="DataTables_Table_1_paginate"><a tabindex="0" class="first paginate_button paginate_button_disabled" id="DataTables_Table_1_first">First</a><a tabindex="0" class="previous paginate_button paginate_button_disabled" id="DataTables_Table_1_previous">Previous</a><span><a tabindex="0" class="paginate_active">1</a><a tabindex="0" class="paginate_button">2</a><a tabindex="0" class="paginate_button">3</a><a tabindex="0" class="paginate_button">4</a><a tabindex="0" class="paginate_button">5</a></span><a tabindex="0" class="next paginate_button" id="DataTables_Table_1_next">Next</a><a tabindex="0" class="last paginate_button" id="DataTables_Table_1_last">Last</a>
+           
             <!-- 原分页 -->
                          <div id='pages'>
                     {!! $list->render() !!}
@@ -100,4 +100,23 @@
             </div>
         </div>
     </div>
+<script>
+    $('.select-box').on('change',function(){
+
+        var statu=$(this).val();
+        var userid=$(this).attr("data-id");
+         $.ajax({
+            url:"/admin/user/editstate" ,            
+            data:{
+                statu:statu,
+                userid:userid,
+                _token:'{{csrf_token()}}'
+            },           
+            dataType:'json',           
+            type:'POST',                
+            success:function(data){
+            }                           
+        });
+    });
+        </script>
 @endsection

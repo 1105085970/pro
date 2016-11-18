@@ -1,6 +1,6 @@
 
 @extends('layout.layout')
-@section('title',' 圈子列表')
+@section('title','收藏集列表')
 @section('container')
 <style>
     #pages li{
@@ -44,11 +44,11 @@
     </style>
 <div class="mws-panel grid_8">
 <div class="mws-panel-header">
-    <span><i class="icon-table"></i>圈子列表</span>
+    <span><i class="icon-table"></i> 收藏集列表</span>
 </div>
 <div class="mws-panel-body no-padding">
     <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
-<form action='/admin/circles/index' method="get">
+<form action='/admin/collections/index' method="get">
 
     <div id="DataTables_Table_1_length" class="dataTables_length"><label>显示<select name='show' size="1" name="DataTables_Table_1_length" aria-controls="DataTables_Table_1">
                 <option value="5" @if($request->input('show')==5)selected="selected" @endif>5</option>
@@ -64,20 +64,22 @@
 </form>
 
      <table class="mws-datatable-fn mws-table dataTable" id="DataTables_Table_1" aria-describedby="DataTables_Table_1_info">
-                 <thead>
-                    <tr role="row"><th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 156px;">圈子编号</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 208px;">圈子名</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 194px;">所属用户</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 136px;">圈内用户数量</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 101px;">创建时间</th></tr>
+                <thead>
+                    <tr role="row"><th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 156px;">序号</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 208px;">收藏集标题</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 194px;">所属用户</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 136px;">粉丝数量</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 101px;">收藏集内帖子数量</th>
+                    <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 101px;">收藏集图片编号</th></tr>
                 </thead>
         
-    <tbody role="alert" aria-live="polite" aria-relevant="all">
+     <tbody role="alert" aria-live="polite" aria-relevant="all">
            @foreach($list1 as $k=>$v)
-                    <tr class="odd" style='text-align: center;'>
+                 <tr class="odd" style='text-align: center;'>
                         <td >{{$list1[$k]->id}}</td>
-                        <td class=" ">{{$list1[$k]->name}}</td>
+                        <td class=" ">{{$list1[$k]->title}}</td>
                         <td class=" ">{{$list1[$k]->username}}</td>
-                        <td class=" ">{{$list1[$k]->follownum}}个</td>
-                        <td class=" ">{{$list1[$k]->addtime}}</td>
+                        <td class=" ">{{$list1[$k]->fansnum}}个</td>
+                        <td class=" ">{{$list1[$k]->postnum}}个</td>
+                        <td class=" "><img src='{{$list1[$k]->path}}'></td>
                     </tr>
-            @endforeach
+                 @endforeach
 
                    </tbody></table>
                    <div class="dataTables_paginate paging_full_numbers" id="DataTables_Table_1_paginate">

@@ -15,33 +15,6 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     
-   	
-      public function insert(Request $request){
-         // $data=$request->except('_token');
-         // dd($data);
-          $this->validate($request, [
-             'username'=>'required|unique:users|regex:/^\w{6,10}$/',
-             'password'=>'required|regex:/^\w{6,10}$/',
-          ],[
-
-               'username.required'=>'请填写用户名',
-               'username.unique'=>'用户名已存在',
-               'username.regex'=>'请填写6~10位数字字母下划线',
-               'password.required'=>'请填写密码',
-               'passwrod.regex'=>'请填写6~10位数字字母下划线',
-
-          ]);
-          $data=$request->only('username','email');
-          $npwd=Auth::user()->password;
-          $arr=DB::table('users')->insert($data);
-          if($arr){
-            echo"yes";
-          }else{
-            return back();
-          }
-      }
-
-
 
       public function index(Request $request){
          $userid=Auth::user()->id;
@@ -57,7 +30,7 @@ class UserController extends Controller
                         $query->where('username','like','%'.$search.'%');
                      }
                   })
-                  ->paginate($request->input('show','10'));
+                  ->paginate($request->input('show','5'));
 
         // var_dump($list);
            return view('admin.user.index',['pic'=>$res,'username'=>$res->username,'list'=>$list,'request'=>$request]);

@@ -7,12 +7,12 @@
 * @author 
 */
 
-namespace App\Http\Controllers\admin\circles;
+namespace App\Http\Controllers\admin\collections;
 use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-class CirclesController extends Controller
+class CollectionsController extends Controller
 {
       public function index(Request $request){
       
@@ -22,21 +22,23 @@ class CirclesController extends Controller
                ->leftJoin('files','users.picid','=','files.id')
                ->select('files.path','users.username')
                ->first();
-          $list=DB::table('circles')
+          $list=DB::table('collections')
                   ->where(function($query)use($request){
                      $search=$request->input('search');
                      if(!empty($search)){
-                        $query->where('name','like','%'.$search.'%');
+                        $query->where('username','like','%'.$search.'%');
                      }
                   })
                   ->paginate($request->input('show','5'));
 
-        $list1=DB::table('circles')
-                    ->leftJoin('users','users.id','=','circles.userid')
-                    ->select('circles.name','circles.id','circles.follownum','circles.addtime','users.username')
+        $list1=DB::table('collections')
+                    ->leftJoin('users','collections.userid','=','users.id')
+                    ->leftJoin('files','collections.picid','=','files.id')
+                    ->select('collections.id as id','collections.title as title','users.username as username','collections.fansnum as fansnum','collections.postnum as postnum','files.path as path')
                     ->get();
+                    
 
-         return view('admin.circles.index',['pic'=>$res,'list'=>$list,'request'=>$request,'username'=>$res->username,'list1'=>$list1]);
+         return view('admin.collections.index',['pic'=>$res,'list'=>$list,'request'=>$request,'username'=>$res->username,'list1'=>$list1]);
       }
   
     

@@ -33,6 +33,13 @@ Route::get('/user/index','admin\user\UserController@index');
 Route::get('/user/xiangqing/{targetid}','admin\user\UserController@xiangqing'); 
 //圈子列表
 Route::get('/circles/index','admin\circles\CirclesController@index'); 
+//收藏集列表
+Route::get('/collections/index','admin\collections\CollectionsController@index'); 
+//社区
+Route::get('/communities/index','admin\communities\CommunitiesController@index'); 
+//帖子
+Route::get('/posts/index','admin\posts\PostsController@index'); 
+Route::get('/posts/xiangqing','admin\posts\PostsController@xiangqing'); 
 
  
 });
