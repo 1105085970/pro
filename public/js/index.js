@@ -336,11 +336,22 @@ function Popup(arr,fun){
 		//修改距离顶部距离动画
 		Transparent_row.animate({'margin-top':0},200);
 		//修改背景透明度动画
-		row2.animate({'opacity':0},200,function(){t.remove();});
+		row2.animate({'opacity':0},200,function(){
+
+			t.remove();
+			//显示滚动条
+			if(!$('.Black_bg').length)
+				$('body').css('overflow','');
+
+		});
+		
 		//回调函数
 		fun('remove');
 		
 	});
+
+	//隐藏滚动条
+	$('body').css('overflow','hidden');
 
 	//中间透明行
 	var Transparent_row=$('<div class="row Transparent_row"></div>');

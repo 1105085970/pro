@@ -37,13 +37,31 @@ class PosController extends Controller
     //Post请求主内容
     public function PostContents(Request $request ,$arr=[]){
         //如果设置了查询条件
-        if(isset($arr['where'])){
-            //设置了where
+        if($request->input('arr'))
+            $arr=$request->input('arr');    //通过ajax传过来的arr数组
+
+        //默认where条件
+        $where=[];
+        //默认 跳过 0 条
+        $skip=0;
+        //默认 获取 10 条
+        $take=10;
+
+        //设置了where
+        if(isset($arr['where']))
             $where=$arr['where'];
-        }else{
-            //没设置where
-            $where=[];
-        }
+
+        //设置了 跳过 多少条
+        if(isset($arr['skip']))
+            $skip=$arr['skip'];
+
+        //设置了 获取 多少条
+        if(isset($arr['take']))
+            $take=$arr['take'];
+
+        //设置了 要显示的页数
+        if(isset($arr['page']))
+            $skip=$take*($arr['page']-1);
 
         //查询数据
         $rows=DB::table('posts')
@@ -63,7 +81,9 @@ class PosController extends Controller
             ->leftjoin('users', 'posts.userid', '=', 'users.id')
             ->leftjoin('files', 'users.picid', '=', 'files.id')
             ->where($where)
-            ->orderBy('id','desc')
+            ->orderBy('id','desc')      //排序方式
+            ->skip($skip)        //跳过多少条
+            ->take($take)       //获取多少条
             ->get();
 
         if(Auth::check()){
@@ -133,7 +153,8 @@ class PosController extends Controller
 
         }
 
-        return $rows;
+        $arr['posts']=$rows;
+        return $arr;
     }
 
     //Ajax帖子表单
@@ -150,11 +171,36 @@ class PosController extends Controller
         else
             $pic='/images/toux.png';
 
+        //获得当前用户创建和关注的收藏集
+        $coll=DB::table('collections')
+                ->select(
+                    'collections.id as id',       //id
+                    'collections.title as title',     //标题
+                    'files.path as bg'          //背景图
+                )
+                ->where('collections.userid',$user->id)
+                ->orWhereIn('collections.id',explode(',',$user->followcoll))
+                ->leftjoin('files','collections.picid','=','files.id')
+                ->get();
+
+        //获得当前用户创建和关注的社区
+        $comm=DB::table('communities')
+                ->select(
+                    'communities.id as id',       //id
+                    'communities.title as title',     //标题
+                    'files.path as bg'          //背景图
+                )
+                ->where('communities.userid',$user->id)
+                ->orWhereIn('communities.id',explode(',',$user->followcomm))
+                ->leftjoin('files','communities.picid','=','files.id')
+                ->get();
+
         //准备返回的数组
         $arr=[
-            'name'=>$user->username,
-            'pic'=>$pic,
-            'nickname'=>(($user->nickname)?$user->nickname:'')
+            'pic'=>$pic,        //背景图
+            'name'=>(($user->nickname)?$user->nickname:$user->username),     //名字
+            'col'=>$coll,       //收藏集
+            'com'=>$comm       //社区
         ];
 
         return $arr;

@@ -251,7 +251,8 @@ class ProController extends Controller
         $posts=new PosController;
 
         $arr=[
-            'where'=>['users.id'=>$param[0]]
+            'where'=>['users.id'=>$param[0]],
+            'id'=>'pro_posts'
         ];
 
         $posts=$posts->PostContents($request,$arr);

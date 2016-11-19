@@ -1,9 +1,0 @@
-diff a/routes/web.php b/routes/web.php	(rejected hunks)
-@@ -12,6 +12,7 @@
- */
- 
- //网站后台GET路由
-+
- Route::get('/admin',function(){
- 	return '后台';
- });

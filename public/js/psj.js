@@ -557,7 +557,7 @@ function proContents(data,param){
 	con.append(col);
 
 	//追加帖子列表
-	homContents(data.posts,'',{id:'pro_posts'});
+	homContents(data.posts);
 
 	//关注、取消关注按钮被点击
 	$('#pro_guanz').click(function(){
