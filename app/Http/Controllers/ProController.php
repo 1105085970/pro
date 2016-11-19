@@ -182,7 +182,7 @@ class ProController extends Controller
             $toux=DB::table('users')
                     ->select('files.path as path')
                     ->where('users.id',$v->uid)
-                    ->leftjoin('files','users.picid','=','files.path')
+                    ->leftjoin('files','users.picid','=','files.id')
                     ->first();
 
             //判断头像是否存在

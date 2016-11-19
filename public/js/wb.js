@@ -22,11 +22,11 @@ $(window).resize(function(){
 		//一列
 		homContents(posts,data.Param,id);
 
-	}else if(col!=2 && parent.width()<=1690){
+	}else if(col!=2 && parent.width()<=1690 && parent.width()>830){
 		//两列
 		homContents(posts,data.Param,id);
 
-	}else if(col!=3){
+	}else if(col!=3 && parent.width()>1690){
 		//三列
 		homContents(posts,data.Param,id);
 	}
@@ -196,6 +196,151 @@ function homContents(datas,param){
 
 	});
 
+	//如果评论按钮被点击
+	$('.post_box_comm').click(function(){
+
+		//找到帖子box
+		var postbox=$(this).parents('.post_box');
+		//找到评论框
+		var commbox=postbox.find('.post_box_commbox');
+
+		//如果评论框有这个类
+		if(commbox.hasClass('post_box_commbox_h')){
+
+			//隐藏评论框
+			commbox.siblings('.commbox_huifu').slideUp();
+
+			//帖子移除阴影
+			postbox.removeClass('post_box_now');
+
+			commbox.animate({height:'60px',opacity:0},500,function(){
+				commbox.removeClass('post_box_commbox_h');	//删除
+				commbox.animate({opacity:1},500,function(){
+					if(commbox.css('display')!='none')
+						commbox.removeAttr('style');	//移除样式属性
+				});
+			});
+			
+
+		}else{
+
+			//显示评论框
+			commbox.siblings('.commbox_huifu').slideDown();
+
+			//帖子添加阴影
+			postbox.addClass('post_box_now');
+
+			commbox.addClass('post_box_commbox_h');		//添加
+			var h=commbox[0].scrollHeight;
+			h=(h+5>500)?500:h+5;
+			commbox.animate({height:h+'px',opacity:1});
+
+		}
+
+
+	})
+
+	//显示第一条评论
+	$('.post_box_commbox').each(function(){
+
+		$(this).children('.commbox_row:eq(0)').animate({opacity:1});
+
+	})
+
+	//如果评论框被修改
+	$('.commbox_textarea').keyup(function(){
+
+		//如果有内容
+		if($(this).val()){
+
+			$(this).parents('.commbox_huifu').find('.commbox_huifu_bottom_tij').addClass('commbox_huifu_bottom_tij_ok');
+
+		}else{
+
+			$(this).parents('.commbox_huifu').find('.commbox_huifu_bottom_tij').removeClass('commbox_huifu_bottom_tij_ok');
+
+		}
+
+		//设置表单高度
+		$(this).css('height','');
+		$(this).css('height',$(this)[0].scrollHeight+'px');
+	})
+
+
+	//如果评论框提交按钮被点击
+	$('.commbox_huifu_bottom_tij').click(function(){
+
+		var t=$(this);
+
+		//回复box
+		var huifu=t.parents('.commbox_huifu');
+
+		//评论内容
+		var text=huifu.find('.commbox_textarea').val();
+
+		//如果没有评论或已经发送ajax 直接返回
+		if(!text || t.attr('ajax'))return;
+
+		//添加ajax属性 防止重复提交
+		t.attr('ajax',1);
+
+		//发送ajax
+		$.ajax({
+			data:{
+				Action:'pos',
+				Method:'_create_comment',
+				post:t.attr('postid'),
+				text:text
+			},
+			success:function(data){
+
+				//失败时
+				if(!data[0] || !data[0].id){
+					Prompt('与服务器通信失败。');
+					return;
+				}
+
+				//成功时
+				Prompt('评论成功。');
+
+				//添加 html 标签
+				var comm=forcomm(data);
+
+				//评论box
+				var commbox=t.parents('.post_box').find('.post_box_commbox');
+
+				//移除评论box none
+				commbox.css('display','block');
+
+				//追加
+				commbox.append(comm);
+
+				//高度滚动变大
+				var h=commbox[0].scrollHeight;
+				h=(h+5>500)?500:h+5;
+				commbox.animate({height:h+'px'});
+
+				//允许再次提交
+				t.removeAttr('ajax');
+
+				//清空评论框
+				huifu.find('.commbox_textarea').val('');
+
+			},
+			error:function(data){
+
+				//失败时
+				Prompt('与服务器通信失败。');
+
+				//允许再次提交
+				t.removeAttr('ajax');
+
+			}
+
+		})
+
+	})
+
 	
 }
 
@@ -330,14 +475,55 @@ function posts_list(data){
 
 		//帖子评论大box
 		var comm='';
-		if(data[i]['comm']){
-			//如果有评论
-			var com=data[i]['comm'];
+		
+		//如果有评论
+		var com=data[i]['comm'];
+
+		
+
+		if(com){
+
 			comm='<div class="col-sm-12 post_box_commbox">';
 			comm+=forcomm(com);
-	 		comm+='</div>';
+
+		}else{
+
+			comm='<div style="display:none" class="col-sm-12 post_box_commbox">';
+
 		}
-	 
+			
+		comm+='</div>';	
+	 		
+		
+
+		//回复框
+		comm+='<div class="col-sm-12 commbox_huifu">'
+
+				+'<div style="display:flex">'
+				//头像
+				+'<img class="commbox_toux" src="'+data[i]['toux']+'">'
+				
+				//评论框
+				+'<div class="commbox_huifu_box">'
+					+'<textarea class="commbox_textarea" placeholder="添加评论..." ></textarea>'
+				+'</div>'
+
+				+'</div>'
+
+				//回复条
+				+'<div class="commbox_huifu_bottom">'
+
+					+'<div class="commbox_huifu_bottom_left">'
+					+'</div>'
+
+					+'<div postid="'+data[i]['id']+'" class="commbox_huifu_bottom_tij">'
+						+'提交'
+					+'</div>'
+
+				+'</div>'
+
+			+'</div>';
+ 
 
 	 da='<div class="row post_box">'
 
@@ -408,11 +594,22 @@ function forcomm(com){
 			//顶部窄的框
 			+'<div class="commbox_top">'
 
-				//用户名
-				+com[k]['name']+': '
+				//缩小时的用户名
+				+'<span class="commbox_name">'+com[k]['name']+'<span class="commbox_name_m">:</span> </span>'
 
 				//帖子内容
 				+com[k]['cont']
+
+			+'</div>'
+
+			
+			+'<div class="commbox_time">'
+
+				//评论时间
+				+'<span class="commbox_times">'+com[k]['time']+'</span>'
+
+				//回复标签
+				+'<i class="commbox_reply fa fa-reply fa-2x" aria-hidden="true"></i>'
 
 			+'</div>'
 
@@ -506,6 +703,26 @@ function postform(data,arr){
 		$(this).parents('.Black_bg').click();
 	});
 
+	//统计要显示的收藏集和社区数量
+
+	var collnum=data.col.length;	//收藏集数量
+	var commnum=data.com.length;	//社区数量
+
+	//如果有收藏集收藏集+1
+	if(collnum)collnum++;
+
+	//如果有社区社区+1			
+	if(commnum)commnum++;
+
+	//高度计算
+	var colmh=(collnum+commnum+2)*60;
+
+	//如果高度大于浏览器高度
+	if(colmh>$(window).height()-40)
+		colmh=$(window).height()-40;
+
+
+
 	//如果类别被点击 弹出选择类别
 	$('#Post_types').click(function(){
 
@@ -513,7 +730,7 @@ function postform(data,arr){
 		Popup({
 			Id:'Post_types_list',
 			Noajax:1,
-			Height:800,
+			Height:colmh,
 			Width:-1
 		},function(){
 			//收藏集
@@ -521,12 +738,13 @@ function postform(data,arr){
 			//社区
 			var com=data.com;
 			//要追加的数据
+			var on="$(this).parents('.Black_bg').click()";
 			var typ='<div class="Post_types_top">'
-			 	   		+'<i class="fa fa-arrow-left fa-2x" aria-hidden="true"></i>'
+			 	   		+'<i onclick="'+on+'" class="fa fa-arrow-left fa-2x" aria-hidden="true"></i>'
 			 	   		+'<span class="Post_types_list_t" >与某人分享</span>'
 			 	   +'</div>'
 
-				   +'<div class="Post_types_list">'
+				   +'<div action="" param="" class="Post_types_list">'
 				   		+'<i class="fa fa-futbol-o fa-2x" aria-hidden="true"></i>'
 				   		+'<span class="Post_types_list_t" >公共</span>'
 				   +'</div>';
@@ -536,7 +754,7 @@ function postform(data,arr){
 				//收藏集
 				typ+='<div class="Post_types_listt">收藏集</div>';
 				for(k in col){
-					typ+='<div class="Post_types_list">'
+					typ+='<div action="coll" param="'+col[k].id+'"  class="Post_types_list">'
 						+'<img src="'+col[k].bg+'">'
 						+'<span class="Post_types_list_t" >'+col[k].title+'</span>'
 					   +'</div>';
@@ -549,7 +767,7 @@ function postform(data,arr){
 				//社区
 				typ+='<div class="Post_types_listt">社区</div>'
 				for(k in com){
-					typ+='<div class="Post_types_list">'
+					typ+='<div action="comm" param="'+com[k].id+'" class="Post_types_list">'
 						+'<img src="'+com[k].bg+'">'
 						+'<span class="Post_types_list_t" >'+com[k].title+'</span>'
 					   +'</div>';
@@ -561,6 +779,18 @@ function postform(data,arr){
 
 			//追加
 			$('#Post_types_list').append(typ);
+
+			//如果列表中的项目被点击
+			$('.Post_types_list').click(function(){
+				//设置
+				var types=$('#Post_types');
+				//类别名
+				types.html($(this).children('.Post_types_list_t').html());
+				types.attr('action',$(this).attr('action'));
+				types.attr('param',$(this).attr('param'));
+				//隐藏当前框
+				$(this).parents('.Black_bg').click();
+			})
 
 		})
 
@@ -602,17 +832,25 @@ function postform(data,arr){
 		if($(this).attr('ajax')||!$('#Post_form_text').val())return;
 
 		//防止被再次点击
-		//$(this).attr('ajax',1);
+		$(this).attr('ajax',1);
 
 		var text=$('#Post_form_text').val();	//贴子内容
 		var t=$(this);
+		var types=$('#Post_types');
+
+		//准备参数
+		var arr={
+			Action:types.attr('action'),	//控制器名
+			Param:types.attr('param')		//对应id
+		};
 
 		//发送ajax
 		$.ajax({
 			data:{
 				Action:'pos',
 				Method:'_create_in',
-				Contents:text
+				Contents:text,
+				Arr:arr
 			},
 			success:function(data){
 
@@ -622,7 +860,7 @@ function postform(data,arr){
 				if(!data){
 					//插入失败时
 					//弹出提示框
-					Prompt('连接服务器失败');
+					Prompt('与服务器通信失败。');
 					return;
 				}
 

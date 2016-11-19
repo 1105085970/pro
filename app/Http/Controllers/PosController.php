@@ -81,7 +81,7 @@ class PosController extends Controller
             ->leftjoin('users', 'posts.userid', '=', 'users.id')
             ->leftjoin('files', 'users.picid', '=', 'files.id')
             ->where($where)
-            ->orderBy('id','desc')      //排序方式
+            ->orderBy('posts.addtime','desc')      //排序方式
             ->skip($skip)        //跳过多少条
             ->take($take)       //获取多少条
             ->get();
@@ -125,26 +125,18 @@ class PosController extends Controller
             //如果允许评论
             if($v->nocomm==1){
                 //查询几条最新评论
-                $comms=DB::table('comments')
-                    ->select(
-                        'comments.id as id',        //评论id
-                        'users.username as name',    //用户名
-                        'files.path as toux',        //用户头像
-                        'comments.content as cont',    //评论内容
-                        'comments.likes as likes',      // +1 的数量
-                        'comments.likeuserid as likesid',  //+1 的用户编号列表
-                        'comments.addtime as time'    //评论发布时间的时间戳
-                    )
-                    ->where('postid',$v->id)
-                    ->leftjoin('users', 'comments.userid', '=', 'users.id')
-                    ->leftjoin('files', 'users.picid', '=', 'files.id')
-                    ->orderBy('comments.id','desc')
-                    ->take(3)   //返回的条数
-                    ->get();
+                $comms=$this->get_comments(['where'=>['postid'=>$v->id]]);
 
                 //如果有评论 把评论放到要返回的对象中
-                if(count($comms))
+                if(count($comms)){
+                    //循环评论
+                    foreach($comms as $vv){
+                        //把时间转换成相对时间
+                        $vv->time=$this->timep($vv->time);
+                    }
+
                     $v->comm=$comms;
+                }
 
             }else{
                 //禁止评论时 返回空的评论数量
@@ -213,13 +205,25 @@ class PosController extends Controller
             'Contents' => 'required'
         ]);
 
+        //要插入的数据
+        $arr=[
+            'content'=>$request->input('Contents'),     //主内容
+            'addtime'=>time(),                          //添加时间
+            'userid'=>Auth::user()->id,                 //所属用户id
+            'type'=>1                                   //帖子类型
+        ];
+
+        $arr2=$request->input('Arr');
+
+        //判断当前帖子是不是在收藏集或社区内发布的
+        if($arr2['Action']=='coll'&&$arr2['Param'])
+            $arr['collid']=$arr2['Param'];    //所属收藏集id
+        elseif($arr2['Action']=='comm'&&$arr2['Param'])
+            $arr['commid']=$arr2['Param'];    //所属社区id
+
+
         //插入数据
-        $id=DB::table('posts')->insertGetId([
-            'content'=>$request->input('Contents'),
-            'addtime'=>time(),
-            'userid'=>Auth::user()->id,
-            'type'=>1
-        ]);
+        $id=DB::table('posts')->insertGetId($arr);
 
         //成功时
         if($id)return $id;
@@ -285,6 +289,86 @@ class PosController extends Controller
 
         return;
     }
+
+
+    //ajax 回复评论
+    public function Post_create_comment(Request $request){
+
+        //如果没有登录 直接返回
+        if(!Auth::check())return;
+
+        //当前登录用户 信息
+        $user=Auth::user();
+
+        //传过来的参数
+        $param=$request->all();
+
+        //如果参数不够 直接返回
+        if(!$param['text'] || !$param['post'])return;
+
+        //准备参数
+        $arr=[
+            'userid'=>$user->id,                //用户id
+            'postid'=>$param['post'],           //帖子id
+            'content'=>$param['text'],          //评论内容
+            'parentid'=>'0',                    //父级id
+            'path'=>'0,',                       //父级id 拼接
+            'addtime'=>time()                   //添加时间 时间戳
+        ];
+
+        //数据库
+        $id=DB::table('comments')
+                ->insertGetId($arr);
+
+        if($id){
+
+            //准备条件
+            $where=['where'=>['comments.id'=>$id]];
+
+            //查询刚才评论的数据
+            $comm=$this->get_comments($where);
+
+            //转换时间
+            $comm[0]->time=$this->timep($comm[0]->time);
+
+            return $comm;
+
+        }
+
+    }
+
+
+    //查询评论一些
+    public function get_comments($arr=[]){
+
+        //默认值
+        $where=[];
+
+        //如果设置了where
+        if(isset($arr['where']))
+            $where=$arr['where'];
+
+        $rows=DB::table('comments')
+            ->select(
+                'comments.id as id',        //评论id
+                'users.username as name',    //用户名
+                'files.path as toux',        //用户头像
+                'comments.content as cont',    //评论内容
+                'comments.likes as likes',      // +1 的数量
+                'comments.likeuserid as likesid',  //+1 的用户编号列表
+                'comments.addtime as time'    //评论发布时间的时间戳
+            )
+            ->where($where)
+            ->leftjoin('users', 'comments.userid', '=', 'users.id')
+            ->leftjoin('files', 'users.picid', '=', 'files.id')
+            ->orderBy('comments.id','desc')
+            ->take(3)   //返回的条数
+            ->get();
+
+        return $rows;
+
+    }
+
 
     //返回时间偏移
     public function timep($t){

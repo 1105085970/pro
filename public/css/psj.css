@@ -361,6 +361,7 @@
 .pro_imgbox{
     width: 100%;
     overflow: hidden;
+    max-height: 145px;
 }
 
 .pro_imgbox img{
