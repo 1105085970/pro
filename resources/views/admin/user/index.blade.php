@@ -74,6 +74,7 @@
                         <td >{{$v->id}}</td>
                         <td class=" ">{{$v->username}}</td>
                         <td class=" ">{{$v->email}}</td>
+                       
                         <td class=" " >
                                 <select class="large select-box" style='width: 200px;' data-id="{{$v->id}}">
                                     <option class="aa" value="0" @if(($v->state)==0)selected="selected" @endif>禁用</option>
@@ -83,6 +84,10 @@
                                 </select>
                             
                         </td>
+
+                      
+                        
+
                         <td class=" sorting_1" ><a href="/admin/user/xiangqing/{{$v->id}}" style='color:red;'><i class='icon-hand-right'></i>用户详情</a></td>
                     </tr>
                  @endforeach

@@ -34,9 +34,15 @@ class CirclesController extends Controller
         $list1=DB::table('circles')
                     ->leftJoin('users','users.id','=','circles.userid')
                     ->select('circles.name','circles.id','circles.follownum','circles.addtime','users.username')
-                    ->get();
+                    ->where(function($query)use($request){
+                     $search=$request->input('search');
+                     if(!empty($search)){
+                        $query->where('name','like','%'.$search.'%');
+                     }
+                  })
+                  ->paginate($request->input('show','5'));
 
-         return view('admin.circles.index',['pic'=>$res,'list'=>$list,'request'=>$request,'username'=>$res->username,'list1'=>$list1]);
+         return view('admin.circles.index',['pic'=>$res,'request'=>$request,'username'=>$res->username,'list1'=>$list1]);
       }
   
     

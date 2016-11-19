@@ -30,7 +30,7 @@ class PostsController extends Controller
                   ->where(function($query)use($request){
                      $search=$request->input('search');
                      if(!empty($search)){
-                        $query->where('username','like','%'.$search.'%');
+                        $query->where('title','like','%'.$search.'%');
                      }
                   })
                   ->paginate($request->input('show','5'));

@@ -48,8 +48,8 @@
 </div>
 <div class="mws-panel-body no-padding">
     <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
-<form action='/admin/collections/index' method="get">
-
+<form action='/admin/posts/index' method="post">
+{{csrf_field()}}
     <div id="DataTables_Table_1_length" class="dataTables_length"><label>显示<select name='show' size="1" name="DataTables_Table_1_length" aria-controls="DataTables_Table_1">
                 <option value="5" @if($request->input('show')==5)selected="selected" @endif>5</option>
                 <option value="10" @if($request->input('show')==10)selected="selected" @endif>10</option>
@@ -108,7 +108,7 @@
            
             <!-- 原分页 -->
                          <div id='pages'>
-                    {!! $list->render() !!}
+                 {!! $list1->appends($request->only('search','show'))->render() !!}
                     </div>
                  </div>
             </div>

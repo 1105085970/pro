@@ -22,23 +22,30 @@ class CollectionsController extends Controller
                ->leftJoin('files','users.picid','=','files.id')
                ->select('files.path','users.username')
                ->first();
-          $list=DB::table('collections')
-                  ->where(function($query)use($request){
-                     $search=$request->input('search');
-                     if(!empty($search)){
-                        $query->where('username','like','%'.$search.'%');
-                     }
-                  })
-                  ->paginate($request->input('show','5'));
+          // $list=DB::table('collections')
+          //         ->where(function($query)use($request){
+          //            $search=$request->input('search');
+          //            if(!empty($search)){
+          //               $query->where('username','like','%'.$search.'%');
+          //            }
+          //         })
+          //         ->paginate($request->input('show','5'));
 
         $list1=DB::table('collections')
                     ->leftJoin('users','collections.userid','=','users.id')
                     ->leftJoin('files','collections.picid','=','files.id')
                     ->select('collections.id as id','collections.title as title','users.username as username','collections.fansnum as fansnum','collections.postnum as postnum','files.path as path')
-                    ->get();
+                    ->where(function($query)use($request){
+                     $search=$request->input('search');
+                     if(!empty($search)){
+                        $query->where('title','like','%'.$search.'%');
+                     }
+                  })
+                  ->paginate($request->input('show','5'));
+                  
                     
 
-         return view('admin.collections.index',['pic'=>$res,'list'=>$list,'request'=>$request,'username'=>$res->username,'list1'=>$list1]);
+         return view('admin.collections.index',['pic'=>$res,'request'=>$request,'username'=>$res->username,'list1'=>$list1]);
       }
   
     
