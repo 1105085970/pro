@@ -18,22 +18,24 @@ class UserController extends Controller
 
       public function index(Request $request){
          $userid=Auth::user()->id;
+         $userlevel=Auth::user()->state;
          $res=DB::table('users')
                ->where('users.id',$userid)
                ->leftJoin('files','users.picid','=','files.id')
                ->select('files.path','users.username')
                ->first();
          $list=DB::table('users')
-                  ->where(function($query)use($request){
+                  ->where(function($query)use($request,$userlevel){
+                    $query->where('state',"<",$userlevel);
                      $search=$request->input('search');
                      if(!empty($search)){
                         $query->where('username','like','%'.$search.'%');
                      }
                   })
                   ->paginate($request->input('show','5'));
-
-        // var_dump($list);
-           return view('admin.user.index',['pic'=>$res,'username'=>$res->username,'list'=>$list,'request'=>$request]);
+       // var_dump($list);
+        //die;
+           return view('admin.user.index',['pic'=>$res,'username'=>$res->username,'list'=>$list,'request'=>$request,'userlevel'=>$userlevel]);
       }
       public function xiangqing(Request $request,$targetid){
           $userid=Auth::user()->id;

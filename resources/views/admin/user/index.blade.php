@@ -69,6 +69,7 @@
                 </thead>
         
      <tbody role="alert" aria-live="polite" aria-relevant="all">
+    
            @foreach($list as $k=>$v)
                  <tr class="odd" style='text-align: center;'>
                         <td >{{$v->id}}</td>
@@ -80,7 +81,10 @@
                                     <option class="aa" value="0" @if(($v->state)==0)selected="selected" @endif>禁用</option>
                                     <option class="bb" value="1" @if(($v->state)==1)selected="selected" @endif>未激活</option>
                                     <option class="cc" value="2" @if(($v->state)==2)selected="selected" @endif>正常</option>
+                                    @if($userlevel>3)
                                     <option class="dd" value="3" @if(($v->state)==3)selected="selected" @endif>管理员</option>
+                                    @endif
+
                                 </select>
                             
                         </td>

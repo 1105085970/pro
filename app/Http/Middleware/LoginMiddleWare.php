@@ -20,6 +20,7 @@ class LoginMiddleWare
             return redirect('/admin/login')->with('info','请先登录');
         }
         
+        
 
         return $next($request);
     }

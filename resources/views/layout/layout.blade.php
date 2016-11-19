@@ -103,7 +103,7 @@
         	
             <div id="mws-navigation">
                 <ul>
-                
+               
                     <li>
                         <a href="#"><i class="icon-user"></i>用户管理</a>
                         <ul>
@@ -112,7 +112,7 @@
                         </ul>
                         
                     </li>
-                    
+                   
                     <li>
                         <a href="#"><i class="icon-planet"></i>圈子管理</a>
                         <ul>

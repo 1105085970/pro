@@ -27,7 +27,7 @@ class AdminController extends Controller
 		{	
 
 
-				if(Auth::user()->state==3){
+				if(Auth::user()->state==3 || Auth::user()->state==4){
 						return redirect("/admin");
 					}else{
 						return redirect('/admin/login')->with('info','权限不够');
