@@ -58,6 +58,9 @@ Route::get('/log','LogController@Index');
 //注销GET路由
 Route::get('/logout','LogController@Logout');
 
+Route::post('/col/PostcharuCollImg','ColController@PostcharuCollImg');
+Route::post('/col/PostxgCollImg/','ColController@PostxgCollImg');
+
 //首页GET路由
 Route::get('/{U1?}/{U2?}/{U3?}/{U4?}', 'IndexController@Index');
 

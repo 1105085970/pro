@@ -3,7 +3,7 @@
 
 {{-- 引入jQuery --}}
 <script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
-
+<script src="/js/jquery.form.min.js" type="text/javascript"></script>
 {{-- 引入Bootstrap --}}
 <link rel="stylesheet" type="text/css" href="/css/bootstrap-flex.min.css">
 {{--<script type="text/javascript" src="/js/bootstrap.min.js"></script>--}}
