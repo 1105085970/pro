@@ -89,6 +89,7 @@ class ColController extends Controller
                     foreach($allid as $k=>$v){
                         $idjh[]=$v->id;
                     }
+                    $shu=0;
                     for($n=0;$n<$num-1;$n++){
                         if(in_array($id[$n],$idjh)){
                             $key[$n]=DB::table('collections')->where('id',$id[$n])->first();
@@ -97,10 +98,12 @@ class ColController extends Controller
                             $tx=DB::table('files')->where('id',$upic->picid)->first();
                             $key1[$n]['bg']=$bg->path;
                             $key1[$n]['tx']=$tx->path;
-                        }else{
-                            $key='你还没有关注';
-                            return ['key'=>$key];
+                            $shu=1;
                         }
+                    }
+                    if($shu==0){
+                        $key='你还没有关注';
+                        return ['key'=>$key];
                     }
                 }
                 return ['key'=>$key,'pic'=>$key1];
@@ -150,8 +153,8 @@ class ColController extends Controller
         foreach($arr as $k=>$v){
             $cun='关注';
             $arr1=DB::table('files')->where('id',$arr[$k]->picid)->first();
-           // $arr3=DB::table('users')->where('id',$arr[$k]->userid)->first();
-            $arr2=DB::table('files')->where('id',$arr[$k]->userid)->first();
+            $arr3=DB::table('users')->where('id',$arr[$k]->userid)->first();
+            $arr2=DB::table('files')->where('id',$arr3->picid)->first();
             $id=explode(',',$arr[$k]->fans);
             foreach($id as $kk=>$vv){
                 if(Auth::id()==$vv&&Auth::id()!=''){

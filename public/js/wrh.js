@@ -2,6 +2,7 @@ var scj="";
 var leftmargin=360;//距离左侧的距离
 function colContents(data,param){
 	if(param=='yours'){
+		Clear_cache('/col/yours');
 		$('#Contents').empty();
 		if(data['key']=='mydl'){
 			location.href='/log';
@@ -12,17 +13,17 @@ function colContents(data,param){
 		var smalldiv='';
 		
 		var leftdiv="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
-		smalldiv="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian chuang' onclick='chuangjian()'><div class='fa fa-plus-circle jc'></div><div class='shou'>创建收藏集</div></div></div>";
+		smalldiv="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian chuang' onclick='chuangjian()' style='box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);'><div class='fa fa-plus-circle jc'></div><div class='shou'>创建收藏集</div></div></div>";
 		
 		if(data['sf']=='有'){
 			for(k in data['key']){
 				var title="<div class='title'>"+data['key'][k].title+"</div>";
 				var biaoyu="<div class='biaoyu'>"+((data['key'][k].slogan)?data['key'][k].slogan:'')+"</div>";
-				var guanzhu="<div class='gz guanzhu"+data['key'][k].id+"' onclick='click1("+data['key'][k].id+")' onmouseover='over("+data['key'][k].id+")' onmouseout='out("+data['key'][k].id+")'>"+data['key'][k].cun+"</div>";
+				//var guanzhu="<div class='gz guanzhu"+data['key'][k].id+"' onclick='click1("+data['key'][k].id+")' onmouseover='over("+data['key'][k].id+")' onmouseout='out("+data['key'][k].id+")'>"+data['key'][k].cun+"</div>";
 				var on="return index('col','"+data['key'][k].id+",导航2','/col/"+data['key'][k].id+"')";
 				var img="<a href='#' onclick=\""+on+"\"><img src='"+data['key'][k].bg+"' class='img1'/></a>";
 				var circle="<div class='circle' style='margin-left:-20px;'><img src='"+data['touxiang']+"' class='img1'/></div>";
-				smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down' style='background:"+data['key'][k].background+";'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
+				smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down' style='background:"+data['key'][k].background+";'>"+circle+title+biaoyu+"</div></div></div>";
 			}
 			var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
 		}
@@ -31,6 +32,7 @@ function colContents(data,param){
 		return;
 	}
 	if(param=='daohang2'){
+		Clear_cache('/col/daohang2');
 		$('#Contents').empty();
 		//没有关注的时候
 		$('#Contents').empty();
@@ -57,7 +59,7 @@ function colContents(data,param){
 		console.log(data);
 		for(k in data['key']){
 			
-			var title="<div class='title'>12313123</div>";
+			var title="<div class='title'>"+data['key'][k].title+"</div>";
 			var biaoyu="<div class='biaoyu'>"+((data['key'][k].slogan)?data['key'][k].slogan:'')+"</div>";
 			var guanzhu="<div class='gz guanzhu"+data['key'][k].id+"' onclick='click1("+data['key'][k].id+")' onmouseover='over("+data['key'][k].id+")' onmouseout='out("+data['key'][k].id+")'>已关注</div>";
 			var on="return index('col','"+data['key'][k].id+",导航2','/col/"+data['key'][k].id+"')";
@@ -144,8 +146,8 @@ function fang(scid){//传过来要操作的id
 			}else{
 				if(dian==0){
 					var div=createX();
-					var hang1="<span class='fspan'>举报滥用行为</span>";
-					var hang2="<span class='fspan'>帮助</span>";
+					var hang1="<span class='fspan' onclick='jubao()'>举报滥用行为</span>";
+					var hang2="<span class='fspan' onclick='bangzhu()'>帮助</span>";
 					var nei=hang1+hang2;
 					div.html(nei);
 					div.appendTo('.tleft');
@@ -162,6 +164,10 @@ function fang(scid){//传过来要操作的id
 		error:function(){}
 	})
 	
+}
+function jubao(){
+	haha();
+	//alert('恭喜你，你的账号已被封，截止日期3000年');
 }
 function del(id){
 	$.ajax({
@@ -187,7 +193,11 @@ function xgscj(scid){
 			var bj=data['arr']['background'];
 			var picid=data['arr']['picid'];
 			var path=data['arr']['path'];
-			var c=data['arr']['slogan'].length;
+			if(data['arr']['slogan']==null){
+				var c=0;
+			}else{
+				var c=data['arr']['slogan'].length;
+			}
 			$(".fabiao").remove();
 			var div=bd();
 			//("+scid+","+picid+","+path+")     
@@ -233,10 +243,10 @@ function xgscj(scid){
 			var tjxy=document.getElementById('tjxy');
 			//显示剩余字数的方法
 			$('.scpic').on('focus',function(){
-				document.title=999;
+				
 			})
 			$('.scpic').on('blur',function(){
-				document.title=$('#imgPre').attr('src');
+				
 			})
 			var t1;
 			tjxy.onfocus=function(){
@@ -256,7 +266,7 @@ function xgscj(scid){
 					}
 					$('.num').html(tjxy.value.length+"/80");
 				},30);
-				document.title='123456789';
+				
 			}
 			tjxy.onblur=function(){
 				clearInterval(t1);
@@ -300,7 +310,7 @@ function xiugaiColl(xgid){
 				haha();//移除修改的框
 				Clear_cache('/col/yours');
 				Clear_cache('/col/'+xgid);
-				index('col','yours','/col/yours');
+				index('col',xgid,'/col/'+xgid);
 			}
 			
 		},
@@ -348,49 +358,12 @@ function bangzhu(){
 	alert("这么简单你还看帮助,你咋不去幼儿园呢");
 }
 function dmouse(){
-	document.title='ooooo';
+	
 	$('.duo').css('cursor','pointer');
 }
 function jia1(){
-	document.title='ooooo';
+	
 	$('.jia1').css('cursor','pointer');
-}
-
-
-
-//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-function comContents(data2,Param){
-	$('#Contents').empty();
-
-
-	if(data2['shequ']=='shequ'){
-		$('.bigdiv').remove();
-		//$("#SubClass").remove();
-		//$("#Navigation").remove();
-		var div=createT();
-		
-		//var share="<div class='fa fa-share-alt share'></div>";
-		var duo="<div class='fa fa-ellipsis-v duo' onclick='fang()' onmouseover='dmouse()'></div>";
-
-		var tou="<div class='circle sqcircle' style='margin-left:-40px;z-index:20;'><img src='/2.webp'></div>";
-		for(h in data2['key'][0].img){
-			tou+="<div class='circle sqcircle' style='margin-left:"+h*40+"px;z-index:"+(data2['key'][0].img.length-h)+"'><img src='"+data2['key'][0].img[h]+"'></div>";
-			document.title=data2['key'][0].img[h];
-		}
-		var zw="<div style='height:36px;width:100%;'></div>";
-		var user="<div class='user'>"+data2['user']+"</div>";
-		var title2="<div class='title2'>"+data2['key'][0]['title']+"</div>";
-		var xuanyan="<div class='xuanyan'>"+((data2['key'][0]['slogan'])?data2['key'][0]['slogan']:'这个人很懒，没有写任何东西')+"</div>";
-		//var guan="<span class='guan'>"+data2['key'][0].cun+"</span>";
-		var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='click2("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")'>"+data2['key'][0].cun+"</span>";
-		var tleft="<div class='col-lg-3 col-sm-7 col-xs-7 tleft'>"+duo+"<img src='"+data2['bg']+"' class='timg'><div style='width:100%;height:100%;background:#A900FF;'>"+tou+zw+user+title2+xuanyan+guan+"</div></div>";//跳转至后的左侧div
-		div.html(tleft);
-		div.appendTo('#Contents');
-		return;
-	}
-	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sqMain(data2)+'</div>');//此处调用了sqMain(data2)方法
 }
 
 
@@ -411,12 +384,18 @@ function scjMain(data){
 	for(k in data['key']){
 		var title="<div class='title'>"+data['key'][k].title+"</div>";
 		var biaoyu="<div class='biaoyu'>"+((data['key'][k].slogan)?data['key'][k].slogan:'')+"</div>";
-		var guanzhu="<div class='gz guanzhu"+data['key'][k].id+"' onclick='click1("+data['key'][k].id+")' onmouseover='over("+data['key'][k].id+")' onmouseout='out("+data['key'][k].id+")'>"+data['key'][k].cun+"</div>";
+		if(data['key'][k].userid==data['key2']){
+			var guanzhu='';
+		}else{
+			var guanzhu="<div class='gz guanzhu"+data['key'][k].id+"' onclick='click1("+data['key'][k].id+")' onmouseover='over("+data['key'][k].id+")' onmouseout='out("+data['key'][k].id+")'>"+data['key'][k].cun+"</div>";
+		}
+		
 		var on="return index('col','"+data['key'][k].id+",导航2','/col/"+data['key'][k].id+"')";
 		var img="<a href='#' onclick=\""+on+"\"><img src='"+data['key'][k].bg+"' class='img1'/></a>";
 		var circle="<div class='circle' style='margin-left:-20px;'><img src='"+data['key'][k].tx+"' class='img1'/></div>";
 		smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down' style='background:"+data['key'][k].background+";'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
 	}
+	console.log(data);
 	var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
 	
 	scj=leftdiv+maindiv;
@@ -426,12 +405,16 @@ function click1(w){
 	$.ajax({
 		data:{Action:'col',Method:'guanzhu',id:w},
 		success:function(data){
-			document.title='hahah';
+			
 			if(data['login']=='login'){
 				location.href='/log';
 			}else if(data['id']=='yes'){
+				Clear_cache('/col/daohang2');
+				index('col','daohang2','/col/daohang2');
 				$('.guanzhu'+w).html('已关注');
 			}else{
+				Clear_cache('/col/daohang2');
+				index('col','daohang2','/col/daohang2');
 				$('.guanzhu'+w).html('关注');
 			}
 		},
@@ -448,12 +431,16 @@ function gclick1(w){
 	$.ajax({
 		data:{Action:'col',Method:'guanzhu',id:w},
 		success:function(data){
-			document.title='hahah';
+			
 			if(data['login']=='login'){
 				location.href='/log';
 			}else if(data['id']=='yes'){
+				Clear_cache('/col/daohang2');
+				index('col','daohang2','/col/daohang2');
 				$('.guan'+w).html('已关注');
 			}else{
+				Clear_cache('/col/daohang2');
+				index('col','daohang2','/col/daohang2');
 				$('.guan'+w).html('关注');
 			}
 		},
@@ -472,46 +459,24 @@ function gout(w){
 //收藏集的方法结束！！！！！！！！！！！！
 
 
-//社区的方法！！！！！！！！！！！！！！！
-//社区的方法！！！！！！！！！！！！！！！
-//社区的方法！！！！！！！！！！！！！！！
-function createSq(){
-	var div=$('<div class="row bigdiv col-md-11" style=""></div>');
-	return div;
-}
-function sqMain(data2){
-	var smalldiv1='';
-	var leftdiv1="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
-	for(j in data2['key']){
-		var circle1="<div class='circle' style='margin-left:-20px;z-index:20;'><img src='/2.webp'></div>";//创建人的头像
-		var title1="<div class='title'>"+data2['key'][j].title+"</div>";
-		var biaoyu1="<div class='biaoyu'>"+((data2['key'][j].slogan)?data2['key'][j].slogan:'')+"</div>";
-		var guanzhu1="<div class='gz jiaru"+data2['key'][j].id+"' onclick='click2("+data2['key'][j].id+")' onmouseover='over2("+data2['key'][j].id+")' onmouseout='out2("+data2['key'][j].id+")'>"+data2['key'][j].cun+"</div>";
-		var on1="return index('com','"+data2['key'][j].id+",导航2','/com/"+data2['key'][j].id+"')";
-		var img1="<div style='width:100%;overflow:hidden;'><a href='#' onclick=\""+on1+"\"><img src='"+data2['key'][j].bg+"' class='img1'></a></div>";
-		for(h in data2['key'][j].img){//此处循环的是管理员的div
-			circle1+="<div class='circle' style='margin-left:"+h*20+"px;z-index:"+(data2['key'][j].img.length-h)+"'><img src='"+data2['key'][j].img[h]+"'></div>";
-			document.title=data2['key'][j].img[h];
-		}
-		smalldiv1+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img1+"<div class='col-md-12 down'>"+circle1+title1+biaoyu1+guanzhu1+"</div></div></div>";
-	}
-	var maindiv1="<div class='row col-md-11 maindiv'>"+smalldiv1+"</div>";//主div
-	
-	sq=leftdiv1+maindiv1;
-	return sq;
-}
 function click2(w){
-	document.title='1231231';
+	
 	$.ajax({
 		data:{Action:'com',Method:'jiaru',id:w},
 		success:function(data){
-			document.title='hahah';
+			
 			if(data['login']=='login'){
 				location.href='/log';
 			}else if(data['id']=='yes'){
 				$('.jiaru'+w).html('已加入');
+				Clear_cache('/com/jiaru');
+				index('com','jiaru','/com/jiaru');
+				
 			}else{
 				$('.jiaru'+w).html('加入');
+				Clear_cache('/com/jiaru');
+				index('com','jiaru','/com/jiaru');
+				
 			}
 		},
 		error:function(data){},
@@ -587,7 +552,7 @@ function preImg(sourceId, targetId) {
     	},
     	error:function(){}
     })
-    document.title=url;
+    
 }
 //无刷新上传图片！！！！！！！！！！
 //无刷新上传图片！！！！！！！！！！
@@ -637,10 +602,10 @@ function createjh(){
 	var tjxy=document.getElementById('tjxy');
 	//显示剩余字数的方法
 	$('.scpic').on('focus',function(){
-		document.title=999;
+		
 	})
 	$('.scpic').on('blur',function(){
-		document.title=$('#imgPre').attr('src');
+		
 	})
 	var t1;
 	tjxy.onfocus=function(){
@@ -660,7 +625,7 @@ function createjh(){
 			}
 			$('.num').html(tjxy.value.length+"/80");
 		},30);
-		document.title='123456789';
+		
 	}
 	tjxy.onblur=function(){
 		clearInterval(t1);
@@ -714,13 +679,13 @@ function charuColl(){
 		data:{Action:'col',Method:'charuColl',title:$('.tjmc').val(),slogan:$('.tjxy').val(),background:jj,gaitu:gaitu},
 		success:function(data){
 			if(data['cg']=='cg'){
+				Clear_cache('/col/yours');
 				haha();
 			}
 			
 		},
 		error:function(data){
 			var cuo=data.responseJSON;
-			
 			
 			var i=0;
 			var t=setInterval(function(){
@@ -762,3 +727,227 @@ function charuColl(){
 //创建收藏集的方法结束！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 //创建收藏集的方法结束！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 //创建收藏集的方法结束！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+
+
+//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//社区的内容!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//创建新社区的方法
+function cjsq(){
+	var div=bd();
+	var cjscj="<div class='cjscj'>创建社群</div>";
+	var name="<div class='name'><input type='text'  placeholder='为此社群命名' class='name1'/></div>";
+	var gkfw="<div class='gkfw' style='padding-top:25px;'>公开范围：<select><option>公开</option></select></div>";
+	var wfgg="<div class='sqjr' style='margin-top:25px;margin-left:10px;'><div style='float:left;'>申请加入</div><div class='slideThree' style='float:right;'><input type='checkbox' value='None' id='slideThree' name='check'  /><label for='slideThree' class='kai'></label></div></div>";
+	var gxxy="<div class='gxxy'><input type='text' placeholder='社区简介' class='gxxy1'/></div>";
+	var quxiao="<div class='quxiao' onclick='haha()'>取消</div>";
+	var mingcheng=$('iname').val();
+	var xuanyan=$('igxxy').val();
+	var cjjh="<div class='cjjh' onclick='charuComm()'>创建</div>";
+	var hj=cjscj+name+gkfw+wfgg+gxxy+quxiao+cjjh;
+	div.html("<div class='col-lg-5 col-md-8 col-sm-10 col-xs-12 fabiao'>"+hj+"</div>");
+	div.appendTo('body');
+}
+function charuComm(){
+	var gaitu='mei';
+	$.ajax({
+		data:{Action:'com',Method:'charuComm',title:$('.name1').val(),slogan:$('.gxxy1').val()},
+		success:function(data){
+			if(data['cg']=='cg'){
+				Clear_cache('/com/ndsq');
+				haha();
+			}
+			
+		},
+		error:function(data){
+			var cuo=data.responseJSON;
+			
+			var i=0;
+			var t=setInterval(function(){
+				if(i%2==0){
+					$('.cuowu').empty();
+					if(cuo['title']=='请填写收藏集名称'){
+						var tt="<span class='fa fa-exclamation-circle'>&nbsp;&nbsp;"+cuo['title']+"</div>";
+					}else if(cuo['title']=='收藏集名称已存在'){
+						var tt="<span class='fa fa-exclamation-circle'>&nbsp;&nbsp;"+cuo['title']+"</div>";
+					}else{
+						var tt='';
+					}
+					if(cuo['slogan']=='请填写个性宣言'){
+						var sl="<span class='fa fa-exclamation-circle'>&nbsp;&nbsp;"+cuo['slogan']+"</div>";
+					}else{
+						var sl='';
+					}
+					var cuowu1="<span class='cuowu1'>"+tt+"</span>";
+					var cuowu2="<span class='cuowu2'>"+sl+"</span>";
+					$('.cuowu').html(cuowu1+cuowu2);
+					i++;
+				}else{
+					$('.cuowu').empty();
+					var cuowu1="<span class='cuowu1'></span>";
+					var cuowu2="<span class='cuowu2'></span>";
+					$('.cuowu').html(cuowu1+cuowu2);
+					i++;
+				}
+				if(i==8){
+					$('.cuowu').empty();
+					clearInterval(t);
+				}
+			},500);
+		}
+	});
+}
+function comContents(data2,Param){
+	Clear_cache('/com');
+	console.log(data2);
+	if(Param=='ndsq'){
+		Clear_cache('/com/ndsq');
+		$('#Contents').empty();
+		if(data2['key']=='mydl'){
+			location.href='/log';
+			return;
+		}
+		console.log(data2);
+		var div=createSq();
+		var smalldiv='';
+		
+		var leftdiv="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
+		smalldiv="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian chuang' onclick='cjsq()' style='box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);'><div class='fa fa-plus-circle jc'></div><div class='shou' style=''>创建社区</div></div></div>";
+		
+		if(data2['sf']=='有'){
+			for(k in data2['key']){
+				var title="<div class='title'>"+data2['key'][k].title+"</div>";
+				var biaoyu="<div class='biaoyu'>"+((data2['key'][k].slogan)?data2['key'][k].slogan:'')+"</div>";
+				//var guanzhu='"<div class='gz guanzhu"+data2['key'][k].id+"' onclick='click1("+data2['key'][k].id+")' onmouseover='over("+data2['key'][k].id+")' onmouseout='out("+data2['key'][k].id+")'>"+data2['key'][k].cun+"</div>"';
+				var guanzhu='';
+				var on="return index('com','"+data2['key'][k].id+",导航2','/com/"+data2['key'][k].id+"')";
+				var img="<a href='#' onclick=\""+on+"\"><img src='"+data2['key'][k].bg+"' class='img1'/></a>";
+				var circle="<div class='circle' style='margin-left:-20px;z-index:20'><img src='"+data2['touxiang']+"' class='img1'/></div>";
+				for(h in data2['key'][k].path){//此处循环的是管理员的div
+					circle+="<div class='circle' style='margin-left:"+h*20+"px;z-index:"+(data2['key'][k].path.length-h)+"'><img src='"+data2['key'][k].path[h]+"'></div>";
+					
+				}
+				smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down' style='background:"+data2['key'][k].background+";'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
+			}
+			var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
+			sq=leftdiv+maindiv;
+		}else{
+			sq=leftdiv+smalldiv;
+		}
+		
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sq+'</div>');
+		return;
+	}
+	if(Param=='jiaru'){
+		//alert(123);
+		Clear_cache('/com/jiaru');
+		$('#Contents').empty();
+		if(data2['key']=='mydl'){
+			location.href='/log';
+			return;
+		}
+		if(data2['key']=='你还没有加入'){
+			var div=createSq();
+			var mei="<div style='width:100%;line-height:100px;font-size:40px;text-align:center;color:#7A7A7A;margin-top:50px;'>没有加入任何社区</div>";
+			var mpic="<div style='margin:0px auto;'><img src='/images/meiyou.jpg' /></div>";
+			var wenzi1="<div style='width:100%;line-height:30px;font-size:20px;text-align:center;color:#7A7A7A;'>你加入的社区会在此处显示。</div>";
+			var wenzi2="<div style='width:100%;line-height:30px;font-size:20px;text-align:center;color:#7A7A7A;'>还没有头绪吗？请查看“为您推荐”标签。</div>";
+			console.log(data2);
+			div.html(mei+mpic+wenzi1+wenzi2);
+			div.appendTo("#Contents");
+			return;
+		}
+		
+		var div=createSq();
+		var smalldiv='';
+	
+		var leftdiv="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
+		console.log(data2);
+		for(k in data2['key']){
+			
+			var title="<div class='title'>"+data2['key'][k].title+"</div>";
+			var biaoyu="<div class='biaoyu'>"+((data2['key'][k].slogan)?data2['key'][k].slogan:'')+"</div>";
+			var guanzhu="<div class='gz gz2 guanzhu"+data2['key'][k].id+"' onclick='click2("+data2['key'][k].id+")' onmouseover='over("+data2['key'][k].id+")' onmouseout='out("+data2['key'][k].id+")'>已加入</div>";
+			var on="return index('com','"+data2['key'][k].id+",导航2','/com/"+data2['key'][k].id+"')";
+			var img="<a href='#' onclick=\""+on+"\"><img src='"+data2['pic'][k].bg+"' class='img1'/></a>";
+			var circle="<div class='circle' style='margin-left:-20px;z-index:20;'><img src='"+data2['pic'][k].tx+"' class='img1'/></div>";
+			for(p in data2['key'][k].path){//此处循环的是管理员的div
+				circle+="<div class='circle' style='margin-left:"+p*20+"px;z-index:"+(data2['key'][k].path.length-p)+"'><img src='"+data2['key'][k].path[p]+"'></div>";
+				
+			}
+			smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down' style='background:"+data2['key'][k].background+"'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
+		}
+		var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
+		
+		scj=leftdiv+maindiv;
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+scj+'</div>');
+		return;
+	}
+	$('#Contents').empty();
+
+
+	if(data2['shequ']=='shequ'){
+		$('.bigdiv').remove();
+		//$("#SubClass").remove();
+		//$("#Navigation").remove();
+		var div=createT();
+		
+		//var share="<div class='fa fa-share-alt share'></div>";
+		var duo="<div class='fa fa-ellipsis-v duo' onclick='fang()' onmouseover='dmouse()'></div>";
+
+		var tou="<div class='circle sqcircle' style='margin-left:-40px;z-index:20;'><img src='"+data2.tx+"'></div>";
+		for(h in data2['key'][0].img){
+			tou+="<div class='circle sqcircle' style='margin-left:"+h*40+"px;z-index:"+(data2['key'][0].img.length-h)+"'><img src='"+data2['key'][0].img[h]+"'></div>";
+			
+		}
+		var zw="<div style='height:36px;width:100%;'></div>";
+		var user="<div class='user'>"+data2['user']+"</div>";
+		var title2="<div class='title2'>"+data2['key'][0]['title']+"</div>";
+		var xuanyan="<div class='xuanyan'>"+((data2['key'][0]['slogan'])?data2['key'][0]['slogan']:'这个人很懒，没有写任何东西')+"</div>";
+		//var guan="<span class='guan'>"+data2['key'][0].cun+"</span>";
+		var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='click2("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")'>"+data2['key'][0].cun+"</span>";
+		var tleft="<div class='col-lg-3 col-sm-7 col-xs-7 tleft'>"+duo+"<img src='"+data2['bg']+"' class='timg'><div style='width:100%;height:100%;background:#A900FF;'>"+tou+zw+user+title2+xuanyan+guan+"</div></div>";//跳转至后的左侧div
+		var main8="<div class='row' id='sqcontent' style='width:100%'></div>";
+		div.html(tleft+main8);
+		div.appendTo('#Contents');
+		homContents(data2.posts);
+		console.log(data2);
+		return;
+	}
+	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sqMain(data2)+'</div>');//此处调用了sqMain(data2)方法
+}
+
+//社区的方法！！！！！！！！！！！！！！！
+//社区的方法！！！！！！！！！！！！！！！
+//社区的方法！！！！！！！！！！！！！！！
+function createSq(){
+	var div=$('<div class="row bigdiv col-md-11" style=""></div>');
+	return div;
+}
+function sqMain(data2){
+	var smalldiv1='';
+	var leftdiv1="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
+	for(j in data2['key']){
+		var circle1="<div class='circle' style='margin-left:-20px;z-index:20;'><img src='"+data2['key'][j].tx+"'></div>";//创建人的头像
+		var title1="<div class='title'>"+data2['key'][j].title+"</div>";
+		var biaoyu1="<div class='biaoyu'>"+((data2['key'][j].slogan)?data2['key'][j].slogan:'')+"</div>";
+		if(data2['key'][j].userid==data2['key2']){
+			var guanzhu1='';
+		}else{
+			var guanzhu1="<div class='gz gz2 jiaru"+data2['key'][j].id+"' onclick='click2("+data2['key'][j].id+")' onmouseover='over2("+data2['key'][j].id+")' onmouseout='out2("+data2['key'][j].id+")'>"+data2['key'][j].cun+"</div>";
+		}
+		
+		var on1="return index('com','"+data2['key'][j].id+",导航2','/com/"+data2['key'][j].id+"')";
+		var img1="<div style='width:100%;overflow:hidden;'><a href='#' onclick=\""+on1+"\"><img src='"+data2['key'][j].bg+"' class='img1'></a></div>";
+		for(h in data2['key'][j].img){//此处循环的是管理员的div
+			circle1+="<div class='circle' style='margin-left:"+h*20+"px;z-index:"+(data2['key'][j].img.length-h)+"'><img src='"+data2['key'][j].img[h]+"'></div>";
+			
+		}
+		smalldiv1+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img1+"<div class='col-md-12 down'>"+circle1+title1+biaoyu1+guanzhu1+"</div></div></div>";
+	}
+	var maindiv1="<div class='row col-md-11 maindiv'>"+smalldiv1+"</div>";//主div
+	
+	sq=leftdiv1+maindiv1;
+	return sq;
+}
