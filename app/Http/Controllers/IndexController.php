@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class IndexController extends Controller
 {
@@ -37,7 +38,7 @@ class IndexController extends Controller
     sea search 搜索
     col Collections 收藏集
     */
-    public $Category_Tourist=['log','hom','sea','col','pro'];
+    public $Category_Tourist=['log','hom','pos','sea','col','pro'];
 
     //首页控制器
     public function Index($U1='hom',$U2='',$U3='',$U4=''){
@@ -122,7 +123,28 @@ class IndexController extends Controller
 
     	//当请求顶部时
     	if($Method=='PostTop'){
+
+            //搜索内容
             $arr=['Search'=>''];
+
+            //当前登录用户默认头像
+            $arr['user']['toux']='/images/toux.png';
+
+            //如果登录了
+            if(Auth::check()){
+                
+                //当前登录用户的数据
+                $user=Auth::user();
+
+                //当前登录用户的头像
+                $toux=DB::table('files')->where('id',$user->picid)->first()->path;
+
+                //如果有头像
+                if($toux)
+                     $arr['user']['toux']=$toux;
+
+            }
+
             return array_merge($arr,$C->$Method($request));
         }
 

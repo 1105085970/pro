@@ -381,8 +381,18 @@ $(function(){
 });
 
 
+
 //个人资料页
 function proContents(data,param){
+
+	//param转换成数组
+	var param=param.split(',');
+
+	//如果是查看全部页面
+	if(param[1]=='all'){
+		proall(data);
+		return;
+	}
 
 	var con=$("#Contents");		//主内容节点
 	var col=$('<div id="pro_col" class="col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-11"></div>');
@@ -441,75 +451,11 @@ function proContents(data,param){
 		  +'</div>';
 
 	//用户兴趣
-	var coll=data.coll;
-	var xqlist='';	//兴趣列表
-	for(var i=0;i<4;i++){
+	var xqlist=xq(data);	//兴趣列表
+	
 
-		var colm=coll[i];
-
-		if(!colm)break;
-
-		if(colm.collid){
-			//是收藏集
-			//点击事件
-			var on="return index('col','"+colm.collid+"','/col/"+colm.collid+"')";
-			//a 链接
-			var a='<a class="pro_xqlist pro_xqlist_coll" href="/col/'+colm.collid+'" onclick="'+on+'">';
-			//副标题
-			var fu=data.name;
-			//背景色
-			var bgc='style="background:'+colm.bg+'"';
-
-		}else{
-			//是社区
-			//点击事件
-			var on="return index('com','"+colm.commid+"','/com/"+colm.commid+"')";
-			//a 链接
-			var a='<a class="pro_xqlist" href="/com/'+colm.commid+'" onclick="'+on+'">';
-			//副标题
-			var fu=colm.members+' 个成员';
-			//背景色
-			var bgc='';
-
-		}
-
-		//头像循环
-		var touxs='';
-		var num=4;
-		for(t in colm.touxs){
-			touxs+='<img style="z-index:'+num+'" src="'+colm.touxs[t]+'">';
-			num--;
-		}
-
-		xqlist+='<div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">'
-			  //链接
-			  +a
-			  //图片
-			  +'<div class="pro_imgbox">'
-			  	+'<img src="'+colm.pic+'">'
-			  +'</div>'
-
-			  //头像等
-			  +'<div '+bgc+' class="pro_toubox">'
-			  	+'<div class="pro_touxbox">'
-			  		//头像
-			  		+touxs
-			  		//标题
-			  		+'<div class="pro_toutitle">'
-			  			+colm.title
-			  		+'</div>'
-			  		//副标题
-			  		+'<div class="pro_toufu">'
-			  			+fu
-			  		+'</div>'
-
-			  	+'</div>'
-			  +'</div>'
-
-			  +'</a>'
-			  +'</div>';
-
-	}
+	//查看全部的事件
+	var on="return index('pro','"+data.uid+",all','/pro/"+data.uid+"/all');";
 
 	var interests='<div class="row">'
 		+'<div id="pro_xqbox" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
@@ -518,7 +464,7 @@ function proContents(data,param){
 			+'<div id="pro_xqname" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
 
 				+data.name+'的兴趣主题'
-				+'<div id="pro_xqqb" href="">查看全部</div>'
+				+'<a id="pro_xqqb" onclick="'+on+'" href="/pro/'+data.uid+'/all">查看全部</a>'
 
 			+'</div>'
 			+'</div>'
@@ -622,5 +568,449 @@ function proContents(data,param){
 		});
 
 	});
+
+
+	//修改资料按钮被点击
+	$('#pro_xiug').click(function(){
+
+		//准备参数
+		var arr={
+			Id:'pro_xiug_edit',
+			Action:'pro',
+			Method:'_getuser',
+			Height:800,
+			Width:1
+		};
+
+		//弹出框
+		Popup(arr,function(data,arr){
+
+			//如果是删除弹出框 直接返回
+			if(data=='remove')return;
+
+			//如果没登录
+			if(data==3){
+				Prompt('请先登录。');
+				return;
+			}
+
+			//要追加数据的div
+			var box=$("#pro_xiug_edit");
+
+			//行
+			var row=$('<dic class="row"></div>');
+
+			//列一
+			var col1=$('<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>');
+
+			//列二
+			var col2=$('<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>');
+
+			//顶部
+			var top='<div class="row">'
+				   +'<div class="col-md-12">'
+
+				   	+'<div id="gedit_top" >编辑个人资料</div>'
+
+				   +'</div>'
+				   +'</div>';
+
+			//列一的内容
+			var col1d='<div class="row">'
+				+'<div class="col-sm-12">'
+
+					//背景图
+					+'<img id="gedit_bg" class="img-fluid" src="'+data.bg+'">'
+
+				+'</div>'
+				+'</div>'
+
+				+'<div class="row">'
+				+'<div class="col-sm-12">'
+
+					
+					+'<div class="gedit_zhong">'
+
+						//头像
+						+'<div><img id="gedit_toux" src="'+data.toux+'"></div>'
+
+						//用户名
+						+'<div id="gedit_username">'+((data.nickname)?data.nickname:data.username)+'</div>'
+
+						//注册时间
+						+'<fieldset class="form-group">'
+						+'<input type="text" id="gedit_created_at" class="form-control" disabled value="'+data.created_at.date.split('.')[0]+'" >'
+						+'<small class="text-muted">注册时间</small>'
+						+'</fieldset>'
+
+						//用户名
+						+'<fieldset class="form-group">'
+						+'<input type="text" class="form-control" disabled value="'+data.username+'" >'
+						+'<small class="text-muted">用户名</small>'
+						+'</fieldset>'
+
+						//签名
+						+'<fieldset class="form-group">'
+						+'<input type="text" class="form-control" id="gedit_qianm" placeholder="Tagline" value="'+data.slogan+'" >'
+						+'<small class="text-muted">签名</small>'
+						+'</fieldset>'
+
+						//昵称
+						+'<fieldset class="form-group">'
+						+'<input type="text" class="form-control" id="gedit_nickname" placeholder="Nickname" value="'+data.nickname+'" >'
+						+'<small class="text-muted">昵称</small>'
+						+'</fieldset>'
+
+					+'</div>'
+
+				+'</div>'
+				+'</div>';
+
+
+			//列二的内容
+			var col2d='<div class="row">'
+				+'<div class="col-sm-12">'
+					+'<div class="gedit_zhong">'
+
+						//手机
+						+'<fieldset class="form-group">'
+						+'<input type="text" class="form-control" id="gedit_phone" placeholder="Mobile phone" value="'+data.phone+'" >'
+						+'<small class="text-muted">手机</small>'
+						+'</fieldset>'
+						
+						//邮箱
+						+'<fieldset class="form-group">'
+						+'<input type="text" class="form-control" id="gedit_email" placeholder="Emial" value="'+data.email+'" >'
+						+'<small class="text-muted">邮箱</small>'
+						+'</fieldset>'
+
+						//性别
+						+'<fieldset class="form-group">'
+							+'<select class="form-control" id="gedit_sex">'
+								+'<option value="0" '+((data.sex==0)?'selected':'')+' >保密</option>'
+								+'<option value="1" '+((data.sex==1)?'selected':'')+' >男</option>'
+								+'<option value="2" '+((data.sex==2)?'selected':'')+' >女</option>'
+							+'</select>'
+						+'<small class="text-muted">性别</small>'
+						+'</fieldset>'
+
+						//简介
+						+'<fieldset class="form-group">'
+							+'<textarea class="form-control" id="gedit_introduce" rows="3">'+data.introduce+'</textarea>'
+						+'<small class="text-muted">简介</small>'
+						+'</fieldset>'
+
+					+'</div>'
+				+'</div>'
+				+'</div>';
+
+			//底部
+			var on="$(this).parents('.Black_bg').click()";
+			var bottom='<div id="gedit_bottom" >'
+
+				   		//取消按钮
+				   		+'<div onclick="'+on+'" id="gedit_bottom_qs">取消</div>'
+
+				   		//提交按钮
+				   		+'<div id="gedit_bottom_tj">提交</div>'
+
+				   +'</div>';
+
+			col1.append(col1d);
+			col2.append(col2d);
+
+			//追加
+			row.append(col1).append(col2);
+			//追加
+			box.append(top).append(row).append(bottom);
+
+
+			//如果提交按钮被点击
+			$('#gedit_bottom_tj').click(function(){
+
+				var t=$(this);
+
+				//防止再次点击
+				if(t.attr('ajax'))return;
+
+				//签名
+				var qian=$('#gedit_qianm').val();
+
+				//昵称
+				var nickname=$('#gedit_nickname').val();
+
+				//手机
+				var phone=$('#gedit_phone').val();
+
+				//邮箱
+				var email=$('#gedit_email').val();
+
+				//性别
+				var sex=$('#gedit_sex').val();
+
+				//简介
+				var jj=$('#gedit_introduce').val();
+
+				//如果没有邮箱
+				if(!email){
+					Prompt('邮箱没有填。');
+					return;
+				}
+
+				//防止重复提交
+				t.attr('ajax',1);
+
+				//准备数据
+				var arr={
+					Action:'pro',
+					Method:'_edit_user',
+					slogan:qian,
+					nickname:nickname,
+					phone:phone,
+					email:email,
+					sex:sex,
+					jj:jj,
+				};
+
+				//发送ajax
+				$.ajax({
+					data:arr,
+					success:function(data){
+						//成功时
+
+						if(data==3){
+
+							Prompt('请先登录。');
+							t.removeAttr('ajax');
+							return;
+
+						}
+
+						if(data=='email'){
+
+							Prompt('邮箱不正确。');
+							t.removeAttr('ajax');
+							return;
+
+						}
+
+						if(data=='email2'){
+
+							Prompt('邮箱重复。');
+							t.removeAttr('ajax');
+							return;
+
+						}
+
+						if(data=='phone'){
+
+							Prompt('手机不正确。');
+							t.removeAttr('ajax');
+							return;
+
+						}
+
+						if(data=='phone2'){
+
+							Prompt('手机重复。');
+							t.removeAttr('ajax');
+							return;
+
+						}
+
+						if(data==1){
+
+							Prompt('修改成功。');
+
+							//清除缓存
+							Clear_cache();
+
+							//清除弹出框缓存
+							$("#Eject").removeData('pro_xiug_edit');
+
+							//刷新
+							index('pro','','/pro');
+
+							t.removeAttr('ajax');
+							return;
+
+						}
+
+						Prompt('没有要修改的。');
+						t.removeAttr('ajax');
+
+					},
+					error:function(data){
+
+						//失败时
+						Prompt('与服务器通信失败。');
+						t.removeAttr('ajax');
+
+					}
+				})
+
+			})
+
+		})
+
+	})
+
+}
+
+
+//查看全部
+function proall(data){
+
+	var con=$("#Contents");		//主内容节点
+	var col=$('<div id="pro_col_all" class="col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-10"></div>');
+
+	var my_coll='';
+	var coll='';
+	var my_comm='';
+	var comm='';
+
+	//创建的收藏集
+	if(data.my_coll){
+
+		my_coll='<div class="row">'
+			+'<div class="pro_all_title col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+				+'拥有的收藏集'
+			+'</div>'
+			+'</div>'
+
+			+'<div class="row">'
+				+xq({coll:data.my_coll,name:data.name})
+			+'</div>';
+
+	}
+
+	//关注的收藏集
+	if(data.coll){
+
+		coll='<div class="row">'
+			+'<div class="pro_all_title col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+				+'关注的收藏集'
+			+'</div>'
+			+'</div>'
+
+			+'<div class="row">'
+				+xq({coll:data.coll,name:data.name})
+			+'</div>';
+
+	}
+
+	//创建的社区
+	if(data.my_comm){
+
+		my_comm='<div class="row">'
+			+'<div class="pro_all_title col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+				+'创建的社区'
+			+'</div>'
+			+'</div>'
+
+			+'<div class="row">'
+				+xq({coll:data.my_comm,name:data.name})
+			+'</div>';
+
+	}
+
+	//关注的社区
+	if(data.comm){
+
+		comm='<div class="row">'
+			+'<div class="pro_all_title col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+				+'创建的社区'
+			+'</div>'
+			+'</div>'
+
+			+'<div class="row">'
+				+xq({coll:data.comm,name:data.name})
+			+'</div>';
+
+	}
+
+	col.append(my_coll+coll+my_comm+comm);
+
+	con.append(col);
+
+}
+
+
+//兴趣列表循环
+function xq(data){
+
+	var coll=data.coll;
+
+	var xqlist=''
+
+	for(var i=0;i<coll.length;i++){
+
+		var colm=coll[i];
+
+		if(!colm)break;
+
+		if(colm.collid){
+			//是收藏集
+			//点击事件
+			var on="return index('col','"+colm.collid+"','/col/"+colm.collid+"')";
+			//a 链接
+			var a='<a class="pro_xqlist pro_xqlist_coll" href="/col/'+colm.collid+'" onclick="'+on+'">';
+			//副标题
+			var fu=data.name;
+			//背景色
+			var bgc='style="background:'+colm.bg+'"';
+
+		}else{
+			//是社区
+			//点击事件
+			var on="return index('com','"+colm.commid+"','/com/"+colm.commid+"')";
+			//a 链接
+			var a='<a class="pro_xqlist" href="/com/'+colm.commid+'" onclick="'+on+'">';
+			//副标题
+			var fu=colm.members+' 个成员';
+			//背景色
+			var bgc='';
+
+		}
+
+		//头像循环
+		var touxs='';
+		var num=4;
+		for(t in colm.touxs){
+			touxs+='<img style="z-index:'+num+'" src="'+colm.touxs[t]+'">';
+			num--;
+		}
+
+		xqlist+='<div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">'
+			  //链接
+			  +a
+			  //图片
+			  +'<div class="pro_imgbox">'
+			  	+'<img src="'+colm.pic+'">'
+			  +'</div>'
+
+			  //头像等
+			  +'<div '+bgc+' class="pro_toubox">'
+			  	+'<div class="pro_touxbox">'
+			  		//头像
+			  		+touxs
+			  		//标题
+			  		+'<div class="pro_toutitle">'
+			  			+colm.title
+			  		+'</div>'
+			  		//副标题
+			  		+'<div class="pro_toufu">'
+			  			+fu
+			  		+'</div>'
+
+			  	+'</div>'
+			  +'</div>'
+
+			  +'</a>'
+			  +'</div>';
+
+	}
+
+	return xqlist;
 
 }

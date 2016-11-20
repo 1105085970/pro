@@ -423,3 +423,137 @@
     word-break: break-all;
     color: rgba(0,0,0,.54);
 }
+
+
+/*查看全部页*/
+#pro_col_all{
+	margin:0 auto;
+}
+
+/*查看全部页 标题*/
+.pro_all_title{
+	color: rgba(0,0,0,0.54);
+    font-size: 16px;
+    font-weight: 500;
+    margin: 32px 0 0;
+    white-space: nowrap;
+    -webkit-flex-shrink: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*修改资料框 顶部*/
+#gedit_top{
+	border-bottom: 1px solid #e5e5e5;
+	display: flex;
+    padding: 16px;
+    color: rgba(0,0,0,0.87);
+    font: 500 20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+}
+
+/*修改资料框 背景图*/
+#gedit_bg{
+
+}
+
+/*修改资料框 包含头像名字等信息的框*/
+.gedit_zhong{
+	padding: 0 24px;
+}
+
+/*修改资料框 头像*/
+#gedit_toux{
+	margin-top: -30px;
+    position: relative;
+    border: 2px solid #fff;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    position: relative;
+    width: 56px;
+    height:56px;
+}
+
+/*修改资料框 用户名*/
+#gedit_username{
+	color: rgba(0,0,0,0.87);
+    font: 500 30px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    position: relative;
+    word-break: break-word;
+    margin-top: 16px;
+}
+
+/*修改资料框 签名*/
+#gedit_created_at{
+	margin: 16px 0 0;
+	
+}
+
+#pro_xiug_edit .form-control[type="text"],#pro_xiug_edit .form-control{
+	border-left: none;
+    border-right: none;
+    border-top: none;
+    border-radius:0;
+}
+
+#pro_xiug_edit .form-control:focus{
+	border-color: #4285f4;
+}
+
+#pro_xiug_edit .form-control:disabled{
+	background-color:rgba(0,0,0,0);
+}
+
+/*修改资料框 手机*/
+#gedit_phone{
+	margin-top: 24px;
+}
+
+/*修改资料框 底部*/
+#gedit_bottom{
+	border-top: 1px solid #e5e5e5;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	position: absolute;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    height:60px;
+}
+
+/*修改资料框 底部按钮*/
+#gedit_bottom_qs,#gedit_bottom_tj{
+	line-height: 20px;
+    min-width: 88px;
+    color: #4285f4;
+    transition: background .2s .1s;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-tap-highlight-color: transparent;
+    margin: 8px;
+}
+
+#gedit_bottom_tj{
+	color: #212121;
+}
+
+@media (max-width: 575px) {
+
+	#gedit_phone{
+		margin-top: 0;
+	}
+
+	#gedit_bottom{
+		position:static;
+	}
+	
+}

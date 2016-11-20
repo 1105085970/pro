@@ -69,6 +69,17 @@ class ProController extends Controller
 
         }
 
+        //要展示的用户的姓名
+        $name=($user->nickname)?$user->nickname:$user->username;
+
+        //如果要显示全部
+        if(isset($param[1]) && $param[1]=='all'){
+            //返回全部
+            $arr=$this->colm(['user'=>$user,'all'=>1]);
+            $arr['name']=$name;
+            return $arr;
+        }
+
         //如果没有 用户
         if(!$user)return;
 
@@ -98,121 +109,7 @@ class ProController extends Controller
             $user->bg='/images/bg.png';
         }
 
-        //要展示的用户的姓名
-        $name=($user->nickname)?$user->nickname:$user->username;
-
-        //要展示的用户创建的收藏集
-        $coll=DB::table('collections')
-                ->select(
-                    'collections.id as collid',         //收藏集id
-                    'collections.title as title',       //标题
-                    'files.path as pic',            //背景图片地址
-                    'collections.background as bg',      //背景色
-                    'collections.userid as uid'         //所属用户id
-                )
-                ->where(['collections.userid'=>$user->id,'collections.hide'=>0])
-                ->leftjoin('files', 'collections.picid', '=', 'files.id')
-                ->get();
-
-        //如果要展示的用户创建的收藏集小于4个 并且 要展示的用户允许显示关注的收藏集
-        if(count($coll)<4 && $user->showcoll==1 && $user->followcoll){
-            $coll2=DB::table('collections')
-                    ->select(
-                        'collections.id as collid',         //收藏集id
-                        'collections.title as title',       //标题
-                        'files.path as pic',            //背景图片地址
-                        'collections.background as bg',      //背景色
-                        'collections.userid as uid'         //所属用户id
-                    )
-                    ->whereIn('collections.id',explode(',',$user->followcoll))
-                    ->leftjoin('files', 'collections.picid', '=', 'files.id')
-                    ->get();
-            //循环合并
-            foreach($coll2 as $v){
-                $coll[]=$v;
-            }
-        }
-
-        //如果要展示的用户创建的收藏集小于4个
-        if(count($coll)<4){
-            //查找要展示的用户创建的社区
-            $comm=DB::table('communities')
-                    ->select(
-                        'communities.id as commid',         //收藏集id
-                        'communities.title as title',       //标题
-                        'files.path as pic',            //背景图片地址
-                        'communities.admins as admins',      //管理员编号列表
-                        'communities.membernum as members',      //成员数量
-                        'communities.userid as uid'         //所属用户id
-                    )
-                    ->where(['communities.userid'=>$user->id,'communities.hide'=>0])
-                    ->leftjoin('files', 'communities.picid', '=', 'files.id')
-                    ->get();
-            //如果要展示的用户创建的社区加收藏集小于4个
-            if(count($coll)+count($comm)<4){
-                $comm2=DB::table('communities')
-                        ->select(
-                            'communities.id as commid',         //收藏集id
-                            'communities.title as title',       //标题
-                            'files.path as pic',            //背景图片地址
-                            'communities.admins as admins',      //管理员编号列表
-                            'communities.membernum as members',      //成员数量
-                            'communities.userid as uid'         //所属用户id
-                        )
-                        ->whereIn('communities.id',explode(',',$user->showcomm))
-                        ->leftjoin('files', 'communities.picid', '=', 'files.id')
-                        ->get();
-                //循环合并
-                foreach($comm2 as $v){
-                    $comm[]=$v;
-                }
-            }
-
-            //循环合并
-            foreach($comm as $v){
-                $coll[]=$v;
-            }
-
-        }
-
-        //循环收藏集、社区数组 得到返回数组
-        foreach($coll as $v){
-
-            //创建者头像
-            $toux=DB::table('users')
-                    ->select('files.path as path')
-                    ->where('users.id',$v->uid)
-                    ->leftjoin('files','users.picid','=','files.id')
-                    ->first();
-
-            //判断头像是否存在
-            if($toux->path)
-                $v->touxs=[$toux->path];
-            else
-                $v->touxs=['/images/toux.png'];     //默认头像
-
-            if(isset($v->commid)){
-                //社区
-                //头像
-                if($v->admins){
-                    //如果有管理员头像列表
-                    $touxs=DB::table('users')
-                            ->select('files.path as path')
-                            ->whereIn('users.id',explode(',',$v->admins))
-                            ->leftjoin('files','users.picid','=','files.id')
-                            ->get();
-                    //循环合并
-                    foreach($touxs as $vv){
-                        if($vv->path)
-                            $v->touxs[]=$vv->path;
-                        else
-                            $v->touxs[]='/images/toux.png';     //默认头像
-                    }
-                }
-
-            }
-
-        }
+        $coll=$this->colm(['user'=>$user,'num'=>4]);
 
         $num=0;
         $coll2='';
@@ -341,5 +238,295 @@ class ProController extends Controller
         }
 
     }
+
+
+    //返回用户的合集和社区
+    public function colm($arr){
+
+        //用户信息
+        $user=$arr['user'];
+
+        //包含所有的数组
+        $list=[];
+
+        //如果要返回全部
+        if(isset($arr['all'])){
+
+            //要返回的数量
+            $num=99999;
+
+        }else{
+
+            //要返回的数量
+            $num=$arr['num'];
+
+        }
+
+        //要展示的用户创建的收藏集
+        $coll=DB::table('collections')
+                ->select(
+                    'collections.id as collid',         //收藏集id
+                    'collections.title as title',       //标题
+                    'files.path as pic',            //背景图片地址
+                    'collections.background as bg',      //背景色
+                    'collections.userid as uid'         //所属用户id
+                )
+                ->where(['collections.userid'=>$user->id,'collections.hide'=>0])
+                ->leftjoin('files', 'collections.picid', '=', 'files.id')
+                ->get();
+
+        //头像
+        $coll=$this->colmtoux($coll);
+
+        //如果有收藏集
+        if(count($coll))
+            $list['my_coll']=clone $coll;
+
+        //如果要展示的用户创建的收藏集小于$num个 并且 要展示的用户允许显示关注的收藏集
+        if(count($coll)<$num && $user->showcoll==1 && $user->followcoll){
+            $coll2=DB::table('collections')
+                    ->select(
+                        'collections.id as collid',         //收藏集id
+                        'collections.title as title',       //标题
+                        'files.path as pic',            //背景图片地址
+                        'collections.background as bg',      //背景色
+                        'collections.userid as uid'         //所属用户id
+                    )
+                    ->whereIn('collections.id',explode(',',$user->followcoll))
+                    ->leftjoin('files', 'collections.picid', '=', 'files.id')
+                    ->get();
+
+            //头像
+            $coll2=$this->colmtoux($coll2);
+
+            //循环合并
+            foreach($coll2 as $v){
+                $coll[]=$v;
+            }
+
+            //如果有收藏集
+            if(count($coll2))
+                $list['coll']=clone $coll2;
+
+        }
+
+        //如果要展示的用户创建的收藏集小于$num个
+        if(count($coll)<$num){
+            //查找要展示的用户创建的社区
+            $comm=DB::table('communities')
+                    ->select(
+                        'communities.id as commid',         //收藏集id
+                        'communities.title as title',       //标题
+                        'files.path as pic',            //背景图片地址
+                        'communities.admins as admins',      //管理员编号列表
+                        'communities.membernum as members',      //成员数量
+                        'communities.userid as uid'         //所属用户id
+                    )
+                    ->where(['communities.userid'=>$user->id,'communities.hide'=>0])
+                    ->leftjoin('files', 'communities.picid', '=', 'files.id')
+                    ->get();
+
+            //头像
+            $comm=$this->colmtoux($comm);
+
+            //如果有社区
+            if(count($comm))
+                $list['my_comm']=clone $comm;
+
+            //如果要展示的用户创建的社区加收藏集小于$num个
+            if(count($coll)+count($comm)<$num){
+                $comm2=DB::table('communities')
+                        ->select(
+                            'communities.id as commid',         //收藏集id
+                            'communities.title as title',       //标题
+                            'files.path as pic',            //背景图片地址
+                            'communities.admins as admins',      //管理员编号列表
+                            'communities.membernum as members',      //成员数量
+                            'communities.userid as uid'         //所属用户id
+                        )
+                        ->whereIn('communities.id',explode(',',$user->showcomm))
+                        ->leftjoin('files', 'communities.picid', '=', 'files.id')
+                        ->get();
+
+                //头像
+                $comm2=$this->colmtoux($comm2);
+
+                //循环合并
+                foreach($comm2 as $v){
+                    $comm[]=$v;
+                }
+
+                //如果有收藏集
+                if(count($comm2))
+                    $list['comm']=clone $comm2;
+
+            }
+
+            //循环合并
+            foreach($comm as $v){
+                $coll[]=$v;
+            }
+
+        }
+
+        //如果要显示全部
+        if(isset($arr['all']))
+            return $list;
+        else
+            return $coll;
+
+    }
+
+    //循环返回头像
+    public function colmtoux($coll){
+
+        //循环收藏集、社区数组 得到返回数组
+        foreach($coll as $v){
+
+            //创建者头像
+            $toux=DB::table('users')
+                    ->select('files.path as path')
+                    ->where('users.id',$v->uid)
+                    ->leftjoin('files','users.picid','=','files.id')
+                    ->first();
+
+            //判断头像是否存在
+            if($toux->path)
+                $v->touxs=[$toux->path];
+            else
+                $v->touxs=['/images/toux.png'];     //默认头像
+
+            if(isset($v->commid)){
+                //社区
+                //头像
+                if($v->admins){
+                    //如果有管理员头像列表
+                    $touxs=DB::table('users')
+                            ->select('files.path as path')
+                            ->whereIn('users.id',explode(',',$v->admins))
+                            ->leftjoin('files','users.picid','=','files.id')
+                            ->get();
+                    //循环合并
+                    foreach($touxs as $vv){
+                        if($vv->path)
+                            $v->touxs[]=$vv->path;
+                        else
+                            $v->touxs[]='/images/toux.png';     //默认头像
+                    }
+                }
+
+            }
+
+        }
+
+        return $coll;
+
+    }
+
+
+    //ajax 获取当前登录用户数据
+    public function Post_getuser(Request $request){
+
+        //如果没有登录
+        if(!Auth::check())return 3;
+
+        //当前登录用户信息
+        $user=Auth::user();
+
+        //默认头像
+        $toux='/images/toux.png';
+
+        //查找头像
+        if($user->picid)
+            $toux2=DB::table('files')->where('id',$user->picid)->first()->path;
+
+        //如果有头像
+        if(isset($toux2))
+            $toux=$toux2;
+
+        //默认背景图片
+        $bg='/images/bg.png';
+
+        //查找背景图
+        if($user->background)
+            $bg2=DB::table('files')->where('id',$user->background)->first()->path;
+
+        //如果有背景图片
+        if(isset($bg2))
+            $bg=$bg2;
+
+
+        //准备要返回的数据
+        $arr=[
+            'id'=>$user->id,                    //用户id
+            'username'=>$user->username,        //用户名
+            'nickname'=>(($user->nickname)?$user->nickname:''),        //昵称
+            'phone'=>(($user->phone)?$user->phone:''),              //手机号
+            'email'=>$user->email,              //邮箱
+            'toux'=>$toux,                      //头像
+            'sex'=>$user->sex,                  //性别
+            'bg'=>$bg,                          //背景图片
+            'slogan'=>(($user->slogan)?$user->slogan:''),               //个性宣言
+            'created_at'=>$user->created_at,                            //注册时间
+            'introduce'=>(($user->introduce)?$user->introduce:'')       //个人简介
+        ];
+
+
+        return $arr;
+
+    }
+
+
+    //alax 修改资料
+    public function Post_edit_user(Request $request){
+
+        //如果没有登录
+        if(!Auth::check())return 3;
+
+        //参数
+        $arr=$request->all();
+
+        //验证邮箱
+        if(!preg_match('/^[A-z0-9]+@[a-z0-9]+(\.[a-z]+){1,2}$/',$arr['email']))
+            return 'email';
+
+        //验证手机号
+        if($arr['phone'] && !preg_match('/^(\d+){11}$/',$arr['phone']))
+            return 'phone';
+
+        //判断邮箱重复
+        $email=DB::table('users')->where('email',$arr['email'])->first();
+        if($email && $email->id != Auth::id())
+            return 'email2';
+
+        //手机号判断重复
+        if($arr['phone']){
+            $phone=DB::table('users')->where('phone',$arr['phone'])->first();
+            if($phone && $phone->id !=Auth::id())
+                return 'phone2';
+        }
+        
+
+        //准备数据
+        $data=[
+            'slogan'=>(($arr['slogan'])?$arr['slogan']:null),       //签名
+            'nickname'=>(($arr['nickname'])?$arr['nickname']:null),   //昵称
+            'phone'=>(($arr['phone'])?$arr['phone']:null),         ///手机
+            'email'=>(($arr['email'])?$arr['email']:''),         //邮箱
+            'sex'=>(($arr['sex'])?$arr['sex']:0),             //性别
+            'introduce'=>(($arr['jj'])?$arr['jj']:null)         //简介
+        ];
+
+
+        $up=DB::table('users')
+                ->where('id',Auth::id())
+                ->update($data);
+
+        if($up)return 1;
+
+        return;
+
+    }
+
 
 }

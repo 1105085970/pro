@@ -133,24 +133,53 @@ function homContents(datas,param){
 	//保存数据到自动加载框
 	$('.auto_jj').data('datas',datas);
 
+	//绑定事件
+	onpost();
+
+	
+}
+
+
+//帖子事件绑定
+function onpost(){
+
+	//取消事件绑定
+
+	//如果 +1 按钮被点击
+	$('.post_box_like').off("click");
+
+	//如果评论按钮被点击
+	$('.post_box_comm').off("click");
+
+	//如果评论框被修改
+	$('.commbox_textarea').off("keyup");
+
+	//如果评论框提交按钮被点击
+	$('.commbox_huifu_bottom_tij').off("click");
+
+	//如果回复图标被点击
+	$('.commbox_reply').off('click');
+
 
 	//如果 +1 按钮被点击
 	$('.post_box_like').click(function(){
 
+		var t=$(this);
+
 		//获得保存 +1 数量的节点
-		var links=$(this).siblings('.post_box_likes');
+		var links=t.siblings('.post_box_likes');
 		//获得当前被 +1 的数量
 		var s=Number(links.html());
 
 		//检查是否有被选中变红的类
-		if($(this).hasClass('post_box_like_red')){
+		if(t.hasClass('post_box_like_red')){
 			//如果有 移除变红的类
-			$(this).removeClass('post_box_like_red');
+			t.removeClass('post_box_like_red');
 			//改变后面被 +1 数量 减1
 			links.html(--s);
 		}else{
 			//如果没有 添加变红的类
-			$(this).addClass('post_box_like_red');
+			t.addClass('post_box_like_red');
 			//改变后面被 +1 数量 加1
 			links.html(++s);
 		}
@@ -160,7 +189,7 @@ function homContents(datas,param){
 			data:{
 				Action:'pos',
 				Method:'_set_like',
-				post:$(this).attr('postid')
+				post:t.attr('postid')
 			},
 			success:function(data){
 
@@ -171,16 +200,26 @@ function homContents(datas,param){
 					//+1 成功
 
 					//添加变红的类
-					$(this).addClass('post_box_like_red');
+					t.addClass('post_box_like_red');
 					return;
 
 				}else if(data==2){
 					//-1 成功
 
 					//移除变红的类
-					$(this).removeClass('post_box_like_red');
+					t.removeClass('post_box_like_red');
 					return;
 
+				}else if(data==3){
+					//未登录
+					Prompt('请先登录。');
+
+					//移除变红的类
+					t.removeClass('post_box_like_red');
+					//改变后面被 +1 数量 减1
+					links.html(--s);
+
+					return;
 				}
 
 				//失败时
@@ -203,6 +242,15 @@ function homContents(datas,param){
 		var postbox=$(this).parents('.post_box');
 		//找到评论框
 		var commbox=postbox.find('.post_box_commbox');
+
+		//当前页面保存的信息
+		var data=$(window).data(location.pathname);
+
+		//当前登录用户的头像
+		var toux=(data)?data.Topdata.user.toux:'/images/toux.png';
+
+		//修改头像
+		postbox.find('.commbox_huifu .commbox_toux').attr('src',toux);
 
 		//如果评论框有这个类
 		if(commbox.hasClass('post_box_commbox_h')){
@@ -290,9 +338,20 @@ function homContents(datas,param){
 				Action:'pos',
 				Method:'_create_comment',
 				post:t.attr('postid'),
-				text:text
+				text:text,
+				comm:t.attr('commid')
 			},
 			success:function(data){
+
+				//没登录
+				if(data==3){
+					
+					Prompt('请先登录。');
+
+					//允许再次提交
+					t.removeAttr('ajax');
+					return;
+				}
 
 				//失败时
 				if(!data[0] || !data[0].id){
@@ -326,6 +385,9 @@ function homContents(datas,param){
 				//清空评论框
 				huifu.find('.commbox_textarea').val('');
 
+				//绑定事件
+				onpost();
+
 			},
 			error:function(data){
 
@@ -341,7 +403,40 @@ function homContents(datas,param){
 
 	})
 
-	
+
+	//如果回复图标被点击
+	$('.commbox_reply').click(function(){
+
+		//父级帖子box
+		var post=$(this).parents('.post_box');
+
+		//要回复人的名字
+		var name=$('<span>@'+$(this).attr('uname')+'</span>');
+
+		//如果名字被点击
+		name.click(function(){
+
+			//提交按钮移除回复人的评论id
+			$(this).parents('.post_box').find('.commbox_huifu_bottom_tij').removeAttr('commid');
+
+			//清空要回复人的box
+			$(this).parent().empty();
+
+		})
+
+		//清空要回复人的box
+		post.find('.commbox_reply_box').empty();
+		//把要回复人的名字加到评论框上边
+		post.find('.commbox_reply_box').append(name);
+
+		//提交按钮添加回复人的评论id
+		post.find('.commbox_huifu_bottom_tij').attr('commid',$(this).attr('commid'));
+
+		//回复框获得焦点
+		post.find('.commbox_textarea').focus();
+
+	})
+
 }
 
 //自动追加帖子数据的方法
@@ -384,8 +479,21 @@ function auto_jj(){
 		},
 		success:function(data){
 
-			if(!data.posts)//失败时
+			if(!data.posts){
+
+				//失败时
 				Prompt('与服务器通信失败。');
+
+				jj.html('与服务器通信失败。');
+
+				//还原保存数据
+				datas.page=Number(datas.page)-1;
+				jj.data('datas',datas);
+
+				//删除ajax属性
+				jj.removeAttr('ajax');
+				return;
+			}
 
 			var posts=data.posts;
 
@@ -458,6 +566,9 @@ function auto_jj(){
 			//删除ajax属性
 			jj.removeAttr('ajax');
 
+			//绑定事件
+			onpost();
+
 		},
 		error:function(data){
 			//失败时
@@ -469,7 +580,9 @@ function auto_jj(){
 
 //帖子样式循环
 function posts_list(data){
+
 	var arr=new Array();
+
 	//循环data对象得到数组
 	for(var i=0;i<data.length;i++){
 
@@ -503,9 +616,15 @@ function posts_list(data){
 				//头像
 				+'<img class="commbox_toux" src="'+data[i]['toux']+'">'
 				
-				//评论框
+				
 				+'<div class="commbox_huifu_box">'
+
+					//要回复的人
+					+'<div class="commbox_reply_box"></div>'
+
+					//评论框
 					+'<textarea class="commbox_textarea" placeholder="添加评论..." ></textarea>'
+
 				+'</div>'
 
 				+'</div>'
@@ -586,6 +705,12 @@ function forcomm(com){
 	var comm='';
 	for(k in com){
 
+	//父级评论者名字
+	var pname='';
+
+	if(com[k]['pid'])
+		pname='<span class="commbox_fuji">@'+com[k]['pname']+' </span>';
+
 	comm+='<div class="commbox_row">'
 
 			//用户头像
@@ -596,6 +721,9 @@ function forcomm(com){
 
 				//缩小时的用户名
 				+'<span class="commbox_name">'+com[k]['name']+'<span class="commbox_name_m">:</span> </span>'
+
+				//@的父级评论的人
+				+pname
 
 				//帖子内容
 				+com[k]['cont']
@@ -609,7 +737,7 @@ function forcomm(com){
 				+'<span class="commbox_times">'+com[k]['time']+'</span>'
 
 				//回复标签
-				+'<i class="commbox_reply fa fa-reply fa-2x" aria-hidden="true"></i>'
+				+'<i commid="'+com[k]['id']+'" uname="'+com[k]['name']+'" class="commbox_reply fa fa-reply fa-2x" aria-hidden="true"></i>'
 
 			+'</div>'
 

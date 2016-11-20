@@ -327,6 +327,10 @@ function Popup(arr,fun){
 
 	var height=(arr.Height)?arr.Height:400;
 
+	//如果高度比屏幕大
+	if(height>$(window).height()-40)
+		height=$(window).height()-40;
+
 	//黑背景
 	var Black_bg=$('<div class="Black_bg"></div>');
 	Black_bg.bind('click',function(e){

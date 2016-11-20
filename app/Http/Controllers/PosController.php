@@ -233,7 +233,10 @@ class PosController extends Controller
 
     //ajax 设置 +-1 
     public function Post_set_like(Request $request){
-        //返回值  1 加一 2 减一
+        //返回值  1 加一 2 减一 3 未登录
+
+        //如果没有登录
+        if(!Auth::check())return 3;
 
         //查到这条帖子数据
         $post=DB::table('posts')->where('id',$request->input('post'))->first();
@@ -295,7 +298,7 @@ class PosController extends Controller
     public function Post_create_comment(Request $request){
 
         //如果没有登录 直接返回
-        if(!Auth::check())return;
+        if(!Auth::check())return 3;
 
         //当前登录用户 信息
         $user=Auth::user();
@@ -304,21 +307,42 @@ class PosController extends Controller
         $param=$request->all();
 
         //如果参数不够 直接返回
-        if(!$param['text'] || !$param['post'])return;
+        if(!isset($param['text']) || !isset($param['post']))return;
+
+        //默认参数
+        $parentid='0';      //父级id
+        $path='0,';         //父级id 拼接
+
+        //如果是回复别人的评论
+        if(isset($param['comm'])){
+
+            //父级id
+            $parentid=$param['comm'];
+
+            //查找父级评论信息
+            $pcomm=DB::table('comments')->where('id',$param['comm'])->first();
+
+            //父级id 拼接
+            $path=$pcomm->path.$param['comm'].',';
+
+        }
 
         //准备参数
         $arr=[
             'userid'=>$user->id,                //用户id
             'postid'=>$param['post'],           //帖子id
             'content'=>$param['text'],          //评论内容
-            'parentid'=>'0',                    //父级id
-            'path'=>'0,',                       //父级id 拼接
+            'parentid'=>$parentid,              //父级id
+            'path'=>$path,                      //父级id 拼接
             'addtime'=>time()                   //添加时间 时间戳
         ];
 
         //数据库
         $id=DB::table('comments')
                 ->insertGetId($arr);
+
+        //帖子评论数加一
+        DB::table('posts')->where('id',$param['post'])->increment('comments');
 
         if($id){
 
@@ -356,7 +380,8 @@ class PosController extends Controller
                 'comments.content as cont',    //评论内容
                 'comments.likes as likes',      // +1 的数量
                 'comments.likeuserid as likesid',  //+1 的用户编号列表
-                'comments.addtime as time'    //评论发布时间的时间戳
+                'comments.addtime as time',    //评论发布时间的时间戳
+                'comments.parentid as pid'      //父级评论id
             )
             ->where($where)
             ->leftjoin('users', 'comments.userid', '=', 'users.id')
@@ -364,6 +389,27 @@ class PosController extends Controller
             ->orderBy('comments.id','desc')
             ->take(3)   //返回的条数
             ->get();
+
+        //循环数组
+        foreach($rows as $k){
+
+            //如果有父级
+            if($k->pid!='0'){
+
+                //查找父级信息
+                $pcomm=DB::table('comments')
+                        ->select(
+                            'users.username as name',        //用户名
+                            'users.nickname as nickname'     //昵称
+                        )
+                        ->leftjoin('users','comments.userid','=','users.id')
+                        ->where('comments.id',$k->pid)
+                        ->first();
+
+                $k->pname=($pcomm->nickname)?$pcomm->nickname:$pcomm->name;
+
+            }
+        }
 
         return $rows;
 

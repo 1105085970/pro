@@ -296,6 +296,7 @@
 /*包含帖子评论的主内容 显示时*/
 .post_box_commbox_h .commbox_top{
     max-height:none;
+    line-height: 20px;
 }
 /*包含帖子评论的头像 显示时*/
 .post_box_commbox_h .commbox_name{
@@ -341,7 +342,7 @@
     max-height: 36px;
     margin: 0 10px 0 16px;
     font-size: 14px;
-    line-height: 20px;
+    line-height: 17px;
     color: rgba(0,0,0,0.87);
     white-space: pre-wrap;
     max-width: 370px;
@@ -362,18 +363,18 @@
     left:10px;
 }
 
-.commbox_times{
-    transition: all .5s;
+.commbox_row:hover .commbox_times{
+    display: none;
 }
 
 /*包含帖子评论的回复图标*/
 .commbox_reply{
     position: absolute;
     top:0;
-    left:0;
+    right:0;
     display: none;
     opacity: 0;
-    transition: all .5s;
+    cursor: pointer;
 }
 
 .commbox_row:hover .commbox_reply{
@@ -450,6 +451,18 @@
 .commbox_huifu_bottom_tij_ok{
     color: #4285f4;
     cursor:pointer;
+}
+
+/*评论要@的人*/
+.commbox_reply_box{
+    color: rgba(41, 98, 255, 0.82);
+}
+.commbox_reply_box span{
+    cursor: pointer;
+}
+/*评论主内容@的人*/
+.commbox_fuji{
+    color: rgba(41, 98, 255, 0.82);
 }
 
 
