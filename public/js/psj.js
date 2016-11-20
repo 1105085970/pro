@@ -639,7 +639,7 @@ function proContents(data,param){
 
 						//注册时间
 						+'<fieldset class="form-group">'
-						+'<input type="text" id="gedit_created_at" class="form-control" disabled value="'+data.created_at.date.split('.')[0]+'" >'
+						+'<input type="text" id="gedit_created_at" class="form-control" disabled value="'+((data.created_at)?data.created_at.date.split('.')[0]:'')+'" >'
 						+'<small class="text-muted">注册时间</small>'
 						+'</fieldset>'
 
