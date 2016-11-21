@@ -437,3 +437,141 @@ function Clear_cache(Url){
 	if(!Url)Url=location.pathname;
 	$(window).removeData(Url);
 }
+
+
+//选择图片弹出框
+function File_upload(arr){
+
+	//fun 回调函数
+	//Many 多文件 最大选择数量
+
+	//准备参数
+	var arr2={
+		Action:'hom',
+		Method:'_getfile',
+		Id:'File_upload',
+		Height:800
+	}
+
+	//如果有传高度
+	if(arr.Height)
+		arr2.Height=arr.Height;
+
+	//如果有传宽度
+	if(arr.Width)
+		arr2.Width=arr.Width;
+
+	//如果有参数
+	if(arr.Param)
+		arr2.Param=arr.Param;
+
+	//弹出框
+	Popup(arr2,function(data,arr){
+
+		if(data=="remove")return;
+
+		if(data==3){
+
+			Prompt('请先登录');
+			return;
+
+		}
+
+		//要追加内容的box
+		var box=$('#File_upload');
+
+		//小屏幕时的top
+		var box_t=$('#File_upload_top');
+
+		var html_t='<span class="File_top_center" >选择图片</span>'
+				  +'<div class="File_top_right">确认</div>';
+
+		box_t.append(html_t);
+
+		//要追加的内容
+
+		//图片循环
+		var imgs='';
+		for(k in data){
+
+			imgs+='<div class="File_imgs col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">'
+					+'<div class="File_imgs_top"></div>'
+					+'<img class="img-fluid" fid="'+data[k].id+'" src="'+data[k].path+'" >'
+					+'<div class="File_imgs_bottom"></div>'
+				+'</div>'
+
+		}
+
+		var on="$(this).parents('.Black_bg').click()";
+
+		var html='<div class="row">'
+			+'<div id="File_top" class="col-sm-12 hidden-xs-down">'
+
+				//删除图标
+				+'<i onclick="'+on+'" id="File_top_left" class="fa fa-times fa-2x" aria-hidden="true"></i>'
+
+				//标题
+				+'<span class="File_top_center" >选择图片</span>'
+
+				//确认按钮
+				+'<div class="File_top_right">确认</div>'
+
+			+'</div>'
+			+'</div>'
+
+			+'<div class="row">'
+
+				//上传框
+				+'<div class="File_imgs col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">'
+					+'<button class="File_imgs_botton" >'
+					+'<i class="fa fa-upload" aria-hidden="true"></i>'
+					+'<div>上传图片</div>'
+					+'</button>'
+				+'</div>'
+
+				+imgs
+
+			+'</div>';
+
+		box.append(html);
+
+		//默认数据
+		arr.fid=[];
+		$('#File_upload').data('check',arr);
+
+		//如果图片被点击
+		$('.File_imgs').click(function(){
+
+			var t=$(this);
+
+			//保存的数据
+			var data=$('#File_upload').data('check');
+
+			//文件id
+			var fid=t.children('img').attr('fid');
+
+			//如果已经被选中 取消选中
+			if(t.hasClass('File_imgs_on')){
+
+				t.removeClass('File_imgs_on');
+				//移除check
+				delete data.fid[fid];
+
+			}else{
+
+				//如果没有选择 添加
+				t.addClass('File_imgs_on');
+				//添加check
+				data.fid[fid]=fid;
+
+			}
+
+			//保存数据
+			$('#File_upload').data('check',data);
+			//console.log()
+
+		})
+
+	})
+
+}

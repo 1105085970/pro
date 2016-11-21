@@ -817,6 +817,19 @@ function postform(data,arr){
 	//添加文本域
 	$("#Post_form").append(form);
 
+	//图片上传按钮等
+	var turow='<div class="row">'
+		+'<div class="col-sm-12" id="Post_form_turow">'
+
+			//相机图标
+			+'<i id="Post_form_camera" class="Post_form_turow_fa fa fa-camera fa-lg" aria-hidden="true"></i>'
+
+		+'</div>'
+		+'</div>';
+
+	//添加图片上传按钮等
+	$('#Post_form').append(turow);
+
 	//按钮
 	var quxiao=$('<div id="Post_form_qx" >取消</div>');
 	var tijiao=$('<div id="Post_form_tj" >提交</div>');
@@ -953,6 +966,26 @@ function postform(data,arr){
 
 	})
 
+
+	//如果相机图标被点击
+	$('#Post_form_camera').click(function(){
+
+		//弹出
+		File_upload({
+
+			Param:{
+				types:'jpg,jpeg,png,gif,bmp'		//要显示的图片类型
+			},
+			Height:500,
+			fun:function(data){
+
+			}
+
+		});
+
+	})
+
+
 	//如果提交按钮被点击
 	$('#Post_form_tj').click(function(){
 		//如果没写贴子内容 直接返回
@@ -978,7 +1011,8 @@ function postform(data,arr){
 				Action:'pos',
 				Method:'_create_in',
 				Contents:text,
-				Arr:arr
+				Arr:arr,
+				Many:4		
 			},
 			success:function(data){
 

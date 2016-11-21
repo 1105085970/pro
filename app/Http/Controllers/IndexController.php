@@ -142,11 +142,12 @@ class IndexController extends Controller
 
                 //如果有头像
                 if(isset($toux))
-                     $arr['user']['toux']=$toux;
+                    $arr['user']['toux']=$toux;
 
             }
 
             return array_merge($arr,$C->$Method($request));
+
         }
 
     	return $C->$Method($request);

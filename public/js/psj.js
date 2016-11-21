@@ -929,7 +929,7 @@ function proall(data){
 
 		comm='<div class="row">'
 			+'<div class="pro_all_title col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
-				+'创建的社区'
+				+'关注的社区'
 			+'</div>'
 			+'</div>'
 

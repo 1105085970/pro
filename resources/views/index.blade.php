@@ -96,7 +96,7 @@
 	</div>
 
 	{{-- 添加帖子按钮，右下角 --}}
-	<i id="Newpost" onclick="Popup({Action:'pos',Method:'addpost',Id:'Post_form'},postform)" class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+	<i id="Newpost" onclick="Popup({Action:'pos',Method:'addpost',Id:'Post_form',Height:405},postform)" class="fa fa-pencil fa-lg" aria-hidden="true"></i>
 
 </body>
 </html>

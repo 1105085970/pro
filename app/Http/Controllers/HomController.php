@@ -54,4 +54,50 @@ class HomController extends Controller
     }
 
 
+    //ajax 返回文件列表
+    public function Post_getfile(Request $request){
+
+        //如果没有登录
+        if(!Auth::check())return 3;
+
+        //当前用户信息
+        $user=Auth::user();
+
+        //传过来的全部参数
+        $param=$request->Param;
+
+        //准备查询条件
+        $arr=['state'=>1,'userid'=>$user->id];
+
+        //返回的值
+        $select=[
+            'id',       //id
+            'path'      //图片地址
+        ];
+
+        //如果有类型限制
+        if(isset($param['types'])){
+            //查询文件
+            $file=DB::table('files')
+                ->select($select)
+                ->where($arr)
+                ->whereIn('extension',explode(',', $param['types']))
+                ->get();
+        }else{
+
+            //查询文件
+            $file=DB::table('files')
+                ->select($select)
+                ->where($arr)
+                ->get();
+
+        } 
+
+        //返回
+        
+        return $file;
+        
+    }
+
+
 }
