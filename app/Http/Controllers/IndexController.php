@@ -137,10 +137,11 @@ class IndexController extends Controller
                 $user=Auth::user();
 
                 //当前登录用户的头像
-                $toux=DB::table('files')->where('id',$user->picid)->first()->path;
+                if($user->picid)
+                    $toux=DB::table('files')->where('id',$user->picid)->first()->path;
 
                 //如果有头像
-                if($toux)
+                if(isset($toux))
                      $arr['user']['toux']=$toux;
 
             }

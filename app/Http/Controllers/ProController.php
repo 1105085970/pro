@@ -75,7 +75,13 @@ class ProController extends Controller
         //如果要显示全部
         if(isset($param[1]) && $param[1]=='all'){
             //返回全部
-            $arr=$this->colm(['user'=>$user,'all'=>1]);
+            $arr=['user'=>$user,'all'=>1];
+
+            //如果是访问自己主页
+            if($user->id==Auth::id())
+                $arr['hide']=1;
+
+            $arr=$this->colm($arr);
             $arr['name']=$name;
             return $arr;
         }
@@ -109,7 +115,12 @@ class ProController extends Controller
             $user->bg='/images/bg.png';
         }
 
-        $coll=$this->colm(['user'=>$user,'num'=>4]);
+        $arr=['user'=>$user,'num'=>4];
+        //如果是访问自己主页
+        if($user->id==Auth::id())
+            $arr['hide']=1;
+
+        $coll=$this->colm($arr);
 
         $num=0;
         $coll2='';
@@ -127,13 +138,13 @@ class ProController extends Controller
             //如果登录了
 
             //当前登录用户已关注的 人员列表
-            $ignores=explode(',',Auth::user()->ignore);
+            $followusers=explode(',',Auth::user()->followusers);
 
             if(Auth::id()==$param[0]){
                 //要显示的个人资料页是当前登录用户的
                 $guanz=3;   //修改资料
 
-            }elseif(in_array($param[0],$ignores)){
+            }elseif(in_array($param[0],$followusers)){
                 //当前登录的用户已经关注要显示的用户
                 $guanz=2;   //取消关注
 
@@ -154,12 +165,17 @@ class ProController extends Controller
 
         $posts=$posts->PostContents($request,$arr);
 
+        //粉丝数量
+        $fans=0;
+        if($user->fans)
+            $fans=count(explode(',',$user->fans));
+
         //准备返回的数组
         $arr=[
             'bg'=>$user->bg,         //背景图片地址
             'toux'=>$user->toux,     //头像图片地址
             'name'=>$name,           //用户姓名
-            'fans'=>count(explode(',',$user->followusers)),     //粉丝数量
+            'fans'=>$fans,     //粉丝数量
             'user'=>((Auth::check())?Auth::id():0),      //登录用户id
             'guanz'=>$guanz,         //关注、取消关注、修改资料按钮
             'uid'=>$param[0],        //要展示的用户id
@@ -181,35 +197,35 @@ class ProController extends Controller
         if(!Auth::check() || !$uid || Auth::id()==$uid)return;
 
         //获得传过来的id 的粉丝列表 数组
-        $followusers=DB::table('users')
+        $fans=DB::table('users')
                         ->where('id',$uid)
                         ->first()
-                        ->followusers;
-        $followusers=explode(',',$followusers);
+                        ->fans;
+        $fans=explode(',',$fans);
 
         //当前登录用户信息
         $user=Auth::user();
 
         //当前用户已关注用编号数组
-        $ignores=explode(',',$user->ignore);
+        $followusers=explode(',',$user->followusers);
 
         //判断当前用户是否关注过了
-        if(in_array($uid,$ignores)){
+        if(in_array($uid,$followusers)){
             //已经关注过了
 
             //删除用户编号
-            unset($ignores[array_search($uid,$ignores)]);
+            unset($followusers[array_search($uid,$followusers)]);
 
             //更新数据库
             DB::table('users')
                 ->where('id',$user->id)
-                ->update(['ignore'=>trim(implode(',', $ignores),',')]);
+                ->update(['followusers'=>trim(implode(',', $followusers),',')]);
 
             //给传过来的用户减少粉丝
-            unset($followusers[array_search($user->id,$followusers)]);
+            unset($fans[array_search($user->id,$fans)]);
             DB::table('users')
                 ->where('id',$uid)
-                ->update(['followusers'=>trim(implode(',',$followusers),',')]);
+                ->update(['fans'=>trim(implode(',',$fans),',')]);
 
             //返回 1
             return 1;
@@ -218,18 +234,18 @@ class ProController extends Controller
             //没有关注过
 
             //添加用户编号
-            $ignores[]=$uid;
+            $followusers[]=$uid;
 
             //更新数据库
             DB::table('users')
                 ->where('id',$user->id)
-                ->update(['ignore'=>trim(implode(',', $ignores),',')]);
+                ->update(['followusers'=>trim(implode(',', $followusers),',')]);
 
             //给传过来的用户添加粉丝
-            $followusers[]=$user->id;
+            $fans[]=$user->id;
             DB::table('users')
                 ->where('id',$uid)
-                ->update(['followusers'=>trim(implode(',',$followusers),',')]);
+                ->update(['fans'=>trim(implode(',',$fans),',')]);
 
             //返回 2
             return 2;
@@ -262,6 +278,11 @@ class ProController extends Controller
 
         }
 
+        $where=['collections.userid'=>$user->id];
+        //如果要显示全部
+        if(!isset($arr['hide']))
+            $where['collections.hide']=0;
+
         //要展示的用户创建的收藏集
         $coll=DB::table('collections')
                 ->select(
@@ -271,7 +292,7 @@ class ProController extends Controller
                     'collections.background as bg',      //背景色
                     'collections.userid as uid'         //所属用户id
                 )
-                ->where(['collections.userid'=>$user->id,'collections.hide'=>0])
+                ->where($where)
                 ->leftjoin('files', 'collections.picid', '=', 'files.id')
                 ->get();
 
@@ -281,6 +302,10 @@ class ProController extends Controller
         //如果有收藏集
         if(count($coll))
             $list['my_coll']=clone $coll;
+
+        //如果要显示全部
+        if(isset($arr['hide']))
+            $user->showcoll=1;
 
         //如果要展示的用户创建的收藏集小于$num个 并且 要展示的用户允许显示关注的收藏集
         if(count($coll)<$num && $user->showcoll==1 && $user->followcoll){
@@ -292,7 +317,7 @@ class ProController extends Controller
                         'collections.background as bg',      //背景色
                         'collections.userid as uid'         //所属用户id
                     )
-                    ->whereIn('collections.id',explode(',',$user->followcoll))
+                    ->whereIn('collections.id',explode(',',trim($user->followcoll,',')))
                     ->leftjoin('files', 'collections.picid', '=', 'files.id')
                     ->get();
 
@@ -310,6 +335,12 @@ class ProController extends Controller
 
         }
 
+        $where=['communities.userid'=>$user->id];
+
+        //如果要显示全部
+        if(!isset($arr['hide']))
+            $where['communities.hide']=0;
+
         //如果要展示的用户创建的收藏集小于$num个
         if(count($coll)<$num){
             //查找要展示的用户创建的社区
@@ -322,7 +353,7 @@ class ProController extends Controller
                         'communities.membernum as members',      //成员数量
                         'communities.userid as uid'         //所属用户id
                     )
-                    ->where(['communities.userid'=>$user->id,'communities.hide'=>0])
+                    ->where($where)
                     ->leftjoin('files', 'communities.picid', '=', 'files.id')
                     ->get();
 
@@ -332,6 +363,10 @@ class ProController extends Controller
             //如果有社区
             if(count($comm))
                 $list['my_comm']=clone $comm;
+
+            //如果要显示全部
+            if(isset($arr['hide']))
+                $user->showcomm=$user->followcomm;
 
             //如果要展示的用户创建的社区加收藏集小于$num个
             if(count($coll)+count($comm)<$num){
@@ -344,7 +379,7 @@ class ProController extends Controller
                             'communities.membernum as members',      //成员数量
                             'communities.userid as uid'         //所属用户id
                         )
-                        ->whereIn('communities.id',explode(',',$user->showcomm))
+                        ->whereIn('communities.id',explode(',',trim($user->showcomm,',')))
                         ->leftjoin('files', 'communities.picid', '=', 'files.id')
                         ->get();
 
@@ -505,17 +540,40 @@ class ProController extends Controller
             if($phone && $phone->id !=Auth::id())
                 return 'phone2';
         }
-        
 
-        //准备数据
-        $data=[
-            'slogan'=>(($arr['slogan'])?$arr['slogan']:null),       //签名
-            'nickname'=>(($arr['nickname'])?$arr['nickname']:null),   //昵称
-            'phone'=>(($arr['phone'])?$arr['phone']:null),         ///手机
-            'email'=>(($arr['email'])?$arr['email']:''),         //邮箱
-            'sex'=>(($arr['sex'])?$arr['sex']:0),             //性别
-            'introduce'=>(($arr['jj'])?$arr['jj']:null)         //简介
-        ];
+        //当前登录用户判断
+        $user=Auth::user();
+
+        //要更新的数组
+        $data=[];
+
+        //签名
+        if($user->slogan!=$arr['slogan'])
+            $data['slogan']=$arr['slogan'];
+
+        //昵称
+        if($user->nickname!=$arr['nickname'])
+            $data['nickname']=$arr['nickname'];
+
+        //手机
+        if($user->phone!=$arr['phone'])
+            $data['phone']=$arr['phone'];
+
+        //邮箱
+        if($user->email!=$arr['email'])
+            $data['email']=$arr['email'];
+
+        //性别
+        if($user->sex!=$arr['sex'])
+            $data['sex']=$arr['sex'];
+
+        //简介
+        if($user->introduce!=$arr['jj'])
+            $data['introduce']=$arr['jj'];
+
+        //如果没有修改 直接返回
+        if(!count($data))
+            return 2;
 
 
         $up=DB::table('users')

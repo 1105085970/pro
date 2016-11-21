@@ -506,7 +506,7 @@
 }
 
 /*修改资料框 手机*/
-#gedit_phone{
+#gedit_username2{
 	margin-top: 24px;
 }
 
@@ -518,8 +518,8 @@
 	justify-content: flex-end;
 	position: absolute;
     right: 0;
+    bottom:0;
     width: 100%;
-    bottom: 0;
     height:60px;
 }
 
@@ -548,7 +548,7 @@
 
 @media (max-width: 575px) {
 
-	#gedit_phone{
+	#gedit_username2{
 		margin-top: 0;
 	}
 

@@ -437,7 +437,7 @@ function proContents(data,param){
 		  				//用户姓名
 		  				+'<div id="pro_name">'+data.name+'</div>'
 		  				//粉丝数量
-		  				+'<div id="pro_fans">'+data.fans+' 位关注者</div>'
+		  				+((data.fans!=0)?'<div id="pro_fans">'+data.fans+' 位关注者</div>':'')
 		  			+'</div>'
 
 		  			//关注、取消关注、修改资料按钮
@@ -464,7 +464,7 @@ function proContents(data,param){
 			+'<div id="pro_xqname" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
 
 				+data.name+'的兴趣主题'
-				+'<a id="pro_xqqb" onclick="'+on+'" href="/pro/'+data.uid+'/all">查看全部</a>'
+				+((data.coll.length!=0)?'<a id="pro_xqqb" onclick="'+on+'" href="/pro/'+data.uid+'/all">查看全部</a>':'')
 
 			+'</div>'
 			+'</div>'
@@ -655,11 +655,7 @@ function proContents(data,param){
 						+'<small class="text-muted">签名</small>'
 						+'</fieldset>'
 
-						//昵称
-						+'<fieldset class="form-group">'
-						+'<input type="text" class="form-control" id="gedit_nickname" placeholder="Nickname" value="'+data.nickname+'" >'
-						+'<small class="text-muted">昵称</small>'
-						+'</fieldset>'
+						
 
 					+'</div>'
 
@@ -671,6 +667,12 @@ function proContents(data,param){
 			var col2d='<div class="row">'
 				+'<div class="col-sm-12">'
 					+'<div class="gedit_zhong">'
+
+						//昵称
+						+'<fieldset class="form-group">'
+						+'<input type="text" class="form-control" id="gedit_nickname" placeholder="Nickname" value="'+data.nickname+'" >'
+						+'<small class="text-muted">昵称</small>'
+						+'</fieldset>'
 
 						//手机
 						+'<fieldset class="form-group">'
@@ -836,7 +838,15 @@ function proContents(data,param){
 
 						}
 
-						Prompt('没有要修改的。');
+						if(data==2){
+
+							Prompt('没有要修改的。');
+							t.removeAttr('ajax');
+							return;
+
+						}
+
+						Prompt('修改失败。');
 						t.removeAttr('ajax');
 
 					},
