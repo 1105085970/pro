@@ -144,7 +144,7 @@ class ColController extends Controller
             $posts=$posts->PostContents($request,$list);
 
             $arr1=Posts::where('userid',$id[0])->get();
-            return ['key'=>$arr,'key2'=>$arr1,'panduan'=>'tiao','userid'=>$arru->id,'user'=>$arru->username,'tx'=>$arrf->path,'bg'=>$arrb->path,'posts'=>$posts,'wwid'=>$collid];
+            return ['key'=>$arr,'key2'=>$arr1,'panduan'=>'tiao','userid'=>$arru->id,'user'=>$arru->username,'tx'=>$arrf->path,'bg'=>$arrb->path,'posts'=>$posts,'wwid'=>$collid,'uid'=>Auth::id()];
         }
         //主页面返回时所带的值，第一次加载
         //主页面返回时所带的值，第一次加载

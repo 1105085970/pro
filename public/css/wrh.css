@@ -110,16 +110,16 @@
 	padding-top:16px;line-height: 20px;
 }
 .biaoyu{
-	font-size:14px;line-height: 18px;margin-top:5px;
+	font-size:14px;line-height: 18px;margin-top:5px;white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;
 }
 .gz{
-	width:48px;height:20px;line-height:20px;text-align:center;position:absolute;font-size:14px;font-weight: 700;color:#fff;bottom:10px;
+	width:70px;height:20px;line-height:20px;text-align:center;position:absolute;font-size:14px;font-weight: 700;color:#fff;bottom:10px;
 }
 .gz2{
 	color:#1bab35;
 }
 .hover{
-	background:#797979;cursor:pointer;border-radius:2px;
+	background:#bfbfbf;cursor:pointer;border-radius:2px;
 }
 /*  点击收藏集跳转后的div样式 */
 .tiao{
@@ -164,7 +164,9 @@
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-    margin-top: 14px;margin-left: 22px;margin-bottom: 60px;margin-right: 20px;
+    margin-top: 14px;margin-left: 22px;margin-bottom: 60px;margin-right: 20px;word-wrap:break-word; 
+word-break:break-all; 
+overflow: hidden;
 }
 .guan{
 	height:36px;line-height:36px;text-align:center;background: #ffffff;border-radius:2px;margin-left: 22px;margin-top:60px;padding:8px 20px;
@@ -424,4 +426,31 @@
 }
 .cuowu1,.cuowu2{
 	width:380px;line-height: 20px;display:block;color:red;font-size:12px;
+}
+.shenhe{
+	width:100%;height:5000px;background: green;position:absolute;z-index:60;
+}
+.jujue{
+	height:50px;margin-top:10px;
+}
+.sqtx{
+	width:50px;height:50px;border-radius:50px;overflow:hidden;float:left;
+}
+.sqtx img{
+	width:50px;height:50px;
+}
+.wenzi{
+	width:150px;height:50px;line-height:50px;margin-left:10px;float:left;
+}
+.tongyi,.butongyi{
+	width:48px;height:20px;margin-top:15px;float:left;position:absolute;right:90px;text-align:center;line-height:20px;border-radius:1px;
+}
+.butongyi{
+	width:48px;right:20px;border-radius:1px;
+}
+.tongyi:hover{
+	background:#FFF;cursor:pointer;
+}
+.butongyi:hover{
+	background:#FFF;cursor:pointer;
 }
