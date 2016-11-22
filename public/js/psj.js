@@ -386,10 +386,11 @@ $(function(){
 function proContents(data,param){
 
 	//param转换成数组
-	var param=param.split(',');
+	if(param)
+		param=param.split(',');
 
 	//如果是查看全部页面
-	if(param[1]=='all'){
+	if(param && param[1]=='all'){
 		proall(data);
 		return;
 	}

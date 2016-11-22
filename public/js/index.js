@@ -382,7 +382,8 @@ function Popup(arr,fun){
 	var row4=$('<div class="row White_box_row2"><div id="'+arr.Id+'" class="col-md-12"></div></div>');
 	
 	row2.bind('click',function(e){
-		return false;
+		//阻止冒泡
+		e.stopPropagation();
 	});
 
 	//追加
@@ -450,7 +451,10 @@ function File_upload(arr){
 		Action:'hom',
 		Method:'_getfile',
 		Id:'File_upload',
-		Height:800
+		Height:800,
+		Many:1,
+		fid:[],
+		fun:arr.fun
 	}
 
 	//如果有传高度
@@ -464,6 +468,9 @@ function File_upload(arr){
 	//如果有参数
 	if(arr.Param)
 		arr2.Param=arr.Param;
+
+	if(arr.Many)
+		arr2.Many=arr.Many;
 
 	//弹出框
 	Popup(arr2,function(data,arr){
@@ -496,7 +503,7 @@ function File_upload(arr){
 
 			imgs+='<div class="File_imgs col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">'
 					+'<div class="File_imgs_top"></div>'
-					+'<img class="img-fluid" fid="'+data[k].id+'" src="'+data[k].path+'" >'
+					+'<img class="img-fluid" fid="'+data[k].id+'" path="'+data[k].path+'" src="'+data[k].path+'" >'
 					+'<div class="File_imgs_bottom"></div>'
 				+'</div>'
 
@@ -522,11 +529,20 @@ function File_upload(arr){
 			+'<div class="row">'
 
 				//上传框
-				+'<div class="File_imgs col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">'
+				+'<div class="File_imgs_a col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">'
+
 					+'<button class="File_imgs_botton" >'
-					+'<i class="fa fa-upload" aria-hidden="true"></i>'
-					+'<div>上传图片</div>'
+						+'<i class="fa fa-upload" aria-hidden="true"></i>'
+						+'<div>上传图片</div>'
 					+'</button>'
+
+					+'<div class="File_imgs_botton_a">'
+						+'<form id="File_imgs_form" name="File_imgs_file">'
+						+'<input type="file" id="File_imgs_file" name="files[]" multiple>'
+						+'<input id="File_imgs_submit" type="submit">'
+						+'</form>'
+					+'</div>'
+
 				+'</div>'
 
 				+imgs
@@ -536,10 +552,57 @@ function File_upload(arr){
 		box.append(html);
 
 		//默认数据
-		arr.fid=[];
 		$('#File_upload').data('check',arr);
 
-		//如果图片被点击
+		var formdata;
+
+		//上传按钮被点击 选择上传文件后
+		$('#File_imgs_file').change(function(){
+
+			//新的 FormData对象
+			formdata=new FormData(document.forms.namedItem("File_imgs_file"));
+			//类别
+			formdata.append('Action','hom');
+			//方法名
+			formdata.append('Method','_file_upload');
+			//点击提交按钮
+			$('#File_imgs_submit').click();
+
+		})
+
+		//如果文件提交按钮被点击
+		$('#File_imgs_form').submit(function(e){
+
+			//发送ajax
+			$.ajax({
+				data:formdata,
+				processData: false,  	// 告诉jQuery不要去处理发送的数据
+  				contentType: false, 		// 告诉jQuery不要去设置Content-Type请求头
+  				success:function(data){
+  					//成功时
+
+  					if(data==3){
+
+  						Prompt('请先登录。');
+  						return;
+
+  					}
+
+
+  				},
+  				error:function(data){
+
+  					//失败时
+  					Prompt('上传失败。');
+  					
+  				}
+			})
+
+			e.preventDefault();
+			
+		})
+
+		//如果文件被点击
 		$('.File_imgs').click(function(){
 
 			var t=$(this);
@@ -550,6 +613,10 @@ function File_upload(arr){
 			//文件id
 			var fid=t.children('img').attr('fid');
 
+			//已选文件数量
+			var num=0;
+			for(k in data.fid)num++;
+
 			//如果已经被选中 取消选中
 			if(t.hasClass('File_imgs_on')){
 
@@ -557,18 +624,51 @@ function File_upload(arr){
 				//移除check
 				delete data.fid[fid];
 
-			}else{
+				num--;
+
+			}else if(data.Many>num){//可选数量
 
 				//如果没有选择 添加
 				t.addClass('File_imgs_on');
 				//添加check
-				data.fid[fid]=fid;
+				data.fid[fid]=t.children('img').attr('path');
 
+				num++;	
+
+			}
+
+			//如果有选中的 让按钮变色
+			if(num){
+				$('.File_top_right').addClass('File_top_right_on');
+			}else{
+				$('.File_top_right').removeClass('File_top_right_on');
 			}
 
 			//保存数据
 			$('#File_upload').data('check',data);
-			//console.log()
+			
+
+		})
+
+
+		//如果提交被点击
+		$('.File_top_right').click(function(){
+
+			//获取数据
+			var data=$('#File_upload').data('check');
+
+			var dat=[];
+
+			//得到文件路径
+			for(k in data.fid){
+				dat.push({id:k,path:data.fid[k]});
+			}
+
+			//隐藏框
+			$(this).parents('.Black_bg').click();
+
+			//回调函数
+			arr.fun(dat);
 
 		})
 

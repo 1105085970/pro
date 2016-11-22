@@ -977,8 +977,10 @@ function postform(data,arr){
 				types:'jpg,jpeg,png,gif,bmp'		//要显示的图片类型
 			},
 			Height:500,
+			Many:2,
 			fun:function(data){
-
+				//data 用户选择的图片
+				console.log(data);
 			}
 
 		});
@@ -1011,8 +1013,7 @@ function postform(data,arr){
 				Action:'pos',
 				Method:'_create_in',
 				Contents:text,
-				Arr:arr,
-				Many:4		
+				Arr:arr
 			},
 			success:function(data){
 

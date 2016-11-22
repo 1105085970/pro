@@ -100,4 +100,32 @@ class HomController extends Controller
     }
 
 
+    //ajax上传文件
+    public function Post_file_upload(Request $request){
+
+        //如果没登录
+        if(!Auth::check())return 3;
+
+        //当前用户信息
+        $user=Auth::user();
+
+        //用户上传的文件
+        $files=$request->file('files');
+
+        //循环保存
+        foreach($files as $v){
+
+            //判断文件上传是否出错
+            if ($v->isValid()){
+                //没出错
+                $v->store('123');
+                return 111;
+            }
+
+        }
+
+
+    }
+
+
 }

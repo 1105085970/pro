@@ -14,6 +14,38 @@
 
 </head>
 <body>
+
+
+	
+  <form name="fileinfo">
+  <input type="file" name="file" required="">
+</form>
+<a href="javascript:sendForm()">Stash the file!</a>
+<script>
+  function sendForm() {
+  var oData = new FormData(document.forms.namedItem("fileinfo"));
+
+  oData.append("Action", "hom");
+  oData.append("Method", "_file_upload");
+
+  $.ajax({
+				data:oData,
+				processData: false,  	// 告诉jQuery不要去处理发送的数据
+  				contentType: false, 		// 告诉jQuery不要去设置Content-Type请求头
+  				success:function(data){
+
+  				}
+			})
+
+}
+</script>
+
+	
+	
+
+
+
+
 	{{-- 全宽容器 --}}
 	<div class="container-fluid">
 
