@@ -42,7 +42,7 @@ class ProController extends Controller
         //用户姓名
         $name=($user->nickname)?$user->nickname:$user->username;
 
-        $arr=[
+        $arr=[  
             'Background'=>'#FFF',
             'CatName'=>$name,
             'Title'=>$name
@@ -59,7 +59,7 @@ class ProController extends Controller
             //如果当前param参数中有 用户id
             $user=DB::table('users')
                 ->where('users.id',$param[0])
-                ->first();
+                ->first(); 
 
         }else{
             //如果没传 用户id
@@ -72,13 +72,13 @@ class ProController extends Controller
         //要展示的用户的姓名
         $name=($user->nickname)?$user->nickname:$user->username;
 
-        //如果要显示全部
+        //如果要显示全部  
         if(isset($param[1]) && $param[1]=='all'){
             //返回全部
             $arr=['user'=>$user,'all'=>1];
 
             //如果是访问自己主页
-            if($user->id==Auth::id())
+            if( $user->id==Auth::id())   
                 $arr['hide']=1;
 
             $arr=$this->colm($arr);
@@ -524,7 +524,7 @@ class ProController extends Controller
         //验证邮箱
         if(!preg_match('/^[A-z0-9]+@[a-z0-9]+(\.[a-z]+){1,2}$/',$arr['email']))
             return 'email';
-
+ 
         //验证手机号
         if($arr['phone'] && !preg_match('/^(\d+){11}$/',$arr['phone']))
             return 'phone';

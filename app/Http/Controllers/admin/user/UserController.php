@@ -33,8 +33,8 @@ class UserController extends Controller
                      }
                   })
                   ->paginate($request->input('show','5'));
-       // var_dump($list);
-        //die;
+        //var_dump($list);
+        
            return view('admin.user.index',['pic'=>$res,'username'=>$res->username,'list'=>$list,'request'=>$request,'userlevel'=>$userlevel]);
       }
       public function xiangqing(Request $request,$targetid){
