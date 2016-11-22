@@ -25,16 +25,19 @@ class ComController extends Controller
             //例 'Nav'=>['导航1'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
         //Fun           请求主内容成功时要执行的函数 
         //
-        
+        $Newpost='';
+        if(Auth::check()){
+            $Newpost=1;
+        }
         $param=explode(',',$request->Param);
 
-        if(isset($param[1]) && $param[1]=='admin'){
+        if(isset($param[1]) && ($param[1]=='admin'||$param[1]=='laji'||$param[1]=='shenhe')){
             $arr=[
             'Background'=>'#0F9D58',
             'CatName'=>'Home',
-                'Nav'=>['加入申请'=>['Url'=>'/com','Action'=>'com/'.$param[0].'/admin','Param'=>['jrsq']],
-                        '可能是垃圾内容'=>['Url'=>'/com/'.$param[0].'/laji','Action'=>'com','Param'=>['laji']],
-                        '待审核'=>['Url'=>'/com/'.$param[0].'/shenhe','Action'=>'com','Param'=>['shenhe']]]
+                'Nav'=>['加入申请'=>['Url'=>'/com','Action'=>'com/'.$param[0].'/admin','Param'=>[$param[0],'jrsq']],
+                        '可能是垃圾内容'=>['Url'=>'/com/'.$param[0].'/laji','Action'=>'com','Param'=>[$param[0],'laji']],
+                        '待审核'=>['Url'=>'/com/'.$param[0].'/shenhe','Action'=>'com','Param'=>[$param[0],'shenhe']]]
             ];
             return $arr;
         }else{
@@ -43,7 +46,8 @@ class ComController extends Controller
                 'CatName'=>'Home',
                     'Nav'=>['为你推荐'=>['Url'=>'/com','Action'=>'com','Param'=>[]],
                             '已加入'=>['Url'=>'/com/jiaru','Action'=>'com','Param'=>['jiaru']],
-                            '你的'=>['Url'=>'/com/ndsq','Action'=>'com','Param'=>['ndsq']]]
+                            '你的'=>['Url'=>'/com/ndsq','Action'=>'com','Param'=>['ndsq']]],
+                            'Newpost'=>$Newpost
                 ];
             
             return $arr;
@@ -62,6 +66,9 @@ class ComController extends Controller
 
         if(isset($param[1]) && $param[1]=='admin'){
             $arr=DB::table('communities')->where('id',$param[0])->first();
+            if($arr->examineuser==null){
+                return ['key'=>'没有'];
+            }
             $uid=explode(',',$arr->examineuser);
             $count=count($uid)-1;
             for($n=0;$n<$count;$n++){
@@ -71,6 +78,8 @@ class ComController extends Controller
             }
             return ['key'=>$user,'key2'=>$param[0]];
 
+        }elseif(isset($param[1]) && $param[1]=='shenhe'){
+            return ['key'=>"审核"];
         }elseif($request->Param=='ndsq'){
             if(Auth::check()){
                 $chuang='你还没有创建社区';
@@ -370,6 +379,7 @@ class ComController extends Controller
             $arr['title']=$request->title;
             $arr['slogan']=$request->slogan;
             $arr['sqjr']=$request->sqjr;
+            $arr['examinepost']=$request->examinepost;
             $arr['addtime']=time();
             $arr['userid']=Auth::id();
            
@@ -414,6 +424,54 @@ class ComController extends Controller
         $update['membernum']=$membernum;
         $arr1=DB::table('communities')->where('id',$request->comid)->update($update);
         return ['key'=>$update];
+    }
+    public function Postxg(Request $request){
+        $arr=DB::table('communities')->where('id',$request->xgid)->first();
+        $pic=DB::table('files')->where('id',$arr->picid)->first();
+        $arr->path=$pic->path;
+        return ['arr'=>$arr];
+    }
+    public function PostxgCommImg(Request $request){
+        if(is_uploaded_file($_FILES['upfile']['tmp_name'])){
+            
+            $hou=pathinfo($_FILES['upfile']['name']);
+            $name=time().str_random(6).'.'.$hou['extension'];
+            
+            $path='/images/'.$name;
+            move_uploaded_file($_FILES['upfile']['tmp_name'],'.'.$path);
+            
+            $arr['path']=$path;
+            if($request->input('picid')==1||$request->input('picid')==2){
+                $arr['userid']=Auth::id();
+                $arr['addtime']=time();
+                $id=DB::table('files')->insertGetId($arr);
+            }else{
+                $id1=DB::table('files')->where('id',$request->input('picid'))->update($arr);
+                $id=$request->input('picid');
+            }
+            
+            return ['arr'=>$request->input('picid'),'id'=>$id];
+        }
+    }
+    public function PostxiugaiComm(Request $request){
+        $this->validate($request,[
+                'title'=>'required',
+                'slogan'=>'required',
+            ],[
+                'title.required'=>'请填写收藏集名称',
+                'slogan.required'=>'请填写个性宣言',
+            ]);
+        if($request->ccc==1){
+            $lastid=DB::table('files')->where('userid',Auth::id())->orderBy('addtime','desc')->first();
+            $arr['picid']=$lastid->id;
+        }
+            $arr['title']=$request->title;
+            $arr['slogan']=$request->slogan;
+            $arr['addtime']=time();
+            $arr['userid']=Auth::id();
+            $arr['describe']=$request->describe;
+            $arr1=DB::table('communities')->where('id',$request->id)->update($arr);
+        return ['cg'=>'cg','arr'=>$arr,'describe'=>$request->describe];
     }
 
 }

@@ -163,6 +163,7 @@ class ColController extends Controller
             }
             $arr[$k]->bg=$arr1->path;
             $arr[$k]->tx=$arr2->path;
+            $arr[$k]->uid=$arr3->id;
             $arr[$k]->cun=$cun;
         }
 
@@ -309,9 +310,16 @@ class ColController extends Controller
             
             $path='/images/'.$name;
             move_uploaded_file($_FILES['upfile']['tmp_name'],'.'.$path);
-            
             $arr['path']=$path;
-            $id=DB::table('files')->where('id',$request->input('picid'))->update($arr);
+            if($request->input('picid')==1||$request->input('picid')==2){
+                $arr['userid']=Auth::id();
+                $arr['addtime']=time();
+                $id=DB::table('files')->insertGetId($arr);
+            }else{
+                $id1=DB::table('files')->where('id',$request->input('picid'))->update($arr);
+                $id=$request->input('picid');
+            }
+            
             return ['arr'=>$request->input('picid')];
         }
        
@@ -324,6 +332,10 @@ class ColController extends Controller
                 'title.required'=>'请填写收藏集名称',
                 'slogan.required'=>'请填写个性宣言',
             ]);
+        if($request->ppp==1){
+            $lastid=DB::table('files')->where('userid',Auth::id())->orderBy('addtime','desc')->first();
+            $arr['picid']=$lastid->id;
+        }
             $arr['title']=$request->title;
             $arr['slogan']=$request->slogan;
             $arr['addtime']=time();
