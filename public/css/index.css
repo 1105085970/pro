@@ -175,7 +175,7 @@ a,a:hover,a:active{
     cursor: pointer;
     height: 56px;
     width: 56px;
-    z-index: 2;
+    z-index: 50;
     border-radius: 50%;
     line-height: 56px;
     text-align: center;

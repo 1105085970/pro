@@ -63,6 +63,10 @@ class PosController extends Controller
         if(isset($arr['page']))
             $skip=$take*($arr['page']-1);
 
+        //排除审核
+        if(!isset($where['posts.state']))
+            $where['posts.state']=1;
+
         //查询数据
         $rows=DB::table('posts')
             ->select(
@@ -76,7 +80,8 @@ class PosController extends Controller
                 'posts.shares as shares',    //分享的数量
                 'posts.noshare as noshare',  //是否禁止分享
                 'posts.comments as comms',   //评论的数量
-                'posts.nocomment as nocomm'  //是否禁止评论
+                'posts.nocomment as nocomm',  //是否禁止评论
+                'posts.picid as picids'         //图片附件列表
             )
             ->leftjoin('users', 'posts.userid', '=', 'users.id')
             ->leftjoin('files', 'users.picid', '=', 'files.id')
@@ -114,6 +119,14 @@ class PosController extends Controller
 
             //删除 +1 的用户编号列表
             unset($v->likesid);
+
+            //图片判断
+            if($v->picids){
+                $imgs=explode(',',$v->picids);
+                $imgs=DB::table('files')->select('id','path')->whereIn('id',$imgs)->get();
+                $v->imgs=$imgs;
+                unset($v->picids);
+            }
 
             //如果禁止分享
             if($v->noshare==0)
@@ -200,33 +213,70 @@ class PosController extends Controller
 
     //ajax插入贴子
     public function Post_create_in(Request $request){
-        //验证
-        $this->validate($request, [
-            'Contents' => 'required'
-        ]);
+
+        //如果没登录
+        if(!Auth::check())return;
+        
+        //所有参数
+        $param=$request->all();
+
+        //如果没有内容 也没有图片 直接返回
+        if(!$param['Contents']&&!$param['imgs'])return;
 
         //要插入的数据
         $arr=[
-            'content'=>$request->input('Contents'),     //主内容
             'addtime'=>time(),                          //添加时间
             'userid'=>Auth::user()->id,                 //所属用户id
-            'type'=>1                                   //帖子类型
         ];
+
+        //如果有内容
+        if($param['Contents']){
+
+            $arr['content']=$param['Contents'];
+            $arr['type']=1;
+
+        }
+
+        //如果有图片
+        if($param['imgs']){
+
+            $arr['picid']=trim($param['imgs'],',');
+            $arr['type']=2;
+
+        }
 
         $arr2=$request->input('Arr');
 
         //判断当前帖子是不是在收藏集或社区内发布的
-        if($arr2['Action']=='coll'&&$arr2['Param'])
+        if($arr2['Action']=='coll'&&$arr2['Param']){
+
             $arr['collid']=$arr2['Param'];    //所属收藏集id
-        elseif($arr2['Action']=='comm'&&$arr2['Param'])
+
+        }
+        elseif($arr2['Action']=='comm'&&$arr2['Param']){
+
             $arr['commid']=$arr2['Param'];    //所属社区id
+
+            //检查是否要审核帖子
+            $comm=DB::table('communities')->where('id',$arr2['Param'])->first();
+            if($comm && $comm->examinepost==1)
+                $arr['state']=2;
+
+        }
 
 
         //插入数据
         $id=DB::table('posts')->insertGetId($arr);
 
         //成功时
-        if($id)return $id;
+        if($id){
+
+            //如果要审核
+            if(isset($arr['state'])&&$arr['state']==2)
+                return 'sh';
+            else
+                return $id;
+        }
         return;
 
     }

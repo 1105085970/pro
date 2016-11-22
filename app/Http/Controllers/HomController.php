@@ -82,6 +82,7 @@ class HomController extends Controller
                 ->select($select)
                 ->where($arr)
                 ->whereIn('extension',explode(',', $param['types']))
+                ->orderBy('id','desc')
                 ->get();
         }else{
 
@@ -89,6 +90,7 @@ class HomController extends Controller
             $file=DB::table('files')
                 ->select($select)
                 ->where($arr)
+                ->orderBy('id','desc')
                 ->get();
 
         } 
@@ -109,8 +111,14 @@ class HomController extends Controller
         //当前用户信息
         $user=Auth::user();
 
+        //该用户文件要保存的路径
+        $path=$this->filePath();
+
         //用户上传的文件
         $files=$request->file('files');
+
+        //允许上传的文件类型
+        $types=explode(',', $request->types);
 
         //循环保存
         foreach($files as $v){
@@ -118,12 +126,84 @@ class HomController extends Controller
             //判断文件上传是否出错
             if ($v->isValid()){
                 //没出错
-                $v->store('123');
-                return 111;
+
+                //判断是否允许的类型
+                if(!in_array($v->getMimeType(), $types))
+                    return 1;
+
+                //数据库增加一条文件
+                $arr=[
+                    'name'=>1,
+                    'extension'=>$v->getMimeType(),     //文件类型
+                    'userid'=>$user->id,
+                    'path'=>1,
+                    'addtime'=>time()
+                ];
+                //插入
+                $fid=DB::table('files')->insertGetId($arr);
+
+                //文件后缀名
+                $hou=array_slice(explode('.',$v->getClientOriginalName()),-1)[0];
+
+                //更新
+                $arr=[
+                    'name'=>$fid,
+                    'path'=>$path.$fid.'.'.$hou
+                ];
+                DB::table('files')->where('id',$fid)->update($arr);
+
+                //移动文件到新的位置
+                $v->storeAs($path,$fid.'.'.$hou);
+                
+            }else{
+                //上传出错
+                return 2;
             }
 
         }
 
+        $request->Param=['types'=>$request->types];
+
+        //返回用户所有文件数据
+        return $this->Post_getfile($request);
+
+
+    }
+
+
+    //返回用户文件地址保存
+    public function filePath($userid=''){
+
+        //如果没有名字
+        if(!$userid)
+            $user=Auth::user();
+        else
+            $user=DB::table('users')->where('id',$userid)->first();
+
+        //用户注册时间
+        $date=date_create($user->created_at);
+
+        //年
+        $year=date_format($date,"Y");
+
+        //月
+        $mon=date_format($date,"m");
+
+        //日
+        $day=date_format($date,"d");
+
+        //该用户文件要保存的路径
+        $path='/files/'.$year.'/'.$mon.'/'.$day.'/'.$user->id.'/';
+
+        return $path;
+
+    }
+
+
+    //返回文件
+    public function Files($a,$b,$c,$d,$e){
+
+        return response()->file(storage_path('app/files/'.$a.'/'.$b.'/'.$c.'/'.$d.'/'.$e));
 
     }
 

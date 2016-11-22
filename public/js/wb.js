@@ -160,6 +160,47 @@ function onpost(){
 	//如果回复图标被点击
 	$('.commbox_reply').off('click');
 
+	//如果图片左右按钮被点击
+	$('.post_box_imgs_left').off('click');
+	$('.post_box_imgs_right').off('click');
+
+
+
+	//如果图片左按钮被点击
+	$('.post_box_imgs_left').click(function(){
+
+		//包含图片的box
+		var box=$(this).siblings('.post_box_imgs_h');
+		//图片要移动的距离
+		var p=box[0].offsetLeft-box.parent().width();
+		//图片要移动的距离
+		var left=(p<=-box[0].scrollWidth+box.parent().width())?-box[0].scrollWidth+box.parent().width():p;
+		//
+		if(left!=p){
+			$(this).css('display','none');
+		}else{
+			$(this).siblings('.post_box_imgs_right').css('display','block');
+		}
+		box.animate({left:left+'px'});
+	})
+	//如果图片右按钮被点击
+	$('.post_box_imgs_right').click(function(){
+
+		//包含图片的box
+		var box=$(this).siblings('.post_box_imgs_h');
+		//图片要移动的距离
+		var p=box[0].offsetLeft+box.parent().width();
+		//图片要移动的距离
+		var left=(p>0)?0:p;
+		if(left==0){
+			$(this).css('display','none');
+		}else{
+			$(this).siblings('.post_box_imgs_left').css('display','block');
+		}
+		box.animate({left:left+'px'});
+	})
+
+
 
 	//如果 +1 按钮被点击
 	$('.post_box_like').click(function(){
@@ -642,6 +683,33 @@ function posts_list(data){
 				+'</div>'
 
 			+'</div>';
+
+
+	//图片
+	//图片box class
+	var imgbox='post_box_imgs';
+	var imgs='';
+	if(data[i]['imgs']){
+
+		var imgs2=data[i]['imgs'];
+
+		//如果只有一张图
+		if(imgs2.length==1){
+			imgbox='post_box_imgs2';
+		}else{
+			imgs+='<div class="post_box_imgs_left">‹</div>'
+				+'<div class="post_box_imgs_right">›</div>'
+		}
+
+		imgs+='<div class="post_box_imgs_h">'
+
+		for(k in imgs2){
+			imgs+='<img class="post_box_imgs_i" src="'+imgs2[k]['path']+'">';
+		}
+
+		imgs+='</div>'
+
+	}
  
 
 	 da='<div class="row post_box">'
@@ -662,6 +730,13 @@ function posts_list(data){
 	 		//帖子主内容
 	 		+'<div class="col-sm-12 post_box_cont">'
 	 			+data[i]['cont']
+	 		+'</div>'
+
+	 		//帖子图片
+	 		+'<div class="col-sm-12 '+imgbox+'">'
+	 			
+	 			+imgs
+	 			
 	 		+'</div>'
 
 	 		//帖子底部
@@ -817,6 +892,14 @@ function postform(data,arr){
 	//添加文本域
 	$("#Post_form").append(form);
 
+	//显示图片的框
+	var tu='<div class="row">'
+		+'<div class="Post_form_tubox col-sm-12" id="Post_form_tubox">'
+		+'</div>'
+		+'</div>';
+
+	$("#Post_form").append(tu);
+
 	//图片上传按钮等
 	var turow='<div class="row">'
 		+'<div class="col-sm-12" id="Post_form_turow">'
@@ -970,17 +1053,103 @@ function postform(data,arr){
 	//如果相机图标被点击
 	$('#Post_form_camera').click(function(){
 
-		//弹出
+		var num=$('.Post_form_tubox').children('.Post_form_tubox_img').length;
+		if(num>=5){
+			Prompt('最多选择5张图。');
+			return;
+		}
+
+		num=5-num;
+
+		//弹出图片选择框
 		File_upload({
 
 			Param:{
-				types:'jpg,jpeg,png,gif,bmp'		//要显示的图片类型
+				types:'image/jpeg,image/png,image/gif,'		//要显示的图片类型
 			},
 			Height:500,
-			Many:2,
+			Many:num,		//可选图片的数量
 			fun:function(data){
 				//data 用户选择的图片
-				console.log(data);
+				
+				//如果没有选择图片 直接返回
+				if(data.length==0)return;
+
+				//图片的box
+				var box=$('.Post_form_tubox');
+
+				//如果文件大于1个
+				if(box.children('.Post_form_tubox_img').length+data.length>1)
+					box.addClass('Post_form_tubox2');
+				else
+					box.removeClass('Post_form_tubox2');
+
+				//循环
+				for(k in data){
+
+					//如果已经选过了
+					var fff=box.children('.Post_form_tubox_img[fid="'+data[k].id+'"]').length;
+					if(fff)continue;
+
+					//要追加的html
+					var imgbox=$('<div fid="'+data[k].id+'" class="Post_form_tubox_img"></div>');
+					//图标
+					var i=$('<i class="img_sc fa fa-close" aria-hidden="true"></i>');
+
+					//图片
+					var img=$('<img class="img_a" src="'+data[k].path+'" >');
+
+					i.click(function(){
+
+						//删除图片
+						$(this).parents('.Post_form_tubox_img').remove();
+
+						//修改白框高度
+						var whiteh=$('.White_box')[0].scrollHeight;
+
+						if(whiteh<$(window).height()-40){
+
+							$('.White_box').height('');
+							whiteh=$('.White_box')[0].scrollHeight;
+							$('.White_box').height(whiteh);
+							$('.Transparent_row').css('margin-top',($(window).height()-whiteh)/2+"px");
+
+						}
+
+						//如果有内容
+						if(box.children('.Post_form_tubox_img').length){
+							$('#Post_form_tj').addClass('Post_form_tj_ok');
+						}else{
+							$('#Post_form_tj').removeClass('Post_form_tj_ok');
+						}
+
+					})
+
+					imgbox.append(img).append(i);
+					box.append(imgbox);
+
+				}
+
+				//修改白框高度
+				var whiteh=$('.White_box')[0].scrollHeight;
+
+				if(whiteh<$(window).height()-40){
+					$('.White_box').height('');
+					whiteh=$('.White_box')[0].scrollHeight;
+					$('.White_box').height(whiteh);
+					$('.Transparent_row').css('margin-top',($(window).height()-whiteh)/2+"px");
+
+				}
+
+
+				//如果有内容
+				if(box.children('.Post_form_tubox_img').length){
+					$('#Post_form_tj').addClass('Post_form_tj_ok');
+				}else{
+					$('#Post_form_tj').removeClass('Post_form_tj_ok');
+				}
+				
+			
 			}
 
 		});
@@ -990,9 +1159,13 @@ function postform(data,arr){
 
 	//如果提交按钮被点击
 	$('#Post_form_tj').click(function(){
+
+		//图片
+		var img=$('.Post_form_tubox').children('.Post_form_tubox_img');
+
 		//如果没写贴子内容 直接返回
 		//如果被点击过 直接返回
-		if($(this).attr('ajax')||!$('#Post_form_text').val())return;
+		if($(this).attr('ajax')||!$('#Post_form_text').val() && !img.length)return;
 
 		//防止被再次点击
 		$(this).attr('ajax',1);
@@ -1007,13 +1180,20 @@ function postform(data,arr){
 			Param:types.attr('param')		//对应id
 		};
 
+		var img2='';
+		img.each(function(){
+			img2+=$(this).attr('fid')+',';
+		})
+
+
 		//发送ajax
 		$.ajax({
 			data:{
 				Action:'pos',
 				Method:'_create_in',
 				Contents:text,
-				Arr:arr
+				Arr:arr,
+				imgs:img2
 			},
 			success:function(data){
 
@@ -1025,6 +1205,15 @@ function postform(data,arr){
 					//弹出提示框
 					Prompt('与服务器通信失败。');
 					return;
+				}
+
+				if(data=='sh'){
+
+					Prompt('等待审核后发布。');
+					//隐藏添加帖子表单
+					t.parents('.Black_bg').click();
+					return;
+
 				}
 
 				//成功时

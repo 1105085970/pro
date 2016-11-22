@@ -473,7 +473,7 @@ function File_upload(arr){
 		arr2.Many=arr.Many;
 
 	//弹出框
-	Popup(arr2,function(data,arr){
+	Popup(arr2,function filelist(data,arr){
 
 		if(data=="remove")return;
 
@@ -486,6 +486,11 @@ function File_upload(arr){
 
 		//要追加内容的box
 		var box=$('#File_upload');
+
+		//清空box
+		box.empty();
+		$('.File_top_center').remove();
+		$('.File_top_right').remove();
 
 		//小屏幕时的top
 		var box_t=$('#File_upload_top');
@@ -538,7 +543,7 @@ function File_upload(arr){
 
 					+'<div class="File_imgs_botton_a">'
 						+'<form id="File_imgs_form" name="File_imgs_file">'
-						+'<input type="file" id="File_imgs_file" name="files[]" multiple>'
+						+'<input type="file" id="File_imgs_file" accept="'+arr.Param.types+'" name="files[]" multiple>'
 						+'<input id="File_imgs_submit" type="submit">'
 						+'</form>'
 					+'</div>'
@@ -565,6 +570,8 @@ function File_upload(arr){
 			formdata.append('Action','hom');
 			//方法名
 			formdata.append('Method','_file_upload');
+			//文件类型
+			formdata.append('types',arr.Param.types);
 			//点击提交按钮
 			$('#File_imgs_submit').click();
 
@@ -581,6 +588,13 @@ function File_upload(arr){
   				success:function(data){
   					//成功时
 
+  					if(!data){
+
+  						Prompt('未知错误。');
+  						return;
+
+  					}
+
   					if(data==3){
 
   						Prompt('请先登录。');
@@ -588,6 +602,28 @@ function File_upload(arr){
 
   					}
 
+  					if(data==2){
+
+  						Prompt('上传出错。');
+  						return;
+
+  					}
+
+  					if(data==1){
+
+  						Prompt('不允许上传的类型。');
+  						return;
+
+  					}
+
+  					//上传成功时
+  					Prompt('上传成功。');
+
+  					//更新缓存
+  					$("#Eject").data('File_upload',data);
+
+  					//调用自己
+  					filelist(data,arr);
 
   				},
   				error:function(data){
@@ -675,3 +711,6 @@ function File_upload(arr){
 	})
 
 }
+
+
+//

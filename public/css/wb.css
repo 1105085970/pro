@@ -125,6 +125,50 @@
     background: rgba(68, 68, 68, 0.23);
 }
 
+/*添加贴子表单中的 图片区 中的图片*/
+.Post_form_tubox_img{
+    position: relative;
+}
+.Post_form_tubox .img_a{
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+.Post_form_tubox2{
+    white-space: nowrap;
+    overflow-x: auto;
+}
+.Post_form_tubox2 .Post_form_tubox_img{
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.Post_form_tubox2 .img_a{
+    height: 200px;
+    width: auto;
+    z-index: 1;
+}
+
+.img_sc{
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    outline: none;
+    overflow: hidden;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    width: 30px;
+    line-height: 24px;
+    z-index: 0;
+    color: #fff;
+    background: #444;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
 /*添加贴子表单中的按钮box*/
 #Post_form_anbox{
 	border-top: 1px solid #f5f5f5;
@@ -229,6 +273,62 @@
     word-wrap: break-word;
     font-size: 12px;
     font-weight: 400;
+}
+
+/*帖子列表大box 中的图片 一张时*/
+.post_box_imgs2 {
+    padding: 0;
+}
+
+.post_box_imgs2 .post_box_imgs_i{
+    width: 100%;
+    height: auto;
+
+}
+
+.post_box_imgs {
+    height:300px;
+    white-space: nowrap;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+.post_box_imgs_h{
+    position: relative;
+    height:100%;
+}
+.post_box_imgs:hover .post_box_imgs_left,.post_box_imgs:hover .post_box_imgs_right{
+    opacity: .6;
+}
+.post_box_imgs .post_box_imgs_i:nth-child(1){
+     margin-left:0;
+}
+.post_box_imgs .post_box_imgs_i{
+    height: 100%;
+    width: auto;
+    display: inline-block;
+    margin-left:2px;
+}
+.post_box_imgs_left{
+    left:0;
+}
+.post_box_imgs_right{
+    right:0;
+}
+.post_box_imgs_left,.post_box_imgs_right{
+    line-height: 300px;
+    opacity: 0;
+    background: #000;
+    color: #fff;
+    font-size: 50px;
+    height: 100%;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    transition: opacity .3s cubic-bezier(0.0,0.0,0.2,1);
+    width: 50px;
+    z-index: 9;
+    cursor: pointer;
 }
 
 /*帖子列表大box 中的底部*/

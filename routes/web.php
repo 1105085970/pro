@@ -68,3 +68,6 @@ Route::get('/{U1?}/{U2?}/{U3?}/{U4?}', 'IndexController@Index');
 //首页ajax路由
 Route::post('/ajax','IndexController@Ajax');
 
+//返回文件路由
+Route::get('/files/{a}/{b}/{c}/{d}/{e}', 'HomController@Files');
+
