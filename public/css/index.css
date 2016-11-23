@@ -113,11 +113,32 @@ a,a:hover,a:active{
 /*顶部子类别*/
 #SubClass{
 	text-align:center;
+	position: relative;
 }
 #SubClass a{
 	height:48px;
 	display:inline-block;
 	color: rgba(255,255,255,0.56);
+}
+
+#SubClass .a_on{
+	color:#fff;
+}
+
+.text-muted #SubClass .a_on{
+	color:#000 !important;
+}
+
+.text-muted #SubClass_bai{
+	background: #4285f4 !important;
+}
+/*顶部子类别 底下白条*/
+#SubClass_bai{
+	background: #fff;
+    bottom: 0;
+    left:0;
+    height: 2px;
+    position: absolute;
 }
 
 /*左侧导航*/

@@ -71,7 +71,7 @@ function index(Action='hom',Param='',Url=''){
 			Topdata=data;	//存数据
 			State++;		//加状态
 			if(State==3)Re(); //如果三个ajax都完成就存储数据
-			Top(data,Action);
+			Top(data,Action,Url);
 			//设置左侧导航被选中的颜色
 			bg(data.Background);
 			background=data.Background;
@@ -143,12 +143,19 @@ function index(Action='hom',Param='',Url=''){
 			Contentsdata=data;	//存数据
 			State++;	//加状态
 			if(State==3)Re(); //如果三个ajax都完成就存储数据
-			$("#Contents")[0].innerHTML='';
-			funa=eval(Action+'Contents');
-			funa(data,Param);
-			$("#Contents").animate({opacity:1,top:"0%"});
-			//滚动条滚动到顶部
-			scrollTo(0,0);
+
+			$("#Contents").animate({opacity:-1,top:"10%"},300,function(){
+
+				//主内容
+				$("#Contents")[0].innerHTML='';
+				funa=eval(Action+'Contents');
+				funa(data,Param);
+				//滚动条滚动到顶部
+				//scrollTo(0,0);
+
+			}).animate({opacity:1,top:"0%"});
+
+			
 		},
 		error:function(){
 			//请求失败时
@@ -184,7 +191,7 @@ function index(Action='hom',Param='',Url=''){
 }
 
 //处理顶部函数
-function Top(data,Action){
+function Top(data,Action,Url){
 	//处理顶部
 	//类别名
 	if(data.CatName){
@@ -208,11 +215,11 @@ function Top(data,Action){
 	}else{
 		//是搜索页
 		//事件
-		var on="index('sea','','/sea');return false;";
+		var on="index('sea',$('#Top_search').val(),'/sea/'+$('#Top_search').val());return false;";
 		//图标
 		var i='<i class="fa fa-search" aria-hidden="true"></i>';
 		//表单
-		var inp='<input type="text" placeholder="Search" autocomplete="off" autofocus value="'+data.Search+'">';
+		var inp='<input id="Top_search" type="text" placeholder="Search" autocomplete="off" autofocus value="'+data.Search+'">';
 		//覆盖
 		$("#Search").html('<form onsubmit="'+on+'">'+i+inp+'</form>');
 		$("#Search").removeClass('hidden-md-down');
@@ -244,8 +251,15 @@ function Top(data,Action){
 			
 			//class类
 			var cla='col-xs-4 col-md-2';
+			var bai='';
+			//如果是当前链接
+			if(href==Url){
+				cla+=' a_on';
+				bai='<div id="SubClass_bai" class="col-xs-12 col-md-12"></div>';
+			}
+
 			//创建节点
-			var a=$('<a onclick="'+on+'" class="'+cla+'" href="'+href+'" >'+n+'</a>');
+			var a=$('<a onclick="'+on+'" class="'+cla+'" href="'+href+'" >'+n+bai+'</a>');
 			//追加节点
 			SubClass.append(a);
 
@@ -299,7 +313,7 @@ function reduction(data){
 	//左侧导航
 	Left(data.Leftdata,data.Action);
 	//顶部
-	Top(data.Topdata,data.Action);
+	Top(data.Topdata,data.Action,data.Url);
 	//设置头部和左侧导航背景色
 	bg(data.Topdata.Background);
 
@@ -484,6 +498,9 @@ function File_upload(arr){
 
 		}
 
+		//
+		arr.fid={};
+
 		//要追加内容的box
 		var box=$('#File_upload');
 
@@ -543,7 +560,7 @@ function File_upload(arr){
 
 					+'<div class="File_imgs_botton_a">'
 						+'<form id="File_imgs_form" name="File_imgs_file">'
-						+'<input type="file" id="File_imgs_file" accept="'+arr.Param.types+'" name="files[]" multiple>'
+						+'<input type="file" id="File_imgs_file" accept="'+((arr.Param&&arr.Param.types)?arr.Param.types:'')+'" name="files[]" multiple>'
 						+'<input id="File_imgs_submit" type="submit">'
 						+'</form>'
 					+'</div>'
@@ -699,6 +716,9 @@ function File_upload(arr){
 			for(k in data.fid){
 				dat.push({id:k,path:data.fid[k]});
 			}
+
+			//如果没有选择
+			if(dat.length==0)return;
 
 			//隐藏框
 			$(this).parents('.Black_bg').click();

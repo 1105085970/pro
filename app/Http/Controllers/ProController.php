@@ -587,4 +587,38 @@ class ProController extends Controller
     }
 
 
+    //ajax 修改头像 背景图
+    public function Post_edit_tu(Request $request){
+
+        //如果没有登录
+        if(!Auth::check())return 3;
+
+        //所有参数
+        $param=$request->all();
+
+        if(!isset($param['type']) || !isset($param['picid']))return;
+
+        //判断要更新头像还是背景图片
+        if($param['type']=='bg'){
+            //背景图
+            $arr=['background'=>$param['picid']];
+
+        }elseif($param['type']=='toux'){
+            //头像
+            $arr=['picid'=>$param['picid']];
+
+        }else{
+            return;
+        }
+
+        //更新
+        $up=DB::table('users')->where('id',Auth::id())->update($arr);
+
+        if($up)return 1;
+        else return 2;
+
+
+    }
+
+
 }

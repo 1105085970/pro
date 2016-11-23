@@ -452,12 +452,35 @@
     color: rgba(0,0,0,0.87);
     font: 500 20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
 }
-
+/*修改资料框 背景图盒子*/
+#gedit_bg_box,#gedit_toux_box{
+    position: relative;
+}
 /*修改资料框 背景图*/
 #gedit_bg{
 
 }
-
+/*修改资料框 背景图上传图标*/
+#gedit_bg_camera,#gedit_toux_camera{
+    background-color: rgba(0,0,0,0.26);
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    bottom: 24px;
+    height: 38px;
+    position: absolute;
+    right: 24px;
+    width: 38px;
+    color: #fff;
+    text-align: center;
+    line-height: 38px;
+    cursor: pointer;
+}
+#gedit_toux_camera{
+    bottom:0;
+    left:10px;
+    right: auto;
+    background-color:rgba(0,0,0,0);
+}
 /*修改资料框 包含头像名字等信息的框*/
 .gedit_zhong{
 	padding: 0 24px;
@@ -555,4 +578,105 @@
 		position:static;
 	}
 	
+}
+
+
+/*找人页 盒子*/
+#people_box{
+    margin:0 auto;
+}
+/*找人页 装人的盒子*/
+.people_p_box{
+    margin-top: 16px;
+}
+.people_box2{
+    margin: 32px 0 0;
+}
+/*找人页 装人的盒子 中的a链接*/
+.people_p_a{
+    
+    cursor: pointer;
+    display: block;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+    background: #fff;
+    padding-top: 1px;
+    padding-bottom: 10px;
+    max-width: 257px;
+    margin: 0 auto;
+}
+/*找人页 装人的盒子 中的头像*/
+.people_p_tou{
+    width: 90px;
+    height: 90px;
+    text-align: center;
+    border-radius: 50%;
+    margin: 24px auto 12px;
+    display: block;
+}
+/*找人页 装人的盒子 中的名字*/
+.people_p_name{
+    color: rgba(0,0,0,0.87);
+    font-size: 16px;
+    line-height: 20px;
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    text-align: center;
+}
+/*找人页 装人的盒子 中的签名*/
+.people_p_qian{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+    color: rgba(0,0,0,0.54);
+    font-size: 14px;
+    vertical-align: middle;
+    text-align: center;
+    height:21px;
+}
+
+/*找人页 装人的盒子 中的关注*/
+.people_p_guanz{
+    color: #4285f4;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 4em;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    height:31px;
+    line-height: 31px;
+}
+
+/*没有关注者*/
+.no_haveyou{
+    text-align: center;
+    margin: 48px 24px;
+}
+
+/*弹出框选择圈子*/
+#circles_box_top{
+    padding-left: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: 500;
+    outline: none;
+    height:60px;
+    line-height: 60px;
+}
+/*弹出框选择圈子 的圈子列表*/
+.circles_box_circle{
+    height:50px;
+    line-height: 50px;
+    padding-left: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
 }

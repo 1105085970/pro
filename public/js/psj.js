@@ -513,6 +513,7 @@ function proContents(data,param){
 		var t=$(this);
 
 		if(state==1){
+			Prompt('已经取消关注。');
 			//关注
 			$(this).html('取消关注');
 			//添加背景变透明的类
@@ -521,6 +522,7 @@ function proContents(data,param){
 			$(this).attr('state',2);
 
 		}else if(state==2){
+			Prompt('已关注。');
 			//取消关注
 			$(this).html('关注');
 			//移除背景变透明的类
@@ -546,6 +548,10 @@ function proContents(data,param){
 					t.removeClass('pro_guanz');
 					//把状态改成 1
 					t.attr('state',1);
+					//清除缓存
+					Clear_cache();
+					Clear_cache('/peo');
+					Clear_cache('/peo/circles');
 					return;
 				}else if(data==2){
 					//关注
@@ -554,6 +560,10 @@ function proContents(data,param){
 					t.addClass('pro_guanz');
 					//把状态改成 2
 					t.attr('state',2);
+					//清除缓存
+					Clear_cache();
+					Clear_cache('/peo');
+					Clear_cache('/peo/circles');
 					return;
 				}
 
@@ -618,10 +628,13 @@ function proContents(data,param){
 
 			//列一的内容
 			var col1d='<div class="row">'
-				+'<div class="col-sm-12">'
+				+'<div id="gedit_bg_box" class="col-sm-12">'
 
 					//背景图
 					+'<img id="gedit_bg" class="img-fluid" src="'+data.bg+'">'
+
+					//相机图标
+					+'<i id="gedit_bg_camera" param="bg" class="fa fa-camera" aria-hidden="true"></i>'
 
 				+'</div>'
 				+'</div>'
@@ -633,7 +646,13 @@ function proContents(data,param){
 					+'<div class="gedit_zhong">'
 
 						//头像
-						+'<div><img id="gedit_toux" src="'+data.toux+'"></div>'
+						+'<div id="gedit_toux_box">'
+							+'<img id="gedit_toux" src="'+data.toux+'">'
+
+							//相机图标
+							+'<i id="gedit_toux_camera" param="toux" class="fa fa-camera" aria-hidden="true"></i>'
+
+						+'</div>'
 
 						//用户名
 						+'<div id="gedit_username">'+((data.nickname)?data.nickname:data.username)+'</div>'
@@ -726,6 +745,78 @@ function proContents(data,param){
 			row.append(col1).append(col2);
 			//追加
 			box.append(top).append(row).append(bottom);
+
+			//如果背景图或头像上传按钮被点击
+			$('#gedit_bg_camera,#gedit_toux_camera').click(function(){
+
+				var t=$(this);
+				var bg=$('#gedit_'+$(this).attr('param'));
+
+				//弹出上传框
+				File_upload({
+
+					Param:{types:'image/jpeg,image/png,image/gif'},
+
+					fun:function(data,arr){
+
+						//替换背景
+						bg.attr('src',data[0].path);
+
+						//准备参数
+						var arr2={
+							Action:'pro',
+							Method:'_edit_tu',
+							picid:data[0].id,
+							type:t.attr('param')
+						};
+
+						//发送ajax
+						$.ajax({
+							data:arr2,
+							success:function(data){
+
+								if(data==3){
+
+									Prompt('请先登录。');
+									return;
+								}
+
+								if(data==1){
+
+									Prompt('修改成功。');
+
+									//清除缓存
+									Clear_cache();
+
+									//清除弹出框缓存
+									$("#Eject").removeData('pro_xiug_edit');
+
+									//刷新
+									index('pro','','/pro');
+
+									return;
+
+								}
+
+								if(data==2){
+
+									//可能没修改
+									return;
+								}
+
+								Prompt('未知错误。')
+
+							},
+							error:function(data){
+
+								Prompt('连接服务器失败。');
+
+							}
+						})
+					}
+				});
+
+			})
 
 
 			//如果提交按钮被点击
@@ -1023,5 +1114,237 @@ function xq(data){
 	}
 
 	return xqlist;
+
+}
+
+
+//人脉页
+function peoContents(data,param){
+
+	//找人页面
+	if(!param)return peo_people(data,param);
+
+	//已关注页面
+	if(param=='circles')return;
+
+	//关注者页面
+	if(param=='haveyou'){
+
+		//如果没有关注的人
+		if(data.length==0){
+			$('#Contents').html('<div class="no_haveyou col-sm-12">目前没有任何关注者。<br>关注你的人将会显示在此处。</div>')
+			return;
+		}
+
+		return peo_people(data,param);
+
+	}
+
+}
+
+//找人页面
+function peo_people(datas,param){
+	//找人页面
+
+	//用户信息
+	var data=datas.users;
+
+	//主内容box
+	var con=$('#Contents');
+
+	//盒子
+	var box=$('<div class="row"></div>');
+	var box2=$('<div id="people_box" class="col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-10" ></div>');
+
+	//标题
+	var title='人员推荐';
+	if(param=='circles')
+		title='';
+
+	var tit='<div class="row">'
+			+'<div class="people_box2 col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-10">'
+				+title
+			+'</div>'
+			+'</div>';
+
+	box2.append(tit).append(box);
+
+	for(k in data){
+
+		//人的box
+		var peo=$('<div class="people_p_box col-xs-6 col-sm-6 col-md-6 col-lg-3 col-xl-3"></div>');
+
+		//人的链接
+		var on="return index('pro','"+data[k].id+"','/pro/"+data[k].id+"')"
+		var a=$('<a onclick="'+on+'" class="people_p_a" href="/pro/'+data[k].id+'"></a>');
+
+		//人的姓名
+		var name=$('<div class="people_p_name">'+data[k].name+'</div>');
+
+		//人的签名
+		var qian=$('<div class="people_p_qian">'+data[k].qian+'</div>');
+
+		//人的头像
+		var tou=$('<img class="people_p_tou" src="'+data[k].toux+'" >');
+
+		//关注按钮
+		if(data[k].guanz==1){
+
+			//关注
+			guanz=$('<div state="1" uid="'+data[k].id+'" uname="'+data[k].name+'" class="people_p_guanz">关注</div>');
+
+		}else if(data[k].guanz==2){
+
+			//取消关注
+			guanz=$('<div state="2" uid="'+data[k].id+'" uname="'+data[k].name+'" class="people_p_guanz" class="pro_guanz">已关注</div>');
+
+		}
+
+		//关注、取消关注按钮被点击
+		guanz.click(function(e){
+
+			e.stopPropagation();	//阻止事件冒泡
+
+			var t=$(this);
+
+			//弹出框
+			Popup({
+				Id:'circles_box',
+				Noajax:1,
+				Width:-1
+			},function(data,arr){
+
+				//如果是删除弹出框
+				if(data=='remove')return;
+
+				//盒子
+				var box=$('#circles_box');
+
+				//顶部
+				var top='<div class="row">'
+					   +'<div id="circles_box_top" class="col-sm-12">'
+					   		+t.attr('uname')
+					   +'</div>'
+					   +'</div>';
+
+				//循环圈子
+				var circles=datas.quans;
+				var quan='';
+				var now2;	//判断用户是否已经在圈子中
+				for(k in circles){
+
+					//圈子内用户ID列表
+					var now='';
+					var ren=circles[k].followid;
+					if(ren){
+						ren=ren.split(',');
+						for(kk in ren){
+							if(ren[kk]==t.attr('uid')){
+								//用户在这个圈子中
+								now='<i class="fa fa-check" aria-hidden="true"></i> ';
+								now2=1;		
+							}
+						}
+					}
+
+
+					quan+='<div class="row">'
+						+'<div cid="'+circles[k].id+'" class="circles_box_circle col-sm-12">'
+							+now
+							+circles[k].name
+						+'</div>'
+					    +'</div>';
+
+				}
+
+				box.append(top).append(quan);
+
+			})
+
+			return false;
+		})
+	
+
+
+		tou.click(function(e){
+
+			e.stopPropagation();	//阻止事件冒泡
+
+			//状态 关注、取消关注
+			var state=$(this).attr('state');
+			var t=$(this);
+
+			if(state==1){
+				//关注
+				$(this).html('已关注');
+				//把状态改成 2
+				$(this).attr('state',2);
+
+			}else if(state==2){
+				//取消关注
+				$(this).html('关注');
+				//把状态改成 1
+				$(this).attr('state',1);
+
+			}
+
+			//发送ajax
+			$.ajax({
+
+				data:{
+					Action:'pro',
+					Method:'_follow_do',
+					uid:$(this).attr('uid')
+				},
+				success:function(data){
+					if(data==1){
+						Prompt('已经取消关注。');
+						//取消关注
+						t.html('关注');
+						//把状态改成 1
+						t.attr('state',1);
+						//清除缓存
+						Clear_cache();
+						Clear_cache('/pro/'+t.attr('uid'));
+						Clear_cache('/peo/circles');
+						return;
+					}else if(data==2){
+						Prompt('已关注。');
+						//关注
+						t.html('已关注');
+						//把状态改成 2
+						t.attr('state',2);
+						//清除缓存
+						Clear_cache();
+						Clear_cache('/peo/'+t.attr('uid'));
+						Clear_cache('/peo/circles');
+						return;
+					}
+
+					//失败时
+					Prompt('与服务器通信失败。');
+
+				},
+				error:function(data){
+					//失败时
+					Prompt('与服务器通信失败。');
+				}
+
+			});
+
+			return false;
+
+		})
+
+
+		a.append(tou).append(name).append(qian).append(guanz);
+
+		//追加
+		peo.append(a);
+		box.append(peo);
+
+	}
+
+	con.append(box2);
 
 }

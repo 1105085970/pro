@@ -146,7 +146,14 @@ class IndexController extends Controller
 
             }
 
-            return array_merge($arr,$C->$Method($request));
+            //控制器返回的数据
+            $arr2=$C->$Method($request);
+
+            //修改标题
+            if(isset($arr2['Title']) && $request->input('Action')!='hom')
+                $arr2['Title'].=' - Google+';
+
+            return array_merge($arr,$arr2);
 
         }
 
