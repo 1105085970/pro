@@ -34,7 +34,7 @@ class SeaController extends Controller
 
     //Post请求主内容
     public function PostContents(Request $request){
-        //
+        
         return ['key'=>'Value','key2'=>'Value2'];
     }
 

@@ -99,6 +99,13 @@ class ComController extends Controller
 
         }elseif(isset($param[1]) && $param[1]=='shenhe'){
             $arr=DB::table('communities')->where('id',$param[0])->first();
+            $clist=DB::table('communities')->get();
+            foreach($clist as $k=>$v){
+                $clistid[]=$clist[$k]->id;
+            }
+            if(!in_array($param[0],$clistid)){
+                return ['key'=>'不存在','clist'=>$clistid];
+            }
             if($arr->examinepost==0){
                 return ['key'=>'不需要审核'];
             }
@@ -120,7 +127,16 @@ class ComController extends Controller
             return ['key'=>$shenhe,'shenhe'=>$shenhe,'cname'=>$arr->title,'cid'=>$param[0]];
 
         }elseif(isset($param[1]) && $param[1]=='laji'){
+
             $arr=DB::table('communities')->where('id',$param[0])->first();
+            //判断是否存在这个id
+            $clist=DB::table('communities')->get();
+            foreach($clist as $k=>$v){
+                $clistid[]=$clist[$k]->id;
+            }
+            if(!in_array($param[0],$clistid)){
+                return ['key'=>'不存在','clist'=>$clistid];
+            }
             if($arr->examinepost==0){
                 return ['key'=>'没有'];
             }
@@ -138,7 +154,7 @@ class ComController extends Controller
             }
             return ['key'=>$shenhe,'shenhe'=>$shenhe,'cname'=>$arr->title,'cid'=>$param[0]];
 
-        }elseif($request->Param=='ndsq'){
+        }elseif($request->Param=='ndsq'){//你的社区！！！！！！！！！！！！！！！！！！！！！！！！！！！
             if(Auth::check()){
                 $chuang='你还没有创建社区';
                 $arr=DB::table('communities')->where('userid',Auth::id())->get();
@@ -176,7 +192,7 @@ class ComController extends Controller
                 return ['key'=>'mydl'];
             }
         }
-        if($request->Param=='jiaru'){
+        if($request->Param=='jiaru'){//已加入！！！！！！！！！！！！！！！！！！！！！！
             if(Auth::check()){
                 //$key=0;
                 
@@ -235,6 +251,13 @@ class ComController extends Controller
         //社区首页返回所需要的值
         if(!empty($request->Param)){
             $id=explode(',',$request->Param);
+           // $clist=DB::table('communities')->get();
+            // foreach($clist as $k=>$v){
+            //     $clistid[]=$clist[$k]->id;
+            // }
+            // if(!in_array($id[0],$clistid)){
+            //     return ['key'=>'不存在','clist'=>$clistid];
+            // }
             $arr=DB::table('communities')->where('id',$id[0])->get();
             $commid=$id[0];
             $txid=DB::table('users')->where('id',$arr[0]->userid)->first();
@@ -572,6 +595,7 @@ class ComController extends Controller
         }
     }
     public function Postcharuposts(Request $request){
+        
         if($request->zou==1){
             $lastid=DB::table('files')->where('userid',Auth::id())->orderBy('addtime','desc')->first();
             $arr['picid']=$lastid->id;
@@ -587,6 +611,7 @@ class ComController extends Controller
         }
         $arr['commid']=$request->commid;
         $list=DB::table('posts')->insert($arr);
+        return ['cg'=>'cg'];
     }
     public function Posttong(Request $request){
         $arr=DB::table('posts')->where('id',$request->id)->update(['state'=>1]);
