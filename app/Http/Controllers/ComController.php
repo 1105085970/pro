@@ -35,7 +35,7 @@ class ComController extends Controller
             $arr=[
             'Background'=>'#0F9D58',
             'CatName'=>'Home',
-                'Nav'=>['加入申请'=>['Url'=>'/com','Action'=>'com/'.$param[0].'/admin','Param'=>[$param[0],'jrsq']],
+                'Nav'=>['加入申请'=>['Url'=>'/com/'.$param[0].'/admin','Action'=>'com','Param'=>[$param[0],'admin']],
                         '可能是垃圾内容'=>['Url'=>'/com/'.$param[0].'/laji','Action'=>'com','Param'=>[$param[0],'laji']],
                         '待审核'=>['Url'=>'/com/'.$param[0].'/shenhe','Action'=>'com','Param'=>[$param[0],'shenhe']]]
             ];
@@ -46,8 +46,8 @@ class ComController extends Controller
                 'CatName'=>'Home',
                     'Nav'=>['为你推荐'=>['Url'=>'/com','Action'=>'com','Param'=>[]],
                             '已加入'=>['Url'=>'/com/jiaru','Action'=>'com','Param'=>['jiaru']],
-                            '你的'=>['Url'=>'/com/ndsq','Action'=>'com','Param'=>['ndsq']]],
-                            'Newpost'=>$Newpost
+                            '你的'=>['Url'=>'/com/ndsq','Action'=>'com','Param'=>['ndsq']]]
+                            //'Newpost'=>$Newpost
                 ];
             
             return $arr;
@@ -66,20 +66,78 @@ class ComController extends Controller
 
         if(isset($param[1]) && $param[1]=='admin'){
             $arr=DB::table('communities')->where('id',$param[0])->first();
-            if($arr->examineuser==null){
+            $clist=DB::table('communities')->get();
+            foreach($clist as $k=>$v){
+                $clistid[]=$clist[$k]->id;
+            }
+            if(!in_array($param[0],$clistid)){
+                return ['key'=>'不存在','clist'=>$clistid];
+            }
+            $ulist=DB::table('users')->get();
+
+            foreach($ulist as $k=>$v){
+                $listid[]=$ulist[$k]->id;
+            }
+            if($arr->sqjr==0){
+                return ['key'=>'不需要'];
+            }else if($arr->examineuser==null){
                 return ['key'=>'没有'];
             }
             $uid=explode(',',$arr->examineuser);
             $count=count($uid)-1;
+            $user=array();
+            $i=0;
             for($n=0;$n<$count;$n++){
-                $user[$n]=DB::table('users')->where('id',$uid[$n])->first();
-                $path=DB::table('files')->where('id',$user[$n]->picid)->first();
-                $user[$n]->path=$path->path;
+                if(in_array($uid[$n],$listid)){
+                    $user[$n]=DB::table('users')->where('id',$uid[$n])->first();
+                    $path=DB::table('files')->where('id',$user[$n]->picid)->first();
+                    $user[$n]->path=$path->path;
+                }
             }
-            return ['key'=>$user,'key2'=>$param[0]];
+            return ['key'=>$user,'key2'=>$param[0],'uid'=>$uid,'ulist'=>$listid];
+            
 
         }elseif(isset($param[1]) && $param[1]=='shenhe'){
-            return ['key'=>"审核"];
+            $arr=DB::table('communities')->where('id',$param[0])->first();
+            if($arr->examinepost==0){
+                return ['key'=>'不需要审核'];
+            }
+            $shenhe=DB::table('posts')->where('state',2)->where('commid',$param[0])->get();
+            // if(!isset($shenhe)){
+            //     return ['key'=>'没有要审核的'];
+            // }
+            foreach($shenhe as $k=>$v){
+                $ftr=DB::table('users')->where('id',$shenhe[$k]->userid)->first();
+                if($shenhe[$k]->picid==null){
+                    $shenhe[$k]->path=1;
+                }else{
+                    $tzpic=DB::table('files')->where('id',$shenhe[$k]->picid)->first();
+                    $shenhe[$k]->path=$tzpic->path;
+                }
+                $shenhe[$k]->username=$ftr->username;
+                
+            }
+            return ['key'=>$shenhe,'shenhe'=>$shenhe,'cname'=>$arr->title,'cid'=>$param[0]];
+
+        }elseif(isset($param[1]) && $param[1]=='laji'){
+            $arr=DB::table('communities')->where('id',$param[0])->first();
+            if($arr->examinepost==0){
+                return ['key'=>'没有'];
+            }
+            $shenhe=DB::table('posts')->where('state',0)->where('commid',$param[0])->get();
+            foreach($shenhe as $k=>$v){
+                $ftr=DB::table('users')->where('id',$shenhe[$k]->userid)->first();
+                if($shenhe[$k]->picid==null){
+                    $shenhe[$k]->path=1;
+                }else{
+                    $tzpic=DB::table('files')->where('id',$shenhe[$k]->picid)->first();
+                    $shenhe[$k]->path=$tzpic->path;
+                }
+                $shenhe[$k]->username=$ftr->username;
+                
+            }
+            return ['key'=>$shenhe,'shenhe'=>$shenhe,'cname'=>$arr->title,'cid'=>$param[0]];
+
         }elseif($request->Param=='ndsq'){
             if(Auth::check()){
                 $chuang='你还没有创建社区';
@@ -260,7 +318,6 @@ class ComController extends Controller
                 }
                 $arr[$k]->img=$list;
             }
-            
         }
         return ['key'=>$arr,'bg'=>$bg->path,'list'=>$list,'key2'=>Auth::id()];
     }
@@ -425,6 +482,25 @@ class ComController extends Controller
         $arr1=DB::table('communities')->where('id',$request->comid)->update($update);
         return ['key'=>$update];
     }
+    public function Postjujue(Request $request){
+        $arr=DB::table('communities')->where('id',$request->comid)->first();
+        $uid=explode(',',$arr->examineuser);
+        $count=count($uid)-1;
+        for($n=0;$n<$count;$n++){
+            if($request->uid==$uid[$n]){
+                unset($uid[$n]);
+            }
+        }
+        $examineuser=implode(',',$uid);
+        
+        //$members=$arr->members.$request->uid.',';
+        //$membernum=$arr->membernum-1;
+        $update['examineuser']=$examineuser;
+        //$update['members']=$members;
+        //$update['membernum']=$membernum;
+        $arr1=DB::table('communities')->where('id',$request->comid)->update($update);
+        return ['key'=>$update];
+    }
     public function Postxg(Request $request){
         $arr=DB::table('communities')->where('id',$request->xgid)->first();
         $pic=DB::table('files')->where('id',$arr->picid)->first();
@@ -473,5 +549,55 @@ class ComController extends Controller
             $arr1=DB::table('communities')->where('id',$request->id)->update($arr);
         return ['cg'=>'cg','arr'=>$arr,'describe'=>$request->describe];
     }
-
+    public function Postfanhui(Request $request){
+        $arr=DB::table('communities')->where('id',$request->comid)->first();
+        $arr1=DB::table('users')->where('id',Auth::id())->first();
+        return ['key'=>$arr,'key1'=>$arr1];
+    }
+    public function Postpimg(Request $request){
+        if(is_uploaded_file($_FILES['upfile']['tmp_name'])){
+            
+            $hou=pathinfo($_FILES['upfile']['name']);
+            $name=time().str_random(6).'.'.$hou['extension'];
+            
+            $path='/images/'.$name;
+            move_uploaded_file($_FILES['upfile']['tmp_name'],'.'.$path);
+            
+            $arr['path']=$path;
+            $arr['userid']=Auth::id();
+            $arr['addtime']=time();
+            $id=DB::table('files')->insertGetId($arr);
+           
+            return ['arr'=>$request->input('picid'),'id'=>$id];
+        }
+    }
+    public function Postcharuposts(Request $request){
+        if($request->zou==1){
+            $lastid=DB::table('files')->where('userid',Auth::id())->orderBy('addtime','desc')->first();
+            $arr['picid']=$lastid->id;
+        }
+        $arr1=DB::table('communities')->where('id',$request->commid)->first();
+        $arr['content']=$request->content;
+        $arr['addtime']=time();
+        $arr['userid']=Auth::id();
+        if($arr1->examinepost==1){
+            $arr['state']=2;
+        }else{
+            $arr['state']=1;
+        }
+        $arr['commid']=$request->commid;
+        $list=DB::table('posts')->insert($arr);
+    }
+    public function Posttong(Request $request){
+        $arr=DB::table('posts')->where('id',$request->id)->update(['state'=>1]);
+        return ['key'=>'cg'];
+    }
+    public function Posthuishou(Request $request){
+        $arr=DB::table('posts')->where('id',$request->id)->update(['state'=>0]);
+        return ['key'=>'cg'];
+    }
+    public function Postsctz(Request $request){
+        $arr=DB::table('posts')->where('id',$request->id)->delete();
+        return ['key'=>'cg'];
+    }
 }

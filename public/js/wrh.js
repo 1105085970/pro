@@ -8,7 +8,6 @@ function colContents(data,param){
 			location.href='/log';
 			return;
 		}
-		console.log(data);
 		var div=createScj();
 		var smalldiv='';
 		
@@ -47,7 +46,6 @@ function colContents(data,param){
 			var mpic="<div style='margin:0px auto;'><img src='/images/meiyou.jpg' /></div>";
 			var wenzi1="<div style='width:100%;line-height:30px;font-size:20px;text-align:center;color:#7A7A7A;'>你关注的收藏集会在此处显示。</div>";
 			var wenzi2="<div style='width:100%;line-height:30px;font-size:20px;text-align:center;color:#7A7A7A;'>还没有头绪吗？请查看“精选”标签。</div>";
-			console.log(data);
 			div.html(mei+mpic+wenzi1+wenzi2);
 			div.appendTo("#Contents");
 			return;
@@ -57,7 +55,6 @@ function colContents(data,param){
 		var smalldiv='';
 	
 		var leftdiv="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
-		console.log(data);
 		for(k in data['key']){
 			
 			var title="<div class='title'>"+data['key'][k].title+"</div>";
@@ -291,7 +288,6 @@ function xiugaiImg(){
         },
         success: function(data){
         	
-        	console.log(data);
         },
         resetForm: false,
         clearForm: false
@@ -398,7 +394,6 @@ function scjMain(data){
 		var circle="<div class='circle' style='margin-left:-20px;'><img onclick='geren("+data['key'][k].uid+")' src='"+data['key'][k].tx+"' class='img1'/></div>";
 		smalldiv+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img+"<div class='col-md-12 down' style='background:"+data['key'][k].background+";'>"+circle+title+biaoyu+guanzhu+"</div></div></div>";
 	}
-	console.log(data);
 	var maindiv="<div class='row col-md-11 maindiv'>"+smalldiv+"</div>";//主div
 	
 	scj=leftdiv+maindiv;
@@ -523,9 +518,7 @@ function createjh(){
 
 	var a=$('.iname').val();
 	var b=$('.igxxy').val();
-	if(a==null||b==null){
-		return false;
-	}
+
 	var c=$('.igxxy').val().length;
 	$(".fabiao").remove();
 	var div=bd();
@@ -793,25 +786,72 @@ function pizhun(comid,uid){
 	$.ajax({
 		data:{Action:'com',Method:'pizhun',comid:comid,uid:uid},
 		success:function(data){
-			alert('123');
-			console.log(data['key']);
+			//alert('123');
+		}
+	})
+}
+function jujue(comid,uid){
+	//alert(comid);
+	$.ajax({
+		data:{Action:'com',Method:'jujue',comid:comid,uid:uid},
+		success:function(data){
+			//alert('123');
 		}
 	})
 }
 //拒绝方法
+function meiyou1(){
+	var div=$("<div class='meiyou row col-md-11'></div>");
+	return div;
+}
 function comContents(data2,Param){
 	Clear_cache('/com');
-	console.log(data2);
 	var param=Param.split(',');
 	if(param[1]=='admin'){
 		var div=shenqing();
 		var tleft="<div class='col-md-2 hidden-sm-down leftdiv'></div>";
 		var zhuyao='';
-		if(data2['key']=='没有'){
-			zhuyao+="<div class='jujue col-lg-8 col-md-9 col-sm-10'>没有新的加入申请</div>";
+		if(data2['key']=='不存在'){
+			var div1=meiyou1();
+			var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
+			var mm2="<div class='mm2'>该社群不存在。</div>";
+			var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+			div1.html(yc+zhu);
+			div1.appendTo("#Contents");
+
+		}else if(data2['key']=='不需要'){
+
+			var div1=meiyou1();
+			var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
+			var mm2="<div class='mm2'>该社群不需要申请加入。</div>";
+			var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+			div1.html(yc+zhu);
+			div1.appendTo("#Contents");
+			
+		}else if(data2['key']=='没有'){
+			//zhuyao+="<div class='jujue col-lg-8 col-md-9 col-sm-10'>没有新的加入申请</div>";
+			var div2=meiyou1();
+			var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
+			//var mm1="<div class='mm1'>信息必须通过审核和批准，才能在社群中显示。</div>";
+			var mm2="<div class='mm2'>没有新的加入申请。</div>";
+			var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+			div2.html(yc+zhu);
+			div2.appendTo("#Contents");
 		}else{
+			
+			if(data2['key'].length==0){
+				var div3=meiyou1();
+				var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
+				//var mm1="<div class='mm1'>信息必须通过审核和批准，才能在社群中显示。</div>";
+				var mm2="<div class='mm2'>没有新的加入申请。</div>";
+				var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+				div3.html(yc+zhu);
+				console.log(data2);
+				div3.appendTo("#Contents");
+			}
+			
 			for(k in data2['key']){
-				zhuyao+="<div class='jujue col-lg-8 col-md-9 col-sm-10'><div class='sqtx'><img src='"+data2['key'][k].path+"'></div><div class='wenzi'>"+data2['key'][k].username+"</div><div class='tongyi'  onclick='pizhun("+data2['key2']+","+data2['key'][k].id+")'>批准</div><div class='butongyi' onclick='jujue("+data2['key'][k].id+")'>拒绝</div></div>";
+				zhuyao+="<div class='jujue col-lg-8 col-md-9 col-sm-10'><div class='sqtx'><img src='"+data2['key'][k].path+"'></div><div class='wenzi'>"+data2['key'][k].username+"</div><div class='tongyi'  onclick='pizhun("+data2['key2']+","+data2['key'][k].id+")'>批准</div><div class='butongyi' onclick='jujue("+data2['key2']+","+data2['key'][k].id+")'>拒绝</div></div>";
 			}
 		}
 		var liebiao="<div class='col-md-10'>"+zhuyao+"</div>";
@@ -821,22 +861,93 @@ function comContents(data2,Param){
 		return;
 	}
 	if(param[1]=='shenhe'){
-		alert(data2['key']);
-		// var div=shenqing();
-		// var tleft="<div class='col-md-2 hidden-sm-down leftdiv'></div>";
-		// var zhuyao='';
-		// if(data2['key']=='没有'){
-		// 	zhuyao+="<div class='jujue col-lg-8 col-md-9 col-sm-10'>没有新的加入申请</div>";
-		// }else{
-		// 	for(k in data2['key']){
-		// 		zhuyao+="<div class='jujue col-lg-8 col-md-9 col-sm-10'><div class='sqtx'><img src='"+data2['key'][k].path+"'></div><div class='wenzi'>"+data2['key'][k].username+"</div><div class='tongyi'  onclick='pizhun("+data2['key2']+","+data2['key'][k].id+")'>批准</div><div class='butongyi' onclick='jujue("+data2['key'][k].id+")'>拒绝</div></div>";
-		// 	}
-		// }
-		// var liebiao="<div class='col-md-10'>"+zhuyao+"</div>";
-		// var main=tleft+liebiao;
-		// div.html(main);
-		// div.appendTo("#Contents");
-		return;
+		if(data2['key']=='不需要审核'){
+			var div=meiyou1();
+			var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
+			var mm1="<div class='mm1'>信息必须通过审核和批准，才能在社群中显示。</div>";
+			var mm2="<div class='mm2'>你可以在“创建社群”社群时添加此功能。</div>";
+			var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm1+mm2+"</div>";
+			div.html(yc+zhu);
+			div.appendTo("#Contents");
+			return;
+		}else{
+			var div=meiyou1();
+			var left1='';
+			if(data2['key'].length==0){
+				var div=meiyou1();
+				var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
+				//var mm1="<div class='mm1'>信息必须通过审核和批准，才能在社群中显示。</div>";
+				var mm2="<div class='mm2'>没有需要审核的帖子</div>";
+				var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+				div.html(yc+zhu);
+				div.appendTo("#Contents");
+				return;
+			}
+			var yc="<div class='col-md-1 hidden-sm-down leftdiv'></div>";
+			for(k in data2['key']){
+				var sssq="<div class='sssq'>所属社区："+data2['cname']+"</div>";
+				var content="<div class='sssq'>内容："+data2['key'][k].content+"</div>";
+				var ftr="<div class='sssq'>发帖人："+data2['key'][k].username+"</div>";
+				if(data2['key'][k].path==1){
+					var tpic='';
+				}else{
+					var tpic="<div class='tpic'><img src='"+data2['key'][k].path+"'></div>";
+				}
+				var tyfb="<div class='tyfb' onclick='tong("+data2['cid']+","+data2['key'][k].id+")'>同意发布</div>";
+				var frhsz="<div class='frhsz' onclick='huishou("+data2['cid']+","+data2['key'][k].id+")'>放入回收站</div>";
+				var bao="<div style='background:#FFF;' class='bao'>"+sssq+ftr+content+tpic+tyfb+frhsz+"</div>";
+				left1+="<div class='col-lg-6 col-md-6 col-sm-8 col-xs-8 left1'>"+bao+"</div>";
+			}
+			var zhu="<div class='col-md-11' style='margin-top:20px;'>"+left1+"</div>";
+			div.html(yc+zhu);
+			div.appendTo("#Contents");
+			return;
+		}
+	}
+	if(param[1]=='laji'){
+		if(data2['key']=='没有'){
+			var div=meiyou1();
+			var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
+			//var mm1="<div class='mm1'>信息必须通过审核和批准，才能在社群中显示。</div>";
+			var mm2="<div class='mm2'>没有被标记为垃圾内容的信息</div>";
+			var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+			div.html(yc+zhu);
+			div.appendTo("#Contents");
+			return;
+		}else{
+			console.log(data2);
+			var div=meiyou1();
+			if(data2['key'].length==0){
+				var div=meiyou1();
+				var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
+				//var mm1="<div class='mm1'>信息必须通过审核和批准，才能在社群中显示。</div>";
+				var mm2="<div class='mm2'>没有包含垃圾内容的帖子 </div>";
+				var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+				div.html(yc+zhu);
+				div.appendTo("#Contents");
+				return;
+			}
+			var left1='';
+			var yc="<div class='col-md-1 hidden-sm-down leftdiv'></div>";
+			for(k in data2['key']){
+				var sssq="<div class='sssq'>所属社区："+data2['cname']+"</div>";
+				var content="<div class='sssq'>内容："+data2['key'][k].content+"</div>";
+				var ftr="<div class='sssq'>发帖人："+data2['key'][k].username+"</div>";
+				if(data2['key'][k].path==1){
+					var tpic='';
+				}else{
+					var tpic="<div class='tpic'><img src='"+data2['key'][k].path+"'></div>";
+				}
+				var tyfb="<div class='tyfb' onclick='tong1("+data2['cid']+","+data2['key'][k].id+")'>同意发布</div>";
+				var frhsz="<div class='frhsz' onclick='sctz("+data2['cid']+","+data2['key'][k].id+")'>删除帖子</div>";
+				var bao="<div style='background:#FFF;' class='bao'>"+sssq+ftr+content+tpic+tyfb+frhsz+"</div>";
+				left1+="<div class='col-lg-6 col-md-6 col-sm-8 col-xs-8 left1'>"+bao+"</div>";
+			}
+			var zhu="<div class='col-md-11' style='margin-top:20px;'>"+left1+"</div>";
+			div.html(yc+zhu);
+			div.appendTo("#Contents");
+			return;
+		}
 	}
 	if(Param=='ndsq'){
 		Clear_cache('/com/ndsq');
@@ -845,7 +956,6 @@ function comContents(data2,Param){
 			location.href='/log';
 			return;
 		}
-		console.log(data2);
 		var div=createSq();
 		var smalldiv='';
 		
@@ -891,7 +1001,6 @@ function comContents(data2,Param){
 			var mpic="<div style='margin:0px auto;'><img src='/images/meiyou.jpg' /></div>";
 			var wenzi1="<div style='width:100%;line-height:30px;font-size:20px;text-align:center;color:#7A7A7A;'>你加入的社区会在此处显示。</div>";
 			var wenzi2="<div style='width:100%;line-height:30px;font-size:20px;text-align:center;color:#7A7A7A;'>还没有头绪吗？请查看“为您推荐”标签。</div>";
-			console.log(data2);
 			div.html(mei+mpic+wenzi1+wenzi2);
 			div.appendTo("#Contents");
 			return;
@@ -901,7 +1010,6 @@ function comContents(data2,Param){
 		var smalldiv='';
 	
 		var leftdiv="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
-		console.log(data2);
 		for(k in data2['key']){
 			
 			var title="<div class='title'>"+data2['key'][k].title+"</div>";
@@ -945,7 +1053,7 @@ function comContents(data2,Param){
 		var xuanyan="<div class='xuanyan'  style='color:black;margin-top:0px;'>个性宣言："+((data2['key'][0]['slogan'])?data2['key'][0]['slogan']:'这个人很懒，没有写任何东西')+"</div>";
 		//var guan="<span class='guan'>"+data2['key'][0].cun+"</span>";
 		var chengyuan="<div style='width:100%;height:20px;font-size:14px;line-height:20px;margin-top:-55px;margin-bottom:20px;margin-left:21px;color:black;' >社群成员："+data2['key'][0].membernum+"个成员</div>";
-		var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='guanli("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")' style='background:#c7c5c5'>管理</span>";
+		var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='guanli("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")' style='background:#0F9D58'>管理</span>";
 		if(data2['key'][0].describe==null){
 			var sqjj="<div></div>";
 		}else{
@@ -953,14 +1061,52 @@ function comContents(data2,Param){
 		}
 		
 		var tleft="<div class='col-lg-3 col-sm-7 col-xs-7 tleft'>"+duo+"<img src='"+data2['bg']+"' class='timg'><div style='width:100%;height:100%;background:#FFF;'>"+tou+zw+user+title2+xuanyan+chengyuan+guan+sqjj+"</div></div>";//跳转至后的左侧div
-		var main8="<div class='row' id='sqcontent' style='margin-top:20px;width:100%'></div>";
-		div.html(tleft+main8);
+		var mainz="<div class='zhu' onclick='addPost("+data2['key'][0]['id']+")'><div class='stx'><img src='/images/mrtx.jpg' style='margin-top:15px;margin-left:20px;display:block;float:left;'></div><div style='margin-top:15px;margin-left:20px;float:left;line-height:40px;color:#BDBDBD'>分享内容...</div><div class='zhao'><img style='margin-top:15px;margin-right:20px;display:block;float:right;' src='/images/zhaoxiang.jpg'></div></div>";
+		var main8="<div class='row' id='sqcontent' style='margin-top:0px;width:100%'></div>";
+		
+		div.html(tleft+mainz+main8);
 		div.appendTo('#Contents');
 		homContents(data2.posts);
-		console.log(data2);
+		
 		return;
 	}
 	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sqMain(data2)+'</div>');//此处调用了sqMain(data2)方法
+}
+function tong(q,w){
+	$.ajax({
+		data:{Action:'com',Method:'tong',id:w},
+		success:function(data){
+			Clear_cache('/com/'+q+'/shenhe');
+			index('com',q+',shenhe','/com/'+q+'/shenhe');
+		}
+	})
+}
+function tong1(q,w){
+	$.ajax({
+		data:{Action:'com',Method:'tong',id:w},
+		success:function(data){
+			Clear_cache('/com/'+q+'/laji');
+			index('com',q+',laji','/com/'+q+'/laji');
+		}
+	})
+}
+function sctz(q,w){
+	$.ajax({
+		data:{Action:'com',Method:'sctz',id:w},
+		success:function(data){
+			Clear_cache('/com/'+q+'/laji');
+			index('com',q+',laji','/com/'+q+'/laji');
+		}
+	})
+}
+function huishou(q,w){
+	$.ajax({
+		data:{Action:'com',Method:'huishou',id:w},
+		success:function(data){
+			Clear_cache('/com/'+q+'/shenhe');
+			index('com',q+',shenhe','/com/'+q+'/shenhe');
+		}
+	})
 }
 function guanli(id){
 	Clear_cache('/com/'+id+'/admin');
@@ -1028,6 +1174,91 @@ function del2(id){
 	})
 }
 
+function addPost(scid){
+	var name='';
+	var comname='';
+	$.ajax({
+		data:{Action:'com',Method:'fanhui',comid:scid},
+		success:function(data){
+			var div=bd();
+			var top1="<div class='top1'><img src='/images/mrtx.jpg' style='margin-top:20px;margin-left:20px;display:block;float:left;'><div class='uname'>"+data['key1'].username+"</div><div class='fa fa-caret-right sanjiao'></div><div class='cname'>"+data['key'].title+"</div></div>";
+			var center1="<div class='centerz'><textarea onfocus='qx(\"center1\")' onblur='cx()' class='center1'>分享内容...</textarea></div>";
+			//var bottom1="<div class='bottom1'><img style='margin-top:0px;margin-left:20px;float:left;' src='/images/xiang.jpg'></div>";
+			var tupian8="<div class='tupian2'><img id='imgPre'></div>";
+			var bottom1="<label><div class='fa fa-camera bottom1'>"+
+				"<form enctype='multipart/form-data' id='sky_upform' name='sky_upform' action='' method='post'>"+
+					
+					"<input type='file' name='upfile' value='' id='imgUp1' onchange=\"preImg8(this.id,'imgPre');\" class='scpic'>"+
+				"</form>"+
+			  "</div></label>";
+			var qxan="<div class='qxan' onclick='haha()'>取消</div>";
+			var fabu="<div class='fabu' onclick='fb("+data['key'].id+")'>发布</div>";
+			var body1="<div class='body1'>"+top1+center1+tupian8+bottom1+qxan+fabu+"</div>";
+			div.html("<div class='baocun'>"+body1+"</div>");
+			div.appendTo('body');
+		}
+	})
+}
+function preImg8(sourceId, targetId) {
+    var url = getFileUrl(sourceId);
+    var imgPre = document.getElementById(targetId);
+    imgPre.src = url;
+    $('.body1').css('margin-top','30px');
+    $('.body1').css('height','570px');
+    $('.tupian2').css('display','block');
+}
+//var fff=0;
+function postImg(){
+    var txt;
+ 	$("#sky_upform").ajaxSubmit({
+        type:'post',
+        url: "/com/pimg",    
+        beforeSubmit: function(){
+            $("#sky_txt").html("图片上传中...");
+        },
+        success: function(data){
+        	// fff=data['id'];
+        },
+        resetForm: false,
+        clearForm: false
+	});
+}
+function fb(id){
+	
+	var zou=0;
+	if($('.body1').height()==570){
+		postImg();
+		zou=1;
+	}
+	$.ajax({
+		data:{Action:'com',Method:'charuposts',content:$('.center1').val(),zou:zou,commid:id},
+		success:function(data){
+			if(data['cg']=='cg'){
+				haha();//移除修改的框
+				Clear_cache('/com/ndsq');
+				Clear_cache('/com/'+xgid);
+				index('com','ndsq','/com/ndsq');
+			}
+			
+		},
+		error:function(data){
+			var cuo=data.responseJSON;
+			
+		}
+	});
+}
+function qx(cs){
+	//document.title=123123;
+	if($('.'+cs).val()=='分享内容...'){
+		document.title=120987;
+		$('.center1').val('');
+	}
+}
+function cx(){
+	if($('.center1').val()==''){
+		$('.center1').val('分享内容...');
+	}
+}
 //修改社群！！！！！！！！！！！！！！！！！！
 //修改社群！！！！！！！！！！！！！！！！！！
 //修改社群！！！！！！！！！！！！！！！！！！
@@ -1123,7 +1354,6 @@ function commImg(){
             $("#sky_txt").html("图片上传中...");
         },
         success: function(data){
-        	console.log(data);
         },
         resetForm: false,
         clearForm: false
@@ -1146,7 +1376,6 @@ function xiugaicomm(xgid){
 				Clear_cache('/com/ndsq');
 				Clear_cache('/com/'+xgid);
 				index('com','ndsq','/com/ndsq');
-				console.log(data);
 			}
 			
 		},
@@ -1253,7 +1482,6 @@ function click2(w){
 				index('com','jiaru','/com/jiaru');
 				
 			}
-			console.log(data);
 		},
 		error:function(data){},
 	})

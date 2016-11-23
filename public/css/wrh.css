@@ -526,3 +526,108 @@ word-break:break-all; overflow: auto;margin-top:20px;margin-right:3px;
 .zhengwen{
 	 text-indent:34px;
 }
+.zhu{
+	width:480px;height:70px;background: #FFF;margin-top:50px;margin-left:0px;border:1px solid #E1E1E1;border-radius:3px;
+}
+.zhu:hover{
+	cursor:pointer;
+}
+.body1{
+	width:430px;min-height:370px;background:#FFF;margin-top:150px;border-radius:3px;position:relative;
+}
+.top1{
+	width:430px;height:60px;
+}
+.uname{
+	margin-left:8px;margin-top:20px;line-height:40px;float: left;
+}
+.sanjiao{
+	margin-top:35px;margin-left:4px;float: left;font-size:12px;
+}
+.cname{
+	margin-left:5px;margin-top:20px;line-height:40px;float: left;color:#5792F5;
+}
+.centerz{
+	width:390px;margin-left:20px;margin-top:20px;border:0px;
+}
+.center1{
+	outline: none;resize: none;width:360px;height:200px;border: 0px;
+}
+.fabu,.qxan{
+	width:60px;height:24px;line-height:24px;background:#DEDEDE;position:absolute;bottom: 15px;text-align:center;border-radius:3px;
+}
+.fabu{
+	right: 50px;
+}
+.qxan{
+	right:150px;
+}
+.fabu:hover{
+	cursor:pointer;
+}
+
+.qxan{
+	cursor:pointer;
+}
+.bottom1{
+    padding-top: 8px;
+    padding-left: 10px;
+    color: #e2dede;
+	font-size:24px;
+	width: 50px;
+    height:50px;
+    position: absolute;
+    left: 20px;
+    border-radius:40px;
+}
+.bottom1:hover{
+	cursor:pointer;
+}
+.bottom1 input{
+	width:0px;outline:none;
+}
+.tupian2{
+	width:360px;height:220px;display:none;
+}
+.tupian2 img{
+	max-height:220px;max-width:360px;
+}
+.meiyou{
+
+}
+.mm1,.mm2{
+	text-align:center;line-height:40px;font-size:20px;
+}
+.left1{
+	float:left;
+}
+.tic{
+	width:100%;
+}
+.tpic img{
+	width:100%;max-width:423px;max-height:300px;
+}
+.sssq{
+	padding-left:15px;padding-top:10px;
+}
+.tpic{
+	margin-top:10px;
+}
+.tyfb,.frhsz{
+	width:80px;height:30px;line-height:30px;text-align: center;background:#E3E3E3;position:absolute;border-radius:3px;bottom:10px;
+}
+.tyfb{
+	right:170px;
+}
+.frhsz{
+	right:30px;width:100px;
+}
+.bao{
+	min-height:470px;border-radius:5px;margin-top:30px;
+}
+.tyfb:hover{
+	cursor:pointer;background: #8B8B8B;
+}
+.frhsz:hover{
+	cursor:pointer;background: #8B8B8B;
+}
