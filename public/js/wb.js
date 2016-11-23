@@ -822,10 +822,6 @@ function forcomm(com){
 	return comm;
 }
 
-//搜索页
-function seaContents(data,param){
-	$("#Contents").html(data);
-}
 
 //添加帖子表单
 function postform(data,arr){
