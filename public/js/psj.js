@@ -1125,7 +1125,15 @@ function peoContents(data,param){
 	if(!param)return peo_people(data,param);
 
 	//已关注页面
-	if(param=='circles')return;
+	if(param=='circles'){
+
+		//圈子
+		peo_circles(data,param);
+
+		peo_people(data,param);
+
+		return;
+	}
 
 	//关注者页面
 	if(param=='haveyou'){
@@ -1159,13 +1167,18 @@ function peo_people(datas,param){
 	//标题
 	var title='人员推荐';
 	if(param=='circles')
-		title='';
+		title='已关注 '+datas.users.length;
 
-	var tit='<div class="row">'
+	if(title){
+		var tit='<div class="row">'
 			+'<div class="people_box2 col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-10">'
 				+title
 			+'</div>'
 			+'</div>';
+	}else{
+		var tit='';
+	}
+	
 
 	box2.append(tit).append(box);
 
@@ -1205,7 +1218,64 @@ function peo_people(datas,param){
 
 			e.stopPropagation();	//阻止事件冒泡
 
+			//状态 关注、取消关注
+			var state=$(this).attr('state');
+
 			var t=$(this);
+
+			if(state==1){
+				//关注
+				$(this).html('已关注');
+				//把状态改成 2
+				$(this).attr('state',2);
+
+				//发送ajax
+				$.ajax({
+
+					data:{
+						Action:'pro',
+						Method:'_follow_do',
+						uid:$(this).attr('uid')
+					},
+					success:function(data){
+						if(data==1){
+							Prompt('已经取消关注。');
+							//取消关注
+							t.html('关注');
+							//把状态改成 1
+							t.attr('state',1);
+							//清除缓存
+							Clear_cache();
+							Clear_cache('/pro/'+t.attr('uid'));
+							Clear_cache('/peo/circles');
+							return;
+						}else if(data==2){
+							Prompt('已关注。');
+							//关注
+							t.html('已关注');
+							//把状态改成 2
+							t.attr('state',2);
+							//清除缓存
+							Clear_cache();
+							Clear_cache('/peo/'+t.attr('uid'));
+							Clear_cache('/peo/circles');
+							return;
+						}
+
+						//失败时
+						Prompt('与服务器通信失败。');
+
+					},
+					error:function(data){
+						//失败时
+						Prompt('与服务器通信失败。');
+					}
+
+				});
+
+				return false;
+
+			}
 
 			//弹出框
 			Popup({
@@ -1217,47 +1287,116 @@ function peo_people(datas,param){
 				//如果是删除弹出框
 				if(data=='remove')return;
 
-				//盒子
-				var box=$('#circles_box');
+				//创建div
+				circles_bo(datas,t);
 
-				//顶部
-				var top='<div class="row">'
-					   +'<div id="circles_box_top" class="col-sm-12">'
-					   		+t.attr('uname')
-					   +'</div>'
-					   +'</div>';
+				var tt=t;
 
-				//循环圈子
-				var circles=datas.quans;
-				var quan='';
-				var now2;	//判断用户是否已经在圈子中
-				for(k in circles){
+				//不再关注被点击
+				$('.circles_box_circle_no').click(function(){
 
-					//圈子内用户ID列表
-					var now='';
-					var ren=circles[k].followid;
-					if(ren){
-						ren=ren.split(',');
-						for(kk in ren){
-							if(ren[kk]==t.attr('uid')){
-								//用户在这个圈子中
-								now='<i class="fa fa-check" aria-hidden="true"></i> ';
-								now2=1;		
+					var t=$(this);
+
+					//隐藏弹出框
+					t.parents('.Black_bg').click();
+
+					//发送ajax
+					$.ajax({
+
+						data:{
+							Action:'pro',
+							Method:'_follow_do',
+							uid:$(this).attr('uid')
+						},
+						success:function(data){
+							if(data==1){
+								Prompt('已经取消关注。');
+
+								//清除缓存
+								Clear_cache();
+								Clear_cache('/pro/'+t.attr('uid'));
+								Clear_cache('/peo/circles');
+
+								tt.parents('.people_p_box').remove();
+
+								return;
+
 							}
+
+							//失败时
+							Prompt('与服务器通信失败。');
+
+						},
+						error:function(data){
+							//失败时
+							Prompt('与服务器通信失败。');
 						}
+
+					});
+
+				})
+
+				//如果圈子被点击
+				$('.circles_box_circle').click(function(){
+
+					var t=$(this);
+
+					if(t.hasClass("circles_box_circle_now"))return;
+
+					//圈子id
+					var cid=t.attr('cid');
+
+					//用户id
+					var uid=t.attr('uid');
+
+					//以前的圈子id
+					var old_cid=t.parents('#circles_box').find('.circles_box_circle_now').attr('cid');
+
+					//隐藏弹出框
+					t.parents('.Black_bg').click();
+
+					var arr={
+						Action:'peo',
+						Method:'_circle_move',
+						cid:cid,	//圈子id
+						uid:uid,	//用户id
+						ocid:old_cid	//以前的圈子id
 					}
 
+					//发送ajax
+					$.ajax({
+						data:arr,
+						success:function(data){
 
-					quan+='<div class="row">'
-						+'<div cid="'+circles[k].id+'" class="circles_box_circle col-sm-12">'
-							+now
-							+circles[k].name
-						+'</div>'
-					    +'</div>';
+							if(!data){
+								Prompt('与服务器通信失败。');
+								return;
+							}
 
-				}
+							//清除缓存
+							Clear_cache();
+							Clear_cache('/pro/'+t.attr('uid'));
+							Clear_cache('/peo/circles');
 
-				box.append(top).append(quan);
+							if(location.pathname=='/peo/circles'){
+								
+								//刷新
+								index('peo','circles','/peo/circles');
+
+							}else{
+								datas.quans=data;
+							}
+							
+
+							Prompt('修改成功。');
+
+						},
+						error:function(data){
+							Prompt('与服务器通信失败。');
+						}
+					})
+
+				})
 
 			})
 
@@ -1345,6 +1484,282 @@ function peo_people(datas,param){
 
 	}
 
-	con.append(box2);
+	con.prepend(box2);
+
+}
+
+
+//圈子信息
+function peo_circles(data,param){
+
+	//主内容区
+	var con=$("#Contents");
+
+	var str='<div class="peo_circles_box_t col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-10">'
+		+'<div class="row">'
+			+'你的圈子'
+		+'</div>'
+		+'</div>';
+
+	//循环圈子列表
+	var quans=data.quans;
+	var quan='';
+	for(k in quans){
+
+		var foll='';
+		//如果圈子内有人
+		if(quans[k].follow){
+			//转成数组
+			//圈子内人的id数组
+			var wid=quans[k].follow;
+
+			for(kk in wid){
+				foll+='<div class="peo_circles_row3_box col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+						//头像
+						+'<img class="peo_circles_row3_toux" src="'+wid[kk].toux+'">'
+						//名字
+						+'<div class="peo_circles_row3_name">'+wid[kk].name+'</div>'
+						//按钮
+						+'<div uname="'+wid[kk].name+'" uid="'+wid[kk].id+'" class="peo_circles_row3_name2">'+quans[k].name+'</div>'
+						
+					+'</div>';
+			}
+			
+		}
+
+		quan+='<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+			+'<div class="row peo_circles_row">'
+
+				//标题
+				+'<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+				+'<div class="row peo_circles_row2">'
+
+					//图标
+					+'<i class="peo_circles_row2_i fa fa-dot-circle-o fa-2x" aria-hidden="true"></i>'
+
+					//标题
+					+'<div class="peo_circles_row2_name">'
+						+quans[k].name
+						//副标题
+						+'<span> '+quans[k].follownum+' 人</span>'
+					+'</div>'
+
+					//按钮
+					+'<i class="peo_circles_row2_i2 fa fa-ellipsis-v fa-lg" aria-hidden="true"></i>'
+
+				+'</div>'
+				+'</div>'
+
+				//隐藏的内容
+				+'<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+				+'<div class="row peo_circles_row3 ">'
+
+					+foll
+
+				+'</div>'
+				+'</div>'
+
+			+'</div>'
+			+'</div>';
+
+	}
+
+	//圈子的box
+	var box='<div class="peo_circles_box col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-10">'
+		   +'<div class="row">'
+		   		+quan
+		   +'</div>'
+		   +'</div>';
+
+	con.append(str).append(box);
+
+	//如果圈子标题被点击
+	$('.peo_circles_row2').click(function(){
+		$(this).parents('.peo_circles_row').find('.peo_circles_row3').slideToggle();
+	})
+
+	//如果要修改圈子
+	$('.peo_circles_row3_name2').click(function(){
+
+		var t=$(this);
+
+		//弹出框
+		Popup({
+			Id:'circles_box',
+			Noajax:1,
+			Width:-1
+		},function(dat,arr){
+
+			circles_bo(data,t);
+
+		})
+
+		//	圈子被点击
+		$('.circles_box_circle').click(function(){
+
+			var t=$(this);
+
+			if(t.hasClass("circles_box_circle_now"))return;
+
+			//圈子id
+			var cid=t.attr('cid');
+
+			//用户id
+			var uid=t.attr('uid');
+
+			//以前的圈子id
+			var old_cid=t.parents('#circles_box').find('.circles_box_circle_now').attr('cid');
+
+			//隐藏弹出框
+			t.parents('.Black_bg').click();
+
+			var arr={
+				Action:'peo',
+				Method:'_circle_move',
+				cid:cid,	//圈子id
+				uid:uid,	//用户id
+				ocid:old_cid	//以前的圈子id
+			}
+
+			//发送ajax
+			$.ajax({
+				data:arr,
+				success:function(data){
+
+					if(!data){
+						Prompt('与服务器通信失败。');
+						return;
+					}
+
+					Prompt('修改成功。');
+
+					//清除缓存
+					Clear_cache();
+					Clear_cache('/pro/'+t.attr('uid'));
+					Clear_cache('/peo/circles');
+
+					//刷新
+					index('peo','circles','/peo/circles');
+
+				},
+				error:function(data){
+					Prompt('与服务器通信失败。');
+				}
+			})
+
+		})
+
+		//不在关注被点击
+		$('.circles_box_circle_no').click(function(){
+			//隐藏提示框
+			$(this).parents('.Black_bg').click();
+
+			//发送ajax
+			$.ajax({
+
+				data:{
+					Action:'pro',
+					Method:'_follow_do',
+					uid:t.attr('uid')
+				},
+				success:function(data){
+					if(data==1){
+						Prompt('已经取消关注。');
+
+						//清除缓存
+						Clear_cache();
+						Clear_cache('/pro/'+t.attr('uid'));
+						Clear_cache('/peo/circles');
+
+						t.parents('.peo_circles_row3_box').remove();
+
+						return;
+
+					}
+
+					//失败时
+					Prompt('与服务器通信失败。');
+
+				},
+				error:function(data){
+					//失败时
+					Prompt('与服务器通信失败。');
+				}
+
+			});
+
+		})
+		
+	})
+
+	
+
+}
+
+
+//创建div
+function circles_bo(datas,t){
+
+	//盒子
+	var box=$('#circles_box');
+
+	//顶部
+	var top='<div class="row">'
+		   +'<div id="circles_box_top" class="col-sm-12">'
+		   		+t.attr('uname')
+		   +'</div>'
+		   +'</div>';
+
+	//循环圈子
+	var circles=datas.quans;
+	var quan='';
+	var now2;	//判断用户是否已经在圈子中
+	for(k in circles){
+
+		//圈子内用户ID列表
+		var now='';
+		var ren=circles[k].followid;
+		if(ren){
+			ren=ren.split(',');
+			for(kk in ren){
+				if(ren[kk]==t.attr('uid')){
+					//用户在这个圈子中
+					now='<i class="fa fa-check" aria-hidden="true"></i> ';
+					now2=1;		
+				}
+			}
+		}
+
+
+		quan+='<div class="row">'
+			+'<div cid="'+circles[k].id+'" uid="'+t.attr('uid')+'" class="'+((now)?'circles_box_circle_now':'')+' circles_box_circle col-sm-12">'
+				+now
+				+circles[k].name
+			+'</div>'
+		    +'</div>';
+
+	}
+
+	if(now2!=1){
+		now='<i class="fa fa-check" aria-hidden="true"></i> ';
+	}else{
+		now='';
+	}
+
+	quan+='<div class="row">'
+			+'<div cid="" uid="'+t.attr('uid')+'" class="'+((now)?'circles_box_circle_now':'')+' circles_box_circle col-sm-12">'
+				+now
+				+'已关注'
+			+'</div>'
+		    +'</div>';
+
+	quan+='<div class="row">'
+			+'<div uid="'+t.attr('uid')+'" class="circles_box_circle_no col-sm-12">'
+				+'<i class="fa fa-close" aria-hidden="true"></i> '
+				+'不再关注'
+			+'</div>'
+		    +'</div>';
+
+	box.append(top).append(quan);
 
 }

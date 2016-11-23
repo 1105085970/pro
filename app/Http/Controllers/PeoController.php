@@ -116,7 +116,7 @@ class PeoController extends Controller
                 )->get();
 
         //循环
-        foreach($users as $v){
+        foreach($users as $k=>$v){
 
             //如果有没有昵称
             if(!$v->name)
@@ -138,7 +138,20 @@ class PeoController extends Controller
 
             }
 
-            
+            //如果是已关注页
+            if($param[0]=='circles'){
+                foreach($quan as $kk=>$vv){
+
+                    $foll=explode(',', $vv->followid);
+
+                    if(in_array($v->id, $foll)){
+                        //用户在该圈子中
+                        $vv->follow[]=$v;
+                        unset($users[$k]);
+                    }
+
+                }
+            }
 
         }
 
@@ -156,6 +169,83 @@ class PeoController extends Controller
         ];
 
         return $arr;
+    }
+
+
+    //ajax 移动用户到圈子
+    public function Post_circle_move(Request $request){
+
+        $arr=$request->all();
+
+        //要移动的用户id
+        $uid=$arr['uid'];
+
+        //要移动到的圈子id
+        $cid=$arr['cid'];
+
+        //以前的圈子id
+        $ocid=$arr['ocid'];
+
+        //如果有以前的
+        if($ocid && $ocid!='0'){
+
+            //得到以前的圈子数据
+             $old=DB::table('circles')->where('id',$ocid)->first();
+
+            //成员数组
+            $old_ren=explode(',',$old->followid);
+
+            //从圈子中删除该用户
+            unset($old_ren[array_search($uid,$old_ren)]);
+
+            //更新
+            $num=$old->follownum;
+            $data=[
+                'follownum'=>--$num,
+                'followid'=>trim(implode(',', $old_ren),',')
+            ];
+            DB::table('circles')->where('id',$ocid)->update($data);
+
+        }
+
+        //如果有要移动到的圈子
+        if($cid && $cid!='0'){
+
+            //得到圈子数据
+            $cir=DB::table('circles')->where('id',$cid)->first();
+
+            //成员数组
+            $ren=explode(',', $cir->followid);
+
+            //添加
+            $ren[]=$uid;
+
+            //更新
+            $num=$cir->follownum;
+            $data=[
+                'follownum'=>++$num,
+                'followid'=>trim(implode(',', $ren),',')
+            ];
+            DB::table('circles')->where('id',$cid)->update($data);
+
+        }
+
+        //当前登录用户的圈子列表
+        $quans=explode(',',Auth::user()->circle);
+
+        $quan=DB::table('circles')
+                    ->select(
+                        'id',
+                        'name',         //圈子名
+                        'follownum',     //圈子内用户数量
+                        'followid'      //圈子内用户编号 列表
+                    )
+                    ->whereIn('id',$quans)
+                    ->get();
+
+        return $quan;
+       
+
     }
 
 }

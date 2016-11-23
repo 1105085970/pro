@@ -66,7 +66,7 @@ function index(Action='hom',Param='',Url=''){
 		data:UU,
 		success:function(data){
 			//请求失败时
-			if(!data){Prompt('头部请求失败'); return;};
+			if(!data){Prompt('顶部请求失败'); return;};
 			//当请求成功时
 			Topdata=data;	//存数据
 			State++;		//加状态
@@ -79,7 +79,7 @@ function index(Action='hom',Param='',Url=''){
 		},
 		error:function(){
 			//请求失败时
-			Prompt('头部请求失败');
+			Prompt('顶部请求失败');
 		}
 
 	});

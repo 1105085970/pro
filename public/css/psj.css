@@ -591,6 +591,7 @@
 }
 .people_box2{
     margin: 32px 0 0;
+    color: rgba(0,0,0,0.54);
 }
 /*找人页 装人的盒子 中的a链接*/
 .people_p_a{
@@ -672,11 +673,116 @@
     line-height: 60px;
 }
 /*弹出框选择圈子 的圈子列表*/
-.circles_box_circle{
+.circles_box_circle,.circles_box_circle_no{
     height:50px;
     line-height: 50px;
     padding-left: 24px;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
+}
+.circles_box_circle_now{
+    background: rgb(69, 90, 100);
+    color: #FFF;
+}
+
+.circles_box_circle_now i{
+    color: #03a9f4;
+}
+
+.circles_box_circle_no{
+    color:red;
+}
+
+.peo_circles_box{
+    margin:0 auto;
+}
+
+.peo_circles_box_t{
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.54);
+    margin: 24px auto;
+}
+
+.peo_circles_row2{
+    align-items: center;
+    background-color: #fff;
+    height: 72px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    min-width: 0;
+}
+
+.peo_circles_row2_i{
+    display: inline-block;
+    padding: 8px;
+    margin: 0 16px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+
+.peo_circles_row2_name{
+    color: rgba(0,0,0,0.87);
+    font-size: 16px;
+    margin-right: 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.peo_circles_row2_name span{
+    color: rgba(0,0,0,0.54);
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: 8px;
+}
+.peo_circles_row3_box{
+    display: flex;
+    -webkit-box-align: center;
+    box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding-top:12px;
+    padding-bottom:12px;
+}
+.peo_circles_row3_toux{
+    height: 40px;
+    width: 40px;
+    margin: 0 16px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+.peo_circles_row3_name{
+    align-items: center;
+    min-width: 0;
+    color: rgba(0,0,0,0.87);
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.peo_circles_row2_i2,.peo_circles_row3_name2{
+    margin-left: auto;
+    margin-right: 20px;
+    border-radius: 50%;
+    color: #757575;
+    cursor: pointer;
+    display: inline-block;
+    fill: #444;
+    height: 48px;
+    line-height: 48px;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    width: 48px;
+    z-index: 0;
 }
