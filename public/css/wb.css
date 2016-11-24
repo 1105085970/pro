@@ -287,7 +287,7 @@
 }
 
 .post_box_imgs {
-    height:300px;
+    max-height:300px;
     white-space: nowrap;
     padding: 0;
     overflow: hidden;
@@ -415,7 +415,7 @@
 .post_box_commbox_h .commbox_row{
     position: static;
     padding: 12px 0;
-    opacity: 1;
+    display: flex;
     align-items: initial;
     overflow: visible;
 }
@@ -440,7 +440,7 @@
 
 /*包含帖子评论的box*/
 .commbox_row{
-	display: flex;
+	display: none;
     position: absolute;
     top: 12px;
     bottom: 12px;
@@ -452,7 +452,6 @@
     overflow: hidden;
     align-items: center;
     word-break: break-word;
-    opacity: 0;
 }
 
 /*包含帖子评论的头像*/

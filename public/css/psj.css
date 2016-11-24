@@ -660,7 +660,7 @@
 }
 
 /*弹出框选择圈子*/
-#circles_box_top{
+#circles_box_top,#circles_new_top{
     padding-left: 24px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -741,6 +741,9 @@
     overflow: hidden;
     margin-left: 8px;
 }
+.peo_circles_row3{
+
+}
 .peo_circles_row3_box{
     display: flex;
     -webkit-box-align: center;
@@ -785,4 +788,62 @@
     -webkit-tap-highlight-color: transparent;
     width: 48px;
     z-index: 0;
+}
+
+/*新建圈子 按钮*/
+.peo_circles_new{
+    text-align: right;
+    display: inline-block;
+    line-height: 40px;
+    min-width: 88px;
+    height:40px;
+    color: #4285f4;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    float:right;
+}
+/*新建圈子 box*/
+#peo_circles_new{
+
+}
+/*新建圈子 顶部*/
+#circles_new_top{
+
+}
+
+/*新建圈子 底部*/
+.circles_new_bottom{
+    display: flex;
+    align-items: center;
+}
+
+.circles_new_qs,.circles_new_cj,.circles_new_sc{
+    box-shadow: none;
+    color: rgba(68,68,68,0.502);
+    cursor: pointer;
+    fill: rgba(68,68,68,0.502);
+    line-height: 40px;
+    min-width: 88px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    height:40px;
+    display: inline-block;
+    float: right;
+}
+
+.circles_new_cj_on{
+    color: #4285f4;
+}
+
+.circles_new_sc{
+    float:left;
+}
+
+.circles_new_sc:hover{
+    color:red;
 }
