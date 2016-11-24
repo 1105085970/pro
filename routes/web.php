@@ -62,6 +62,7 @@ Route::post('/col/PostcharuCollImg','ColController@PostcharuCollImg');
 Route::post('/col/PostxgCollImg/','ColController@PostxgCollImg');
 Route::post('/com/PostxgCommImg/','ComController@PostxgCommImg');
 Route::post('/com/pimg/','ComController@Postpimg');
+Route::post('/col/pimg/','ColController@Postpimg');
 //首页GET路由
 Route::get('/{U1?}/{U2?}/{U3?}/{U4?}', 'IndexController@Index');
 

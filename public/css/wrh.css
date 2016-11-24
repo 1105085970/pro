@@ -539,6 +539,9 @@ word-break:break-all; overflow: auto;margin-top:20px;margin-right:3px;
 .body1{
 	width:430px;min-height:370px;background:#FFF;margin-top:150px;border-radius:3px;position:relative;
 }
+.body2{
+	width:300px;min-height:370px;background:#FFF;margin-top:150px;border-radius:3px;position:relative;
+}
 .top1{
 	width:430px;height:60px;
 }
@@ -634,4 +637,25 @@ word-break:break-all; overflow: auto;margin-top:20px;margin-right:3px;
 }
 .frhsz:hover{
 	cursor:pointer;background: #8B8B8B;
+}
+.main1{
+	height:30px;max-width:;margin-top:20px;margin-bottom:-15px;clear:both;
+}
+.tjyh,.gd{
+	position:absolute;
+}
+.tjyh{
+	left:30px;
+}
+.gd{
+	right:0px;
+}
+.gd:hover{
+	cursor:pointer;
+}
+.img1:hover{
+	cursor:pointer;
+}
+.main5{
+	width:1000px;
 }

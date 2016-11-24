@@ -52,18 +52,11 @@ class ComController extends Controller
             
             return $arr;
         }
-
-        
-
     }
 
     //Post请求主内容
     public function PostContents(Request $request){
-
-
         $param=explode(',',$request->Param);
-
-
         if(isset($param[1]) && $param[1]=='admin'){
             $arr=DB::table('communities')->where('id',$param[0])->first();
             $clist=DB::table('communities')->get();
@@ -255,10 +248,19 @@ class ComController extends Controller
             foreach($clist as $k=>$v){
                 $clistid[]=$clist[$k]->id;
             }
-            if(!in_array($id[0],$clistid)){
+            $ai=0;
+            if(in_array($id[0],$clistid)){
+                $ai=1;
+            }
+            if($ai==0){
                 return ['key'=>'不存在','clist'=>$clistid];
             }else{
             $arr=DB::table('communities')->where('id',$id[0])->get();
+            if($arr[0]->userid==Auth::id()){
+                $gbg="管理";
+            }else{
+                $gbg='不是管理';
+            }
             $commid=$id[0];
             $txid=DB::table('users')->where('id',$arr[0]->userid)->first();
             $txpath=DB::table('files')->where('id',$txid->picid)->first();
@@ -299,7 +301,7 @@ class ComController extends Controller
                 'id'=>'sqcontent'
             ];
             $posts=$posts->PostContents($request,$list);
-            return ['key'=>$arr,'key2'=>$request->Param,'user'=>$arru->username,'bg'=>$bg->path,'shequ'=>'shequ','tx'=>$txpath->path,'posts'=>$posts];
+            return ['key'=>$arr,'key2'=>$request->Param,'user'=>$arru->username,'bg'=>$bg->path,'shequ'=>'shequ','tx'=>$txpath->path,'posts'=>$posts,'gbg'=>$gbg];
         }
         }
         $arr=DB::table('communities')->get();
@@ -437,6 +439,17 @@ class ComController extends Controller
                         unset($sid[$pp]);
                         $exam=implode(',',$sid);
                         $arr1=DB::table('communities')->where('id',$request->input('id'))->update(['examineuser'=>$exam]);
+                        $arr2=DB::table('users')->where('id',Auth::id())->first();
+                        $comm8=explode(',',$arr2->followcomm);
+                        $kkk=-1;
+                        foreach($com8 as $k=>$v){
+                            if($v==$request->input('id')){
+                                $kkk=$k;break;
+                            }
+                        }
+                        unset($com8[$kkk]);
+                        $follow9=implode(',',$com8);
+                        $arr3=DB::table('users')->where('id',Auth::id())->update($follow9);
                         return ['id'=>'quxiao'];
                     }
                 }
@@ -504,6 +517,13 @@ class ComController extends Controller
         $update['members']=$members;
         $update['membernum']=$membernum;
         $arr1=DB::table('communities')->where('id',$request->comid)->update($update);
+        $arr2=DB::table('users')->where('id',$request->uid)->first();
+        if($arr2->followcomm==''){
+            $followcomm=$request->comid.',';
+        }else{
+            $followcomm=$arr2->followcomm.$request->comid.',';
+        }
+        $arr3=DB::table('users')->where('id',$request->uid)->update(['followcomm'=>$followcomm]);
         return ['key'=>$update];
     }
     public function Postjujue(Request $request){
@@ -561,9 +581,9 @@ class ComController extends Controller
                 'title.required'=>'请填写收藏集名称',
                 'slogan.required'=>'请填写个性宣言',
             ]);
-        if($request->ccc==1){
-            $lastid=DB::table('files')->where('userid',Auth::id())->orderBy('addtime','desc')->first();
-            $arr['picid']=$lastid->id;
+        if($request->ccc!=0){
+           
+            $arr['picid']=$request->ccc;
         }
             $arr['title']=$request->title;
             $arr['slogan']=$request->slogan;
@@ -600,9 +620,9 @@ class ComController extends Controller
     }
     public function Postcharuposts(Request $request){
         
-        if($request->zou==1){
-            $lastid=DB::table('files')->where('userid',Auth::id())->orderBy('addtime','desc')->first();
-            $arr['picid']=$lastid->id;
+        if($request->zou!=0){
+            
+            $arr['picid']=$request->zou;
         }
         $arr1=DB::table('communities')->where('id',$request->commid)->first();
         $arr['content']=$request->content;
@@ -628,5 +648,22 @@ class ComController extends Controller
     public function Postsctz(Request $request){
         $arr=DB::table('posts')->where('id',$request->id)->delete();
         return ['key'=>'cg'];
+    }
+    public function Postaddadmin(Request $request){
+        $arr=DB::table('communities')->where('id',$request->comid)->first();
+        if($arr->members==''){
+            $you='没有';
+            return ['you'=>$you];
+        }else{
+            $list=explode(',',$arr->members);
+            return ['list'=>$list,'arr'=>$arr];
+        }
+        
+    }
+    public function Postadd(Request $request){
+        $arr=DB::table('communities')->where('id',$request->comid)->first();
+        $arr1=$arr->admins.$request->id.',';
+        $arr=DB::table('communities')->where('id',$request->comid)->update(['admins'=>$arr1]);
+        return ['cg'=>'cg'];
     }
 }
