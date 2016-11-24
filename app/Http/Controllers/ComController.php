@@ -256,6 +256,12 @@ class ComController extends Controller
                 return ['key'=>'不存在','clist'=>$clistid];
             }else{
             $arr=DB::table('communities')->where('id',$id[0])->get();
+            $wo=explode(',',$arr[0]->members);
+            if(in_array(Auth::id(),$wo)||$arr[0]->userid==Auth::id()){
+                $yj="可以发布";
+            }else{
+                $yj="不可以发布";
+            }
             if($arr[0]->userid==Auth::id()){
                 $gbg="管理";
             }else{
@@ -301,7 +307,7 @@ class ComController extends Controller
                 'id'=>'sqcontent'
             ];
             $posts=$posts->PostContents($request,$list);
-            return ['key'=>$arr,'key2'=>$request->Param,'user'=>$arru->username,'bg'=>$bg->path,'shequ'=>'shequ','tx'=>$txpath->path,'posts'=>$posts,'gbg'=>$gbg];
+            return ['key'=>$arr,'key2'=>$request->Param,'user'=>$arru->username,'bg'=>$bg->path,'shequ'=>'shequ','tx'=>$txpath->path,'posts'=>$posts,'gbg'=>$gbg,'yj'=>$yj];
         }
         }
         $arr=DB::table('communities')->get();

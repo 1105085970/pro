@@ -99,10 +99,13 @@ function colContents(data,param){
 
 			var tleft="<div class='col-lg-3 col-sm-4 col-xs-4 tleft'>"+duo+"<img src='"+data['bg']+"' class='timg'><div style='width:100%;height:100%;background:"+data['key'].background+";'>"+tou+zw+user+title2+xuanyan+guan+"</div></div>";//跳转至后的左侧div
 			var leftdiv="<div class='col-lg-1 col-md-1 col-sm-1 col-xs-1 tleft'></div>";
-			
-			var mainz="<div class='zhu' onclick='addPost1("+data['key']['id']+")' style='margin-top:20px;'><div class='stx'><img src='/images/mrtx.jpg' style='margin-top:15px;margin-left:20px;display:block;float:left;'></div><div style='margin-top:15px;margin-left:20px;float:left;line-height:40px;color:#BDBDBD'>分享内容...</div><div class='zhao'><img style='margin-top:15px;margin-right:20px;display:block;float:right;' src='/images/zhaoxiang.jpg'></div></div>";
-				var main8="<div class='row' id='scjcontent' style='margin-top:0px;width:100%'></div>";
-
+			if(data['uid']==data['userid']){
+				var mainz="<div class='zhu' onclick='addPost1("+data['key']['id']+")' style='margin-top:20px;'><div class='stx'><img src='/images/mrtx.jpg' style='margin-top:15px;margin-left:20px;display:block;float:left;'></div><div style='margin-top:15px;margin-left:20px;float:left;line-height:40px;color:#BDBDBD'>分享内容...</div><div class='zhao'><img style='margin-top:15px;margin-right:20px;display:block;float:right;' src='/images/zhaoxiang.jpg'></div></div>";
+			}else{
+				var mainz='';
+				
+			}
+			var main8="<div class='row' id='scjcontent' style='margin-top:0px;width:100%'></div>";
 
 			//var main6="<div class='row' id='scjcontent' style='width:100%'></div>";
 			div.html(tleft+mainz+main8);
@@ -112,7 +115,7 @@ function colContents(data,param){
 			return;
 		}
 	}else{
-		$('#Contents').html('<div class="row bigdiv col-md-11" style="font-size:50px;line-height:50px;margin-left:24%;margin-top:100px;"><img src="/images/404.png"></div>');
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="font-size:50px;line-height:50px;margin-top:100px;"><img style="margin-left:24%;" src="/images/404.png"></div>');
 		return;
 	}
 	var div=createScj();
@@ -529,12 +532,12 @@ function gclick1(w){
 			if(data['login']=='login'){
 				location.href='/log';
 			}else if(data['id']=='yes'){
-				Clear_cache('/col/daohang2');
-				index('col','daohang2','/col/daohang2');
+				Clear_cache('/col/'+w);
+				index('col',String(w),'/col/'+w);
 				$('.guan'+w).html('已关注');
 			}else{
-				Clear_cache('/col/daohang2');
-				index('col','daohang2','/col/daohang2');
+				Clear_cache('/col/'+w);
+				index('col',String(w),'/col/'+w);
 				$('.guan'+w).html('关注');
 			}
 		},
@@ -1213,7 +1216,7 @@ console.log(data2['key']);
 			if(data2['gbg']=='管理'){
 				var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='guanli("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")' style='background:#0F9D58'>管理</span>";
 			}else{
-				var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='click2("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")' style='background:#0F9D58'>"+data2['key'][0].cun+"</span>";
+				var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='click3("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")' style='background:#0F9D58'>"+data2['key'][0].cun+"</span>";
 			}
 			if(data2['key'][0].describe==null){
 				var sqjj="<div></div>";
@@ -1222,7 +1225,11 @@ console.log(data2['key']);
 			}
 			
 			var tleft="<div class='col-lg-3 col-sm-7 col-xs-7 tleft'>"+duo+"<img src='"+data2['bg']+"' class='timg'><div style='width:100%;height:100%;background:#FFF;'>"+tou+zw+user+title2+xuanyan+chengyuan+guan+sqjj+"</div></div>";//跳转至后的左侧div
-			var mainz="<div class='zhu' onclick='addPost("+data2['key'][0]['id']+")'><div class='stx'><img src='/images/mrtx.jpg' style='margin-top:15px;margin-left:20px;display:block;float:left;'></div><div style='margin-top:15px;margin-left:20px;float:left;line-height:40px;color:#BDBDBD'>分享内容...</div><div class='zhao'><img style='margin-top:15px;margin-right:20px;display:block;float:right;' src='/images/zhaoxiang.jpg'></div></div>";
+			if(data2['yj']=='可以发布'){
+				var mainz="<div class='zhu' onclick='addPost("+data2['key'][0]['id']+")'><div class='stx'><img src='/images/mrtx.jpg' style='margin-top:15px;margin-left:20px;display:block;float:left;'></div><div style='margin-top:15px;margin-left:20px;float:left;line-height:40px;color:#BDBDBD'>分享内容...</div><div class='zhao'><img style='margin-top:15px;margin-right:20px;display:block;float:right;' src='/images/zhaoxiang.jpg'></div></div>";
+			}else{
+				var mainz='';
+			}
 			var main8="<div class='row' id='sqcontent' style='margin-top:0px;width:100%'></div>";
 			
 			div.html(tleft+mainz+main8);
@@ -1232,7 +1239,7 @@ console.log(data2['key']);
 			return;
 		}
 	}else{
-		$('#Contents').html('<div class="row bigdiv col-md-11" style="font-size:50px;line-height:50px;margin-left:24%;margin-top:100px;"><img src="/images/404.png"></div>');
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="font-size:50px;line-height:50px;margin-top:100px;"><img style="margin-left:24%;" src="/images/404.png"></div>');
 		return;
 	}
 	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sqMain(data2)+'</div>');//此处调用了sqMain(data2)方法
@@ -1709,6 +1716,40 @@ function click2(w){
 		error:function(data){},
 	})
 }
+function click3(w){
+	$.ajax({
+		data:{Action:'com',Method:'jiaru',id:w},
+		success:function(data){
+			
+			if(data['login']=='login'){
+				location.href='/log';
+			}else if(data['id']=='yes'){
+				$('.jiaru'+w).html('已加入');
+				Clear_cache('/com/'+w);
+				index('com',String(w),'/com/'+w);
+				
+			}else  if(data['id']=='shenqing'){
+				$('.jiaru'+w).html('取消申请');
+				Clear_cache('/com/jiaru');
+				//index('com','jiaru','/com/jiaru');
+			}else if(data['id']=='quxiao'){
+				$('.jiaru'+w).html('申请加入');
+				Clear_cache('/com/jiaru');
+				//index('com','jiaru','/com/jiaru');
+			}else if(data['id']=='wanshi'){
+				$('.jiaru'+w).html('申请加入');
+				Clear_cache('/com/jiaru');
+				//index('com','jiaru','/com/jiaru');
+			}else{
+				$('.jiaru'+w).html('加入');
+				Clear_cache('/com/'+w);
+				index('com',String(w),'/com/'+w);
+				
+			}
+		},
+		error:function(data){},
+	})
+}
 function over2(w){
 	$('.jiaru'+w).addClass('hover');
 }
@@ -1837,7 +1878,7 @@ function seaContents(data2,param){
 	}
 	sq=leftdiv1+main1+main2+main3;
 	if(main1==''&&main2==''&&main3==''){
-		$('#Contents').html('<div class="row bigdiv col-md-11" style="text-align:center;line-height:50px;margin-top:200px;font-size:50px;margin-left:23%">没有符合该条件的文章</div>');
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="text-align:center;line-height:50px;margin-top:100px;font-size:50px;"><img style="margin-left:23%;" src="/images/404.png"></div>');
 	}else{
 		$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sq+'</div>');
 	}
