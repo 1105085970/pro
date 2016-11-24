@@ -105,6 +105,9 @@ class PeoController extends Controller
                 ->leftjoin('files','users.picid','=','files.id')
                 ->orderBy('id','desc');
 
+        }else{
+            //404
+            return 404;
         }
 
         $users=$users->select(

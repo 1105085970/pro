@@ -36,8 +36,8 @@ class ColController extends Controller
                 'CatName'=>'Home',
                 'Nav'=>['精选'=>['Url'=>'/col','Action'=>'col','Param'=>[]],
                         '已关注'=>['Url'=>'/col/daohang2','Action'=>'col','Param'=>['daohang2']],
-                        '你的'=>['Url'=>'/col/yours','Action'=>'col','Param'=>['yours']]],
-                        'Newpost'=>$Newpost
+                        '你的'=>['Url'=>'/col/yours','Action'=>'col','Param'=>['yours']]]
+                        
             ];
         
         return $arr;
@@ -122,6 +122,17 @@ class ColController extends Controller
         //点击某一个收藏级后出现的页面
         if(!empty($request->Param)){
             $id=explode(',',$request->Param);
+            $clist=DB::table('collections')->get();
+            foreach($clist as $k=>$v){
+                $clistid[]=$clist[$k]->id;
+            }
+            $ai=0;
+            if(in_array($id[0],$clistid)){
+                $ai=1;
+            }
+            if($ai==0){
+                return ['key'=>'不存在','clist'=>$clistid];
+            }
             $arr=DB::table('collections')->where('id',$id[0])->first();
             $collid=$id[0];
             foreach($arr as $k=>$v){
@@ -251,6 +262,11 @@ class ColController extends Controller
             return ['arr'=>$id];
         }
     }
+    public function Postfanhui(Request $request){
+        $arr=DB::table('collections')->where('id',$request->comid)->first();
+        $arr1=DB::table('users')->where('id',Auth::id())->first();
+        return ['key'=>$arr,'key1'=>$arr1];
+    }
     public function PostcharuColl(Request $request){
         
         $this->validate($request,[
@@ -274,6 +290,42 @@ class ColController extends Controller
             $arr['background']=$request->background;
             $arr1=DB::table('collections')->insert($arr);
         return ['cg'=>'cg','background'=>$request->background];
+    }
+    public function Postpimg(Request $request){
+        if(is_uploaded_file($_FILES['upfile']['tmp_name'])){
+            
+            $hou=pathinfo($_FILES['upfile']['name']);
+            $name=time().str_random(6).'.'.$hou['extension'];
+            
+            $path='/images/'.$name;
+            move_uploaded_file($_FILES['upfile']['tmp_name'],'.'.$path);
+            
+            $arr['path']=$path;
+            $arr['userid']=Auth::id();
+            $arr['addtime']=time();
+            $id=DB::table('files')->insertGetId($arr);
+           
+            return ['arr'=>$request->input('picid'),'id'=>$id];
+        }
+    }
+    public function Postcharuposts(Request $request){
+        
+        if($request->zou!=0){
+            
+            $arr['picid']=$request->zou;
+        }
+        $arr1=DB::table('collections')->where('id',$request->commid)->first();
+        $arr['content']=$request->content;
+        $arr['addtime']=time();
+        $arr['userid']=Auth::id();
+        // if($arr1->examinepost==1){
+        //     $arr['state']=2;
+        // }else{
+        //     $arr['state']=1;
+        // }
+        $arr['collid']=$request->commid;
+        $list=DB::table('posts')->insert($arr);
+        return ['cg'=>'cg'];
     }
     // public function Postfztp(Request $request){
     //     // move_uploaded_file($request->url,'/100.jpg');
@@ -326,7 +378,7 @@ class ColController extends Controller
                 $id=$request->input('picid');
             }
             
-            return ['arr'=>$request->input('picid')];
+            return ['arr'=>$id];
         }
        
     }
@@ -338,9 +390,9 @@ class ColController extends Controller
                 'title.required'=>'请填写收藏集名称',
                 'slogan.required'=>'请填写个性宣言',
             ]);
-        if($request->ppp==1){
-            $lastid=DB::table('files')->where('userid',Auth::id())->orderBy('addtime','desc')->first();
-            $arr['picid']=$lastid->id;
+        if($request->ppp!=0){
+            
+            $arr['picid']=$request->ppp;
         }
             $arr['title']=$request->title;
             $arr['slogan']=$request->slogan;

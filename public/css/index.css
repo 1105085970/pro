@@ -8,7 +8,9 @@ body{
 a,a:hover,a:active{
 	text-decoration: none !important;
 }
-
+#Body{
+	overflow: hidden;
+}
 /*顶部*/
 #Top{
 	position: fixed;
@@ -152,7 +154,7 @@ a,a:hover,a:active{
 	z-index: 50;
 }
 
-#Navigation a{
+#Navigation a,#Navigation_hide a{
 	color: rgba(0,0,0,0.87);
 	font-size: 14px;
 	height: 48px;
@@ -163,10 +165,10 @@ a,a:hover,a:active{
     display: flex;
     padding: 0 12px 0 20px;
 }
-#Navigation a:hover{
+#Navigation a:hover,#Navigation_hide a:hover{
 	background: #e7e7e7;
 }
-#Navigation i{
+#Navigation i,#Navigation_hide i{
 	display: block;
 	line-height: 50px;
 	font-weight: 300;
@@ -179,6 +181,44 @@ a,a:hover,a:active{
 	background: #e7e7e7;
 }
 
+/*左侧隐藏的导航*/
+#Navigation_hide{
+	position: fixed;
+	top:0;
+	left:-100%;
+	bottom:0;
+	width:300px;
+	background: #fff;
+	z-index: 200;
+	box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2);
+}
+
+/*左侧隐藏的导航 中的图标*/
+#Navigation_hide #Navigation_now i{
+	color: #757575 !important;
+}
+
+/*左侧隐藏的导航 的顶部*/
+#Navigation_hide_top{
+	height: 64px;
+	border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 16px;
+    line-height: 64px;
+    font-size: 1.5em;
+    color:rgb(117, 117, 117);
+}
+
+/*左侧隐藏的导航 的顶部 的右侧按钮*/
+#Navigation_hide_top_right{
+	float:right;
+	height: 64px !important;
+	line-height: 64px !important;
+	text-align: right;
+	padding-right:0 !important;
+}
 
 /*主内容*/
 #Contents{
@@ -420,4 +460,25 @@ a,a:hover,a:active{
 		width:80%;
 	}
 
+}
+
+
+
+/*404*/
+.container_404{
+	text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    height:500px;
+}
+
+.container_404 .content{
+	text-align: center;
+    display: inline-block;
+}
+
+.container_404 .title{
+	font-size: 72px;
+    margin-bottom: 40px;
+    color: #B0BEC5;
 }

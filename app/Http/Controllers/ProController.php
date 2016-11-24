@@ -69,6 +69,9 @@ class ProController extends Controller
 
         }
 
+        //如果没有用户
+        if(!$user)return 404;
+
         //要展示的用户的姓名
         $name=($user->nickname)?$user->nickname:$user->username;
 

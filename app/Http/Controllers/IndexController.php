@@ -91,9 +91,9 @@ class IndexController extends Controller
                 '收藏集'=>['Icon'=>'fa-podcast','Url'=>'/col','Param'=>['col']],
                 '社群'=>['Icon'=>'fa-th-large','Url'=>'/com','Param'=>['com']],
                 '个人资料'=>['Icon'=>'fa-user-circle','Url'=>'/pro','Param'=>['pro']],
-                '人脉'=>['Icon'=>'fa-users','Url'=>'/peo','Param'=>['peo']],
-                '通知'=>['Icon'=>'fa-bell','Url'=>'/not','Param'=>['not']],
-                '设置'=>['Icon'=>'fa-cog','Url'=>'/set','Param'=>['set']]
+                '人脉'=>['Icon'=>'fa-users','Url'=>'/peo','Param'=>['peo']]
+                //'通知'=>['Icon'=>'fa-bell','Url'=>'/not','Param'=>['not']],
+                //'设置'=>['Icon'=>'fa-cog','Url'=>'/set','Param'=>['set']]
             ];
 
         }else{

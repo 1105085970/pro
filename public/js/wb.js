@@ -75,11 +75,6 @@ function homContents(datas,param){
 		var col1=$('<div class="post_box_col post_box_col_right col-xs-6 col-sm-6 col-md-6 col-lg-6" ></div>');
 		var col2=$('<div class="post_box_col post_box_col_left col-xs-6 col-sm-6 col-md-6 col-lg-6" ></div>');
 
-		//清空主内容区
-		con.empty();
-		//追加两列到主内容区
-		con.append(col1).append(col2);
-
 		var num=0;
 
 		for(k in arr){
@@ -91,7 +86,11 @@ function homContents(datas,param){
 			num++;	
 
 		}
-		
+
+		//清空主内容区
+		con.empty();
+		//追加两列到主内容区
+		con.append(col1).append(col2);
 
 	}else{
 		//三列
