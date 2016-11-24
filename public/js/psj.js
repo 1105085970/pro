@@ -1166,9 +1166,13 @@ function peo_people(datas,param){
 
 	//标题
 	var title='人员推荐';
-	if(param=='circles')
-		title='已关注 '+datas.users.length;
-	else if(param=='haveyou')
+	if(param=='circles'){
+		var num=0;
+		for(k in data)
+			num++
+		title='已关注 '+num;
+
+	}else if(param=='haveyou')
 		title='';
 
 	if(title){
@@ -1247,7 +1251,7 @@ function peo_people(datas,param){
 							//把状态改成 1
 							t.attr('state',1);
 							//清除缓存
-							Clear_cache();
+							Clear_cache('/peo');
 							Clear_cache('/pro/'+t.attr('uid'));
 							Clear_cache('/peo/circles');
 							return;
@@ -1258,7 +1262,7 @@ function peo_people(datas,param){
 							//把状态改成 2
 							t.attr('state',2);
 							//清除缓存
-							Clear_cache();
+							Clear_cache('/peo');
 							Clear_cache('/peo/'+t.attr('uid'));
 							Clear_cache('/peo/circles');
 							return;
@@ -1280,10 +1284,12 @@ function peo_people(datas,param){
 			}
 
 			//弹出框
+			var h=datas.quans.length*50+160;
 			Popup({
 				Id:'circles_box',
 				Noajax:1,
-				Width:-1
+				Width:-1,
+				Height:((h>$(window).height()-40)?$(window).height()-40:h)
 			},function(data,arr){
 
 				//如果是删除弹出框
@@ -1315,7 +1321,7 @@ function peo_people(datas,param){
 								Prompt('已经取消关注。');
 
 								//清除缓存
-								Clear_cache();
+								Clear_cache('/peo');
 								Clear_cache('/pro/'+t.attr('uid'));
 								Clear_cache('/peo/circles');
 
@@ -1376,7 +1382,7 @@ function peo_people(datas,param){
 							}
 
 							//清除缓存
-							Clear_cache();
+							Clear_cache('/peo');
 							Clear_cache('/pro/'+t.attr('uid'));
 							Clear_cache('/peo/circles');
 
@@ -1525,12 +1531,13 @@ function peo_circles(data,param){
 	$('.peo_circles_row3_name2').click(function(){
 
 		var t=$(this);
-
+		var h=data.quans.length*50+160;
 		//弹出框
 		Popup({
 			Id:'circles_box',
 			Noajax:1,
-			Width:-1
+			Width:-1,
+			Height:((h>$(window).height()-40)?$(window).height()-40:h)
 		},function(dat,arr){
 
 			circles_bo(data,t);
@@ -1577,7 +1584,7 @@ function peo_circles(data,param){
 					Prompt('修改成功。');
 
 					//清除缓存
-					Clear_cache();
+					Clear_cache('/peo');
 					Clear_cache('/pro/'+t.attr('uid'));
 					Clear_cache('/peo/circles');
 
@@ -1610,7 +1617,7 @@ function peo_circles(data,param){
 						Prompt('已经取消关注。');
 
 						//清除缓存
-						Clear_cache();
+						Clear_cache('/peo');
 						Clear_cache('/pro/'+t.attr('uid'));
 						Clear_cache('/peo/circles');
 
@@ -1742,7 +1749,7 @@ function peo_circles(data,param){
 			//绑定事件
 			add_edit_circle(d.id);
 
-			//删除帖子被点击
+			//删除圈子被点击
 			$('.circles_new_sc').click(function(){
 
 				var t=$(this);

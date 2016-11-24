@@ -45,7 +45,7 @@ class PosController extends Controller
         //默认 跳过 0 条
         $skip=0;
         //默认 获取 10 条
-        $take=10;
+        $take=50;
 
         //设置了where
         if(isset($arr['where']))
