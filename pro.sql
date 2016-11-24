@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2016-11-24 08:20:51
+Date: 2016-11-25 00:24:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,15 +25,23 @@ CREATE TABLE `circles` (
   `name` varchar(100) NOT NULL COMMENT '圈子名称',
   `dynamic` tinyint(2) NOT NULL DEFAULT '2' COMMENT '首页讯息串中的讯息数量。0没有1减少2标准3更多',
   `notice` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否获取有关新信息的通知。1获取0不获取',
-  `follownum` int(10) unsigned NOT NULL COMMENT '圈子内的用户数量',
+  `follownum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '圈子内的用户数量',
   `followid` text COMMENT '圈子内的用户编号列表，逗号分隔',
   `addtime` int(10) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of circles
 -- ----------------------------
+INSERT INTO `circles` VALUES ('3', '7', 'aaa', '2', '1', '1', '4', '1479986374');
+INSERT INTO `circles` VALUES ('4', '7', 'bbb', '2', '1', '2', '8,11', '1479987171');
+INSERT INTO `circles` VALUES ('5', '7', 'ccc', '2', '1', '1', '12', '1479989174');
+INSERT INTO `circles` VALUES ('6', '7', 'ddd', '2', '1', '1', '10', '1479989209');
+INSERT INTO `circles` VALUES ('7', '7', 'lll', '2', '1', '0', null, '1479993594');
+INSERT INTO `circles` VALUES ('8', '13', 'aaa', '2', '1', '3', '12,10,7', '1479998566');
+INSERT INTO `circles` VALUES ('9', '13', 'bbb', '2', '1', '0', null, '1479998598');
+INSERT INTO `circles` VALUES ('10', '16', 'vvv', '2', '1', '1', '13', '1479999204');
 
 -- ----------------------------
 -- Table structure for collections
@@ -54,18 +62,24 @@ CREATE TABLE `collections` (
   `picid` int(11) DEFAULT '1' COMMENT '收藏集图片编号',
   `background` varchar(100) NOT NULL COMMENT '收藏集背景色',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of collections
 -- ----------------------------
-INSERT INTO `collections` VALUES ('36', ' 一个淘宝女装商家对淘宝的控诉', ' 一个淘宝女装商家对淘宝的控诉', '1479920184', '9', null, null, '0', '3', '10,11,25,', '0', '62', '#EB3F79');
-INSERT INTO `collections` VALUES ('37', '微历史', 'The Staffordshire Bull Terrier was developed in the region of Staffordshire, England,', '1479920523', '9', null, null, '0', '0', '', '0', '64', '#A900FF');
-INSERT INTO `collections` VALUES ('38', 'everyone hi a lovely day', 'Taking a break during a walk.﻿', '1479920579', '9', null, null, '0', '1', '10,', '0', '64', '#7D56C1');
-INSERT INTO `collections` VALUES ('39', '美国福布斯是这样介绍马云', '美国福布斯是这样介绍马云', '1479920802', '10', null, null, '0', '2', '11,9,', '0', '66', '#679E37');
-INSERT INTO `collections` VALUES ('40', 'The German Shepherd (German: Deutscher Schäferhund, German pronunciation', 'The German Shepherd (German: Deutscher Schäferhund, German pronunciation', '1479920842', '10', null, null, '0', '0', null, '0', '67', '#00887A');
-INSERT INTO `collections` VALUES ('41', 'The German Shepherd ', 'The German Shepherd ', '1479921137', '11', null, null, '0', '2', '9,25,', '0', '68', '#1D87E4');
-INSERT INTO `collections` VALUES ('42', '新盈利模式，汩汩而出。', '新盈利模式，汩汩而出。', '1479923334', '25', null, null, '0', '0', null, '0', '72', '#7D56C1');
+INSERT INTO `collections` VALUES ('59', '滚滚红尘 Panda', '万物皆有裂痕，那是光照进来的地方', '1479953742', '8', null, null, '0', '1', '13,', '0', '72', '#00ABC0');
+INSERT INTO `collections` VALUES ('60', '好享寧靜大自然 ', ' 攝於香港城門水塘  ', '1479956870', '9', null, null, '0', '2', '12,13,', '0', '83', '#A900FF');
+INSERT INTO `collections` VALUES ('61', '小鳥站枝頭~ 週日愉快 ', 'hAPPy MooD ', '1479956567', '9', null, null, '0', '1', '13,', '0', '84', '#00ABC0');
+INSERT INTO `collections` VALUES ('62', '123213', '23212312312', '1479958308', '9', null, null, '0', '1', '13,', '0', '88', '#A900FF');
+INSERT INTO `collections` VALUES ('63', ' 黃昏夜 ~ ', ' 黃昏夜 ~  黃昏夜 ~ ', '1479957747', '9', null, null, '0', '0', null, '0', '86', '#00ABC0');
+INSERT INTO `collections` VALUES ('64', '大家早安', '希望没扰人清梦', '1479958073', '9', null, null, '0', '0', '', '0', '89', '#00ABC0');
+INSERT INTO `collections` VALUES ('65', '1231231', '21312312', '1479959079', '9', null, null, '0', '0', null, '0', '93', '#00ABC0');
+INSERT INTO `collections` VALUES ('66', '这是我的第一个收藏集', '这是我的第一个收藏集', '1479959924', '12', null, null, '0', '1', '13,', '0', '94', '#029AE4');
+INSERT INTO `collections` VALUES ('67', '123123', '1231231', '1479960992', '12', null, null, '0', '0', null, '0', '100', '#00ABC0');
+INSERT INTO `collections` VALUES ('68', '21312312', '1231231231', '1479964227', '12', null, null, '0', '0', null, '0', '95', '#00ABC0');
+INSERT INTO `collections` VALUES ('69', '12321323123', '213123123123', '1479964283', '12', null, null, '0', '0', null, '0', '101', '#00ABC0');
+INSERT INTO `collections` VALUES ('70', '爱上兄弟连', '邓小平说的这么清楚，邓的家族有多少亿万富翁？', '1480000338', '13', null, null, '0', '0', null, '0', '1', '#EB3F79');
+INSERT INTO `collections` VALUES ('71', 'i love you', 'i love you', '1480004445', '13', null, null, '0', '0', null, '0', '126', '#F8A724');
 
 -- ----------------------------
 -- Table structure for comments
@@ -84,33 +98,24 @@ CREATE TABLE `comments` (
   `path` varchar(255) NOT NULL DEFAULT '0' COMMENT '父级编号层级拼接',
   `addtime` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of comments
 -- ----------------------------
-INSERT INTO `comments` VALUES ('5', '9', '10', '加油毛毛！', null, null, '0', null, '0', '0,', '1479915270');
-INSERT INTO `comments` VALUES ('6', '10', '11', '加油王保！', null, null, '0', null, '0', '0,', '1479915409');
-INSERT INTO `comments` VALUES ('7', '11', '12', 'Handsome boy lovely', null, null, '0', null, '0', '0,', '1479915982');
-INSERT INTO `comments` VALUES ('8', '12', '12', '你可能会喜欢的社群', null, null, '0', null, '0', '0,', '1479916032');
-INSERT INTO `comments` VALUES ('9', '12', '11', '尖子生是怎样炼成的？', null, null, '0', null, '0', '0,', '1479916057');
-INSERT INTO `comments` VALUES ('10', '12', '10', '科学家在实验室养成的肠道组织在老鼠体内茁壮', null, null, '0', null, '0', '0,', '1479916077');
-INSERT INTO `comments` VALUES ('11', '12', '13', '宝贝好可爱', null, null, '0', null, '0', '0,', '1479916240');
-INSERT INTO `comments` VALUES ('12', '13', '14', 'The breed\'s officially recognized name is German Shepherd Dog in the English language, sometimes abbreviated as GSD and was also formerly known as the Alsatian in Britain.', null, null, '0', null, '0', '0,', '1479916558');
-INSERT INTO `comments` VALUES ('13', '13', '13', 'The breed\'s officially recognized name is German Shepherd Dog in the English language, sometimes abbreviated as GSD and was also formerly known as the Alsatian in Britain.', null, null, '0', null, '0', '0,', '1479916575');
-INSERT INTO `comments` VALUES ('14', '13', '11', 'The breed\'s officially recognized name is German Shepherd Dog in the English language, sometimes abbreviated as GSD and was also formerly known as the Alsatian in Britain.', null, null, '0', null, '0', '0,', '1479916582');
-INSERT INTO `comments` VALUES ('15', '13', '14', '写小说本不想幽默', null, null, '0', null, '0', '0,', '1479916658');
-INSERT INTO `comments` VALUES ('16', '14', '15', 'The girls snuggling with us after a long weekend being boarded at the vet.', null, null, '0', null, '0', '0,', '1479916786');
-INSERT INTO `comments` VALUES ('17', '15', '16', '向中国叩头  脸书研发审查工具\n\n图片：2016年3月18日扎克伯格和一小群人在北京天安门前慢跑\nFacebook创办人扎克伯格（Mark Zuckerberg）为了让脸书进军中国，不仅用自己的肺帮中国过滤雾霾，在雾霾天里在北京路跑，还打算配合中国审查制度，编写能封锁特定内容的程式。', null, null, '0', null, '0', '0,', '1479917071');
-INSERT INTO `comments` VALUES ('18', '15', '16', 'qqq', null, null, '0', null, '17', '0,17,', '1479917132');
-INSERT INTO `comments` VALUES ('19', '16', '17', '这不是一个笑话，而是一个严肃的话题', null, null, '0', null, '0', '0,', '1479917257');
-INSERT INTO `comments` VALUES ('20', '19', '18', '近日一名教授在微博上发表题为“中国的防火墙是不是弄反了？', null, null, '0', null, '0', '0,', '1479917881');
-INSERT INTO `comments` VALUES ('21', '19', '19', 'Chocolate Labradors', null, null, '0', null, '0', '0,', '1479918002');
-INSERT INTO `comments` VALUES ('22', '20', '20', '话说二郎神与众仙斗法，将哮天犬变成玉皇大帝，就连王母也分辨不出。王母唯恐闹出事端，只好向佛祖求教该如何辨认？\n佛祖说：江山易改本性难移，样貌可以幻化，本性不会改变。\n你让嫦娥赤身裸体端包子给他俩送去，两眼直勾勾看女人的那个就是老皇帝，只知道吃包子的那个就是狗！', null, null, '0', null, '0', '0,', '1479919209');
-INSERT INTO `comments` VALUES ('23', '20', '20', '江山易改本性难移', null, null, '0', null, '22', '0,22,', '1479919218');
-INSERT INTO `comments` VALUES ('24', '21', '21', ' Odin wishes you a good day. A fine walk in the forest with a little bit ice bathing before trip to the veterinary for checking his tonsils, no more antibiotics wait and see. ', null, null, '0', null, '0', '0,', '1479919333');
-INSERT INTO `comments` VALUES ('25', '23', '22', '邮箱里收到这封很特别的邮件，目标直指最红最火的淘宝，淘宝现在天下无敌，', null, null, '0', null, '0', '0,', '1479919454');
-INSERT INTO `comments` VALUES ('26', '25', '24', '新盈利模式，汩汩而出。', null, null, '0', null, '0', '0,', '1479923356');
+INSERT INTO `comments` VALUES ('1', '1', '1', '虽然各色各', '1', '1', '1', '1', '1', '1,', '11152333');
+INSERT INTO `comments` VALUES ('2', '2', '2', '三个太过挑剔', '2', '2', '2', '2', '2', '2,', '34234234');
+INSERT INTO `comments` VALUES ('3', '3', '3', '嘎如果', '3', '3', '3', '3', '3', '3,', '234234');
+INSERT INTO `comments` VALUES ('4', '4', '4', '公司各色各', '4', '4', '4', '4', '4', '4,', '4353453');
+INSERT INTO `comments` VALUES ('5', '10', '2', 'nihao', null, null, '0', null, '0', '0,', '1479734306');
+INSERT INTO `comments` VALUES ('6', '10', '2', 'qweqweqw', null, null, '0', null, '5', '0,5,', '1479734334');
+INSERT INTO `comments` VALUES ('7', '8', '10', '哈哈个啥\n', null, null, '0', null, '0', '0,', '1479861702');
+INSERT INTO `comments` VALUES ('8', '9', '45', 'kk', null, null, '0', null, '0', '0,', '1479973471');
+INSERT INTO `comments` VALUES ('9', '9', '45', 'dgtg', null, null, '0', null, '0', '0,', '1479977132');
+INSERT INTO `comments` VALUES ('10', '13', '46', '对我来说，有一项角逐胜过二者，那就是本周末开始的世界小姐总决赛。', null, null, '0', null, '0', '0,', '1479998444');
+INSERT INTO `comments` VALUES ('11', '15', '48', 'A  child\'s  personal  bodyguard  and  their  footbal  team.  \n!﻿', null, null, '0', null, '0', '0,', '1479998959');
+INSERT INTO `comments` VALUES ('12', '18', '51', 'The Labrador Retriever, also Labrador, is a type of retriever-gun dog. ', null, null, '0', null, '0', '0,', '1479999462');
+INSERT INTO `comments` VALUES ('13', '14', '54', '别紧张，你会表现的很好！', null, null, '0', null, '0', '0,', '1480000554');
 
 -- ----------------------------
 -- Table structure for commoption
@@ -148,6 +153,44 @@ CREATE TABLE `commtypes` (
 -- ----------------------------
 -- Records of commtypes
 -- ----------------------------
+INSERT INTO `commtypes` VALUES ('1', '1', 'ZsCffC', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('2', '2', 'UOzbOc', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('3', '3', 'nRay80', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('5', '5', 'yNkjix', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('6', '6', 'MuaveU', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('7', '7', 'BClZ1A', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('8', '8', 'vrOHDw', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('9', '9', 'sczEVk', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('10', '10', '2Sam5s', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('11', '11', 'iKVYbe', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('12', '12', 'opYkNL', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('13', '13', '7TZYft', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('14', '14', 'dJtUv4', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('15', '15', 'PW9gNs', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('16', '16', 'ipoxal', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('17', '17', 'Wf82uQ', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('18', '18', 'DCwZKe', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('19', '19', 'Pvh8Zc', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('20', '20', 'ZeBx6c', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('21', '21', 'ZgiaF6', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('22', '22', 'pGtc2T', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('23', '23', 'jnt1m1', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('24', '24', 'sIOeO9', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('25', '25', 'I3KYio', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('26', '26', '3nMSxn', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('27', '27', 'mn8fwF', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('28', '28', '2qFeK5', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('29', '29', 'ttRfkE', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('30', '30', 'hSQ9AZ', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('31', '31', 'Ni8cNS', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('32', '32', 'arQZrG', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('33', '33', 'yH9laR', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('34', '34', 'oVsVZ1', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('35', '35', 'W4xUkb', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('36', '36', 'xjQG5H', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('37', '37', 'ei5ZAj', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('38', '38', 'zKBZxO', '0', '0,', '1478693351', '0');
+INSERT INTO `commtypes` VALUES ('39', '39', 'v6t7Lv', '0', '0,', '1478693351', '0');
 
 -- ----------------------------
 -- Table structure for communities
@@ -171,12 +214,19 @@ CREATE TABLE `communities` (
   `describe` text COMMENT '社区描述',
   `linkid` varchar(500) DEFAULT NULL COMMENT '链接编号列表，逗号分隔',
   `typeid` varchar(300) DEFAULT NULL COMMENT '类别编号列表，逗号分隔',
+  `sqjr` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '1申请加入，0加入，',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of communities
 -- ----------------------------
+INSERT INTO `communities` VALUES ('1', 'Naruto', 'Naruto', '1479955161', '8', '0', null, '1', '100,1,2,3', '0', '2', '9,14,', null, '78', '', null, '2', '0');
+INSERT INTO `communities` VALUES ('27', 'Transformers', 'Till all are one!', '1479954378', '8', '0', null, '1', null, '0', '1', '16,', null, '74', null, null, null, '0');
+INSERT INTO `communities` VALUES ('28', 'Landscape', 'Learning  the Natural World', '1479954870', '8', '0', null, '1', null, '0', '2', '9,17,', null, '77', null, null, null, '0');
+INSERT INTO `communities` VALUES ('29', 'Anime', 'Welcome to our world!', '1479955821', '9', '0', null, '1', null, '0', '1', '15,', null, '80', null, null, null, '0');
+INSERT INTO `communities` VALUES ('30', 'I was bored and ', 'I was bored and started watching WataMote', '1479956044', '9', '0', null, '1', null, '0', '0', null, null, '82', null, null, null, '0');
+INSERT INTO `communities` VALUES ('31', '这是我的第一个社群', '这是我的第一个社群', '1479960311', '12', '0', null, '1', null, '0', '1', '18,', null, '94', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for files
@@ -191,60 +241,137 @@ CREATE TABLE `files` (
   `state` tinyint(2) NOT NULL DEFAULT '1' COMMENT '文件状态。1正常0回收站',
   `addtime` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of files
 -- ----------------------------
-INSERT INTO `files` VALUES ('24', '24', 'image/jpeg', '9', '/files/2016/11/23/9/24.jpg', '1', '1479915220');
-INSERT INTO `files` VALUES ('25', '25', 'image/jpeg', '10', '/files/2016/11/23/10/25.jpg', '1', '1479915378');
-INSERT INTO `files` VALUES ('26', '26', 'image/jpeg', '10', '/files/2016/11/23/10/26.jpg', '1', '1479915537');
-INSERT INTO `files` VALUES ('27', '27', 'image/jpeg', '10', '/files/2016/11/23/10/27.jpg', '1', '1479915555');
-INSERT INTO `files` VALUES ('28', '28', 'image/jpeg', '11', '/files/2016/11/23/11/28.jpg', '1', '1479915805');
-INSERT INTO `files` VALUES ('29', '29', 'image/jpeg', '11', '/files/2016/11/23/11/29.jpg', '1', '1479915911');
-INSERT INTO `files` VALUES ('30', '30', 'image/jpeg', '11', '/files/2016/11/23/11/30.jpg', '1', '1479915924');
-INSERT INTO `files` VALUES ('31', '31', 'image/jpeg', '12', '/files/2016/11/23/12/31.jpg', '1', '1479916104');
-INSERT INTO `files` VALUES ('32', '32', 'image/jpeg', '12', '/files/2016/11/23/12/32.jpg', '1', '1479916117');
-INSERT INTO `files` VALUES ('33', '33', 'image/jpeg', '12', '/files/2016/11/23/12/33.jpg', '1', '1479916211');
-INSERT INTO `files` VALUES ('34', '34', 'image/jpeg', '9', '/files/2016/11/23/9/34.jpg', '1', '1479916405');
-INSERT INTO `files` VALUES ('35', '35', 'image/jpeg', '9', '/files/2016/11/23/9/35.jpg', '1', '1479916422');
-INSERT INTO `files` VALUES ('36', '36', 'image/jpeg', '13', '/files/2016/11/23/13/36.jpg', '1', '1479916529');
-INSERT INTO `files` VALUES ('37', '37', 'image/jpeg', '13', '/files/2016/11/23/13/37.jpg', '1', '1479916605');
-INSERT INTO `files` VALUES ('38', '38', 'image/jpeg', '13', '/files/2016/11/23/13/38.jpg', '1', '1479916616');
-INSERT INTO `files` VALUES ('39', '39', 'image/jpeg', '14', '/files/2016/11/23/14/39.jpg', '1', '1479916765');
-INSERT INTO `files` VALUES ('40', '40', 'image/jpeg', '14', '/files/2016/11/23/14/40.jpg', '1', '1479916832');
-INSERT INTO `files` VALUES ('41', '41', 'image/jpeg', '14', '/files/2016/11/23/14/41.jpg', '1', '1479916843');
-INSERT INTO `files` VALUES ('42', '42', 'image/jpeg', '15', '/files/2016/11/23/15/42.jpg', '1', '1479916938');
-INSERT INTO `files` VALUES ('43', '43', 'image/jpeg', '15', '/files/2016/11/23/15/43.jpg', '1', '1479916949');
-INSERT INTO `files` VALUES ('44', '44', 'image/jpeg', '15', '/files/2016/11/23/15/44.jpg', '1', '1479916998');
-INSERT INTO `files` VALUES ('45', '45', 'image/jpeg', '16', '/files/2016/11/23/16/45.jpg', '1', '1479917217');
-INSERT INTO `files` VALUES ('46', '46', 'image/jpeg', '16', '/files/2016/11/23/16/46.jpg', '1', '1479917269');
-INSERT INTO `files` VALUES ('47', '47', 'image/jpeg', '16', '/files/2016/11/23/16/47.jpg', '1', '1479917279');
-INSERT INTO `files` VALUES ('48', '48', 'image/jpeg', '17', '/files/2016/11/23/17/48.jpg', '1', '1479917486');
-INSERT INTO `files` VALUES ('49', '49', 'image/jpeg', '17', '/files/2016/11/23/17/49.jpg', '1', '1479917496');
-INSERT INTO `files` VALUES ('50', '50', 'image/jpeg', '18', '/files/2016/11/23/18/50.jpg', '1', '1479917600');
-INSERT INTO `files` VALUES ('51', '51', 'image/jpeg', '18', '/files/2016/11/23/18/51.jpg', '1', '1479917611');
-INSERT INTO `files` VALUES ('52', '52', 'image/jpeg', '18', '/files/2016/11/23/18/52.jpg', '1', '1479917809');
-INSERT INTO `files` VALUES ('53', '53', 'image/jpeg', '19', '/files/2016/11/23/19/53.jpg', '1', '1479917907');
-INSERT INTO `files` VALUES ('54', '54', 'image/jpeg', '19', '/files/2016/11/23/19/54.png', '1', '1479919013');
-INSERT INTO `files` VALUES ('55', '55', 'image/jpeg', '20', '/files/2016/11/23/20/55.jpeg', '1', '1479919110');
-INSERT INTO `files` VALUES ('56', '56', 'image/jpeg', '20', '/files/2016/11/23/20/56.jpg', '1', '1479919165');
-INSERT INTO `files` VALUES ('57', '57', 'image/jpeg', '20', '/files/2016/11/23/20/57.jpg', '1', '1479919172');
-INSERT INTO `files` VALUES ('58', '58', 'image/jpeg', '21', '/files/2016/11/23/21/58.jpg', '1', '1479919293');
-INSERT INTO `files` VALUES ('59', '59', 'image/jpeg', '21', '/files/2016/11/23/21/59.jpg', '1', '1479919311');
-INSERT INTO `files` VALUES ('60', '60', 'image/jpeg', '21', '/files/2016/11/23/21/60.jpg', '1', '1479919319');
-INSERT INTO `files` VALUES ('61', '61', 'image/jpeg', '23', '/files/2016/11/23/23/61.jpeg', '1', '1479919393');
-INSERT INTO `files` VALUES ('62', '62', 'image/jpeg', '23', '/files/2016/11/23/23/62.jpg', '1', '1479919417');
-INSERT INTO `files` VALUES ('63', null, null, '9', '/images/1479920184WqLQS9.jpg', '1', null);
-INSERT INTO `files` VALUES ('64', null, null, '9', '/images/1479920523PssEGd.png', '1', null);
-INSERT INTO `files` VALUES ('65', null, null, '9', '/images/1479920579IvqIs4.jpg', '1', null);
-INSERT INTO `files` VALUES ('66', null, null, '10', '/images/1479920802344yzZ.jpg', '1', null);
-INSERT INTO `files` VALUES ('67', null, null, '10', '/images/1479920842EUXuJ9.jpg', '1', null);
-INSERT INTO `files` VALUES ('68', null, null, '11', '/images/1479921137qjxlsR.jpg', '1', null);
-INSERT INTO `files` VALUES ('69', '69', 'image/jpeg', '9', '/files/2016/11/23/9/69.jpg', '1', '1479921471');
-INSERT INTO `files` VALUES ('70', '70', 'image/jpeg', '25', '/files/2016/11/24/25/70.jpg', '1', '1479923205');
-INSERT INTO `files` VALUES ('71', '71', 'image/jpeg', '25', '/files/2016/11/24/25/71.jpg', '1', '1479923229');
-INSERT INTO `files` VALUES ('72', null, null, '25', '/images/14799233348bd5vw.jpg', '1', null);
+INSERT INTO `files` VALUES ('1', '1', '', '1', '/images/sqmrbg.jpg', '1', '2343354');
+INSERT INTO `files` VALUES ('2', '2', null, '2', '/images/2.jpg', '1', '3423');
+INSERT INTO `files` VALUES ('3', '3', null, '4', '/images/3.jpg', '1', '32432423');
+INSERT INTO `files` VALUES ('4', '4', null, '5', '/images/5.jpg', '1', '43545');
+INSERT INTO `files` VALUES ('5', '5', null, '6', '/images/6.jpg', '1', '345465');
+INSERT INTO `files` VALUES ('6', null, null, '7', '/images/1.jpg', '1', null);
+INSERT INTO `files` VALUES ('7', null, null, '8', '/images/1479817635AkcUxw.jpg', '1', null);
+INSERT INTO `files` VALUES ('8', null, null, '9', '/images/1.jpg', '1', null);
+INSERT INTO `files` VALUES ('9', null, null, '8', '/images/1.jpg', '1', null);
+INSERT INTO `files` VALUES ('10', null, null, '1', '/images/1.jpg', '1', null);
+INSERT INTO `files` VALUES ('11', null, null, '2', '/images/1.jpg', '1', null);
+INSERT INTO `files` VALUES ('12', null, null, '8', '/images/1479456790QaBi9z.jpg', '1', null);
+INSERT INTO `files` VALUES ('13', null, null, '8', '/images/1479456925hfYmgg.jpg', '1', null);
+INSERT INTO `files` VALUES ('14', null, null, '8', '/images/14794582348sHPBA.jpg', '1', null);
+INSERT INTO `files` VALUES ('15', null, null, '8', '/images/1479458405nsNxI5.jpg', '1', null);
+INSERT INTO `files` VALUES ('16', null, null, '8', '/images/1479458472A07OBA.jpg', '1', null);
+INSERT INTO `files` VALUES ('17', null, null, '8', '/images/1479458728xLa6rV.jpg', '1', null);
+INSERT INTO `files` VALUES ('18', null, null, '8', '/images/1479459454NY2lfW.jpg', '1', null);
+INSERT INTO `files` VALUES ('19', null, null, '8', '/images/14795362140NYsKk.jpg', '1', null);
+INSERT INTO `files` VALUES ('20', null, null, '8', '/images/1479460353v2KcVz.jpg', '1', null);
+INSERT INTO `files` VALUES ('21', null, null, '8', '/images/1479466379LP4dbd.jpg', '1', null);
+INSERT INTO `files` VALUES ('22', null, null, '8', '/images/1479536072kwS6SC.jpg', '1', null);
+INSERT INTO `files` VALUES ('23', null, null, '8', '/images/1479909777UONfeB.jpg', '1', null);
+INSERT INTO `files` VALUES ('24', null, null, '9', '/images/14797836159KI63W.jpg', '1', null);
+INSERT INTO `files` VALUES ('25', null, null, '9', '/images/1479783669oj3g19.jpg', '1', null);
+INSERT INTO `files` VALUES ('26', null, null, '9', '/images/1479783697Rz1P8g.jpg', '1', null);
+INSERT INTO `files` VALUES ('27', null, null, '9', '/images/14797837429nuzCD.jpg', '1', null);
+INSERT INTO `files` VALUES ('28', null, null, '9', '/images/1479783841cxmrNG.jpg', '1', null);
+INSERT INTO `files` VALUES ('29', null, null, '9', '/images/1479784007JgUCM8.jpg', '1', null);
+INSERT INTO `files` VALUES ('30', null, null, '9', '/images/1479784148RzQVCe.jpg', '1', null);
+INSERT INTO `files` VALUES ('31', null, null, '9', '/images/1479784843Wy1HcV.jpg', '1', '1479784843');
+INSERT INTO `files` VALUES ('32', null, null, '9', '/images/1479784902UkkHMA.jpg', '1', '1479784902');
+INSERT INTO `files` VALUES ('33', null, null, '9', '/images/1479788057vuYEhs.jpg', '1', '1479785674');
+INSERT INTO `files` VALUES ('34', null, null, '8', '/images/1479955128o103wP.jpg', '1', '1479817603');
+INSERT INTO `files` VALUES ('35', null, null, '8', '/images/1479817670rIcxAQ.jpg', '1', '1479817670');
+INSERT INTO `files` VALUES ('36', null, null, '8', '/images/1479827387pSPWV0.jpg', '1', '1479827387');
+INSERT INTO `files` VALUES ('37', null, null, '8', '/images/1479827427seYSvl.jpg', '1', '1479827427');
+INSERT INTO `files` VALUES ('38', null, null, '8', '/images/1479827551fcdF6B.jpg', '1', '1479827552');
+INSERT INTO `files` VALUES ('39', null, null, '8', '/images/14798277702wYXzh.jpg', '1', '1479827770');
+INSERT INTO `files` VALUES ('40', null, null, '8', '/images/1479861525ugv0ng.jpg', '1', '1479861525');
+INSERT INTO `files` VALUES ('41', '41', 'image/jpeg', '8', '/files/2016/11/14/8/41.jpg', '1', '1479862782');
+INSERT INTO `files` VALUES ('42', null, null, '8', '/images/1479867702RuF8C5.jpg', '1', '1479867702');
+INSERT INTO `files` VALUES ('43', '43', 'image/jpeg', '8', '/files/2016/11/14/8/43.jpg', '1', '1479873276');
+INSERT INTO `files` VALUES ('44', '44', 'image/jpeg', '8', '/files/2016/11/14/8/44.jpg', '1', '1479873277');
+INSERT INTO `files` VALUES ('45', '45', 'image/jpeg', '8', '/files/2016/11/14/8/45.jpg', '1', '1479873277');
+INSERT INTO `files` VALUES ('46', '46', 'image/jpeg', '8', '/files/2016/11/14/8/46.jpg', '1', '1479873278');
+INSERT INTO `files` VALUES ('47', null, null, '8', '/images/1479892359NkTCtX.jpg', '1', '1479892359');
+INSERT INTO `files` VALUES ('48', null, null, '8', '/images/14799102057DdKVK.jpg', '1', '1479899323');
+INSERT INTO `files` VALUES ('49', null, null, '8', '/images/1479903825EZ4nJU.jpg', '1', '1479903825');
+INSERT INTO `files` VALUES ('50', null, null, '8', '/images/147990419505FEac.jpg', '1', '1479904195');
+INSERT INTO `files` VALUES ('51', null, null, '8', '/images/14799162222W2XKn.jpg', '1', '1479904452');
+INSERT INTO `files` VALUES ('52', null, null, '8', '/images/1479909932RDJAyh.jpg', '1', null);
+INSERT INTO `files` VALUES ('53', null, null, '8', '/images/1479910991YpoBO8.jpg', '1', null);
+INSERT INTO `files` VALUES ('54', null, null, '8', '/images/1479912307wmREpP.jpg', '1', '1479912308');
+INSERT INTO `files` VALUES ('55', null, null, '8', '/images/1479913516FfWYmx.jpg', '1', '1479913516');
+INSERT INTO `files` VALUES ('56', null, null, '8', '/images/14799135203AwLQT.jpg', '1', '1479913520');
+INSERT INTO `files` VALUES ('57', null, null, '8', '/images/1479913926l1tKgV.jpg', '1', '1479913926');
+INSERT INTO `files` VALUES ('58', null, null, '8', '/images/1479915566xwEimr.jpg', '1', '1479915566');
+INSERT INTO `files` VALUES ('59', null, null, '8', '/images/1479917647yOo2rO.jpg', '1', '1479916304');
+INSERT INTO `files` VALUES ('60', null, null, '8', '/images/14799174812eOhvr.jpg', '1', '1479917481');
+INSERT INTO `files` VALUES ('61', null, null, '8', '/images/14799427394y8Hu8.jpg', '1', '1479942739');
+INSERT INTO `files` VALUES ('62', null, null, '8', '/images/14799427674qb8OH.jpg', '1', '1479942767');
+INSERT INTO `files` VALUES ('63', null, null, '8', '/images/14799428081x2Z70.jpg', '1', '1479942808');
+INSERT INTO `files` VALUES ('64', '64', 'image/jpeg', '8', '/files/2016/11/14/8/64.jpg', '1', '1479952198');
+INSERT INTO `files` VALUES ('65', '65', 'image/jpeg', '8', '/files/2016/11/14/8/65.jpg', '1', '1479952291');
+INSERT INTO `files` VALUES ('66', '66', 'image/jpeg', '8', '/files/2016/11/14/8/66.jpg', '1', '1479952363');
+INSERT INTO `files` VALUES ('67', '67', 'image/jpeg', '8', '/files/2016/11/14/8/67.jpg', '1', '1479952535');
+INSERT INTO `files` VALUES ('68', '68', 'image/jpeg', '8', '/files/2016/11/14/8/68.jpg', '1', '1479952887');
+INSERT INTO `files` VALUES ('69', '69', 'image/jpeg', '8', '/files/2016/11/14/8/69.jpg', '1', '1479952979');
+INSERT INTO `files` VALUES ('70', '70', 'image/jpeg', '8', '/files/2016/11/14/8/70.jpg', '1', '1479953188');
+INSERT INTO `files` VALUES ('71', '71', 'image/jpeg', '8', '/files/2016/11/14/8/71.jpg', '1', '1479953323');
+INSERT INTO `files` VALUES ('72', null, null, '8', '/images/1479953742jBVeTx.jpg', '1', '1479953742');
+INSERT INTO `files` VALUES ('73', '73', 'image/jpeg', '8', '/files/2016/11/14/8/73.jpg', '1', '1479954027');
+INSERT INTO `files` VALUES ('74', null, null, '8', '/images/1479954377l962G5.jpg', '1', '1479954377');
+INSERT INTO `files` VALUES ('75', '75', 'image/jpeg', '8', '/files/2016/11/14/8/75.jpg', '1', '1479954517');
+INSERT INTO `files` VALUES ('76', null, null, '8', '/images/1479954869Ba4RKj.jpg', '1', '1479954613');
+INSERT INTO `files` VALUES ('77', null, null, '8', '/images/14799548250ea6j3.jpg', '1', '1479954825');
+INSERT INTO `files` VALUES ('78', null, null, '8', '/images/1479955161iiDGsJ.jpg', '1', '1479954957');
+INSERT INTO `files` VALUES ('79', null, null, '8', '/images/1479955243zRWh4B.jpg', '1', '1479955243');
+INSERT INTO `files` VALUES ('80', null, null, '9', '/images/1479955821qEdM0e.jpg', '1', '1479955821');
+INSERT INTO `files` VALUES ('81', null, null, '9', '/images/1479955884RdW2J5.jpg', '1', '1479955884');
+INSERT INTO `files` VALUES ('82', null, null, '9', '/images/1479956043bYwlKg.jpg', '1', '1479956043');
+INSERT INTO `files` VALUES ('83', null, null, '9', '/images/1479958307gNX8FL.jpg', '1', '1479956453');
+INSERT INTO `files` VALUES ('84', null, null, '9', '/images/1479956529Fh40c2.jpg', '1', null);
+INSERT INTO `files` VALUES ('85', null, null, '9', '/images/14799582786JgnEp.jpg', '1', null);
+INSERT INTO `files` VALUES ('86', null, null, '9', '/images/1479957747lrdBfK.jpg', '1', null);
+INSERT INTO `files` VALUES ('87', null, null, '9', '/images/1479957878FRNwkh.jpg', '1', null);
+INSERT INTO `files` VALUES ('88', null, null, '9', '/images/1479957882CFu9Bb.jpg', '1', null);
+INSERT INTO `files` VALUES ('89', null, null, '9', '/images/1479957889MbWSxo.jpg', '1', null);
+INSERT INTO `files` VALUES ('90', null, null, '9', '/images/1479958072xHEaG6.jpg', '1', null);
+INSERT INTO `files` VALUES ('91', null, null, '9', '/images/1479958791GS2L6j.jpg', '1', null);
+INSERT INTO `files` VALUES ('92', null, null, '9', '/images/14799588877dRHIo.jpg', '1', null);
+INSERT INTO `files` VALUES ('93', null, null, '9', '/images/1479959079J5YE4a.jpg', '1', null);
+INSERT INTO `files` VALUES ('94', null, null, '12', '/images/147995992377tUcf.jpg', '1', '1479959923');
+INSERT INTO `files` VALUES ('95', null, null, '12', '/images/1479964226eV8J3m.jpg', '1', '1479960311');
+INSERT INTO `files` VALUES ('96', null, null, '12', '/images/1479960581OXpXiJ.jpg', '1', null);
+INSERT INTO `files` VALUES ('97', null, null, '12', '/images/1479960586p4WfCB.jpg', '1', null);
+INSERT INTO `files` VALUES ('98', null, null, '12', '/images/1479960660PkjNSp.jpg', '1', null);
+INSERT INTO `files` VALUES ('99', null, null, '12', '/images/1479960841CfmpfQ.jpg', '1', null);
+INSERT INTO `files` VALUES ('100', null, null, '12', '/images/14799609928bSxau.jpg', '1', null);
+INSERT INTO `files` VALUES ('101', null, null, '12', '/images/1479964282KsASNK.jpg', '1', null);
+INSERT INTO `files` VALUES ('102', '102', 'image/jpeg', '13', '/files/2016/11/24/13/102.jpg', '1', '1479998408');
+INSERT INTO `files` VALUES ('103', '103', 'image/jpeg', '13', '/files/2016/11/24/13/103.jpg', '1', '1479998496');
+INSERT INTO `files` VALUES ('104', '104', 'image/jpeg', '13', '/files/2016/11/24/13/104.jpg', '1', '1479998507');
+INSERT INTO `files` VALUES ('105', '105', 'image/jpeg', '14', '/files/2016/11/24/14/105.jpeg', '1', '1479998698');
+INSERT INTO `files` VALUES ('106', '106', 'image/jpeg', '14', '/files/2016/11/24/14/106.jpg', '1', '1479998753');
+INSERT INTO `files` VALUES ('107', '107', 'image/jpeg', '14', '/files/2016/11/24/14/107.jpg', '1', '1479998761');
+INSERT INTO `files` VALUES ('108', '108', 'image/jpeg', '15', '/files/2016/11/24/15/108.jpg', '1', '1479998935');
+INSERT INTO `files` VALUES ('109', '109', 'image/jpeg', '16', '/files/2016/11/24/16/109.jpg', '1', '1479999080');
+INSERT INTO `files` VALUES ('110', '110', 'image/jpeg', '16', '/files/2016/11/24/16/110.jpg', '1', '1479999105');
+INSERT INTO `files` VALUES ('111', '111', 'image/jpeg', '16', '/files/2016/11/24/16/111.jpg', '1', '1479999118');
+INSERT INTO `files` VALUES ('112', '112', 'image/jpeg', '17', '/files/2016/11/24/17/112.png', '1', '1479999293');
+INSERT INTO `files` VALUES ('113', '113', 'image/jpeg', '17', '/files/2016/11/24/17/113.jpg', '1', '1479999343');
+INSERT INTO `files` VALUES ('114', '114', 'image/jpeg', '17', '/files/2016/11/24/17/114.jpg', '1', '1479999358');
+INSERT INTO `files` VALUES ('115', '115', 'image/jpeg', '18', '/files/2016/11/24/18/115.jpg', '1', '1479999439');
+INSERT INTO `files` VALUES ('116', '116', 'image/jpeg', '18', '/files/2016/11/24/18/116.png', '1', '1479999473');
+INSERT INTO `files` VALUES ('117', '117', 'image/jpeg', '18', '/files/2016/11/24/18/117.jpg', '1', '1479999484');
+INSERT INTO `files` VALUES ('118', '118', 'image/jpeg', '19', '/files/2016/11/24/19/118.jpg', '1', '1479999590');
+INSERT INTO `files` VALUES ('119', '119', 'image/jpeg', '19', '/files/2016/11/24/19/119.jpg', '1', '1479999598');
+INSERT INTO `files` VALUES ('120', '120', 'image/jpeg', '19', '/files/2016/11/24/19/120.jpg', '1', '1479999683');
+INSERT INTO `files` VALUES ('121', '121', 'image/jpeg', '20', '/files/2016/11/24/20/121.jpg', '1', '1479999782');
+INSERT INTO `files` VALUES ('122', '122', 'image/jpeg', '20', '/files/2016/11/24/20/122.jpg', '1', '1479999790');
+INSERT INTO `files` VALUES ('123', '123', 'image/jpeg', '13', '/files/2016/11/24/13/123.jpg', '1', '1480000364');
+INSERT INTO `files` VALUES ('124', '124', 'image/jpeg', '13', '/files/2016/11/24/13/124.jpg', '1', '1480000459');
+INSERT INTO `files` VALUES ('125', '125', 'image/jpeg', '13', '/files/2016/11/24/13/125.jpg', '1', '1480000607');
+INSERT INTO `files` VALUES ('126', null, null, '13', '/images/1480004444K24oR7.jpg', '1', null);
 
 -- ----------------------------
 -- Table structure for links
@@ -316,26 +443,35 @@ CREATE TABLE `posts` (
   `fixed` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否固定到顶部 1固定 0禁',
   `state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '帖子状态。1正常0回收站2待审核',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of posts
 -- ----------------------------
-INSERT INTO `posts` VALUES ('10', null, null, 'Temperament\nThe Staffordshire Bull Terrier does everything full throttle: play, work and love. It is extremely courageous and obedient, affectionate with a sense of humor. One owner of this breed says, \"Staffordshire Bull Terriers are very people friendly. They are not particularly wary of strangers in almost all circumstances—although I\'ve heard a few anecdotes about some being wary of particular people. My dogs are always happy to meet new people!\" The breed’s reputation ', '1479915244', '9', '2', '24', null, null, null, null, null, null, null, null, '2', '1', '1', '4', '9,10,11,12', '0', '0', '1');
-INSERT INTO `posts` VALUES ('11', null, null, '什么是西藏的当务之急\n——保护西藏的生态环境\n\n什么是西藏的当务之急？西藏自治区的新党委书记吴英杰认为“深入开展对达赖集团斗争、实现社会局势持续稳定长期稳定全面稳定”是首要政治任务。笔者以为保护西藏的生态环境是当务之急，西藏高原并非世界上生态环境保护的最好的地方，而是世界上生态环境破坏最严重的地方，气温上升，冰川雪山融化，草原退化，沙漠化扩大，水质下降', '1479915384', '10', '2', '25', null, null, null, null, null, null, null, null, '3', '1', '1', '3', '10,11,12', '0', '0', '1');
-INSERT INTO `posts` VALUES ('12', null, null, '誰的歌聲輕輕、輕輕唱，\n誰的淚水靜靜淌。\n那些年華都付作過往，\n他們偎依著彼此說好要面對風浪。\n\n又是一地枯黃，楓葉紅了滿面秋霜。\n這場故夢裡，人生如戲唱，\n還有誰登場。', '1479915812', '11', '2', '28', null, null, null, null, null, null, null, null, '2', '1', '1', '3', '11,12,13', '0', '0', '1');
-INSERT INTO `posts` VALUES ('13', null, null, 'The German Shepherd (German: Deutscher Schäferhund, German pronunciation: [ˈʃɛːfɐˌhʊnt]) is a breed of medium to large-sized working dog that originated in Germany. The breed\'s officially recognized name is German Shepherd Dog in the English language, sometimes abbreviated as GSD and was also formerly known as the Alsatian in Britain.', '1479916217', '12', '2', '33', null, null, null, null, null, null, null, null, '2', '1', '1', '2', '12,9', '0', '0', '1');
-INSERT INTO `posts` VALUES ('14', null, null, 'German Shepherd is a relatively new breed of dog, with their origin dating to 1899. As part of the Herding Group, German Shepherds are working dogs developed originally for herding sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including disability assistance, search-and-rescue, police and military roles, and even acting.', '1479916539', '13', '2', '36', null, null, null, null, null, null, null, null, '2', '1', '1', '1', '13', '0', '0', '1');
-INSERT INTO `posts` VALUES ('15', null, null, '刘震云：写小说本不想幽默\n\n图片：刘震云在今年的“中国时代（China Time）”活动期间出席朗诵会\n在被中国媒体称为“刘震云月”的11月里，中国作家刘震云短暂现身德国。他谈到中国式审查、万达和华谊之间的矛盾以及中国的高速发展。', '1479916770', '14', '2', '39', null, null, null, null, null, null, null, null, '1', '1', '1', '1', '14', '0', '0', '1');
-INSERT INTO `posts` VALUES ('16', null, null, 'BUTTERFLY GIF OR YOU SWEET FRIEND !!\nI Love You my Friend !\n', '1479917020', '15', '2', '44', null, null, null, null, null, null, null, null, '2', '1', '1', '1', '15', '0', '0', '1');
-INSERT INTO `posts` VALUES ('17', null, null, '近日一名教授在微博上发表题为“中国的防火墙是不是弄反了？”的文章，引来不少民众的共鸣。文章说：爬过几次长城，发现一个规律，朝外那一面的城墙险峻，敌人爬上来不容易；而朝内的一面都比较平缓，自己上去防御比较容易。而现在中国的防火墙呢？好像是专门和自己过不去。﻿', '1479917223', '16', '2', '45', null, null, null, null, null, null, null, null, '1', '1', '1', '1', '16', '0', '0', '1');
-INSERT INTO `posts` VALUES ('18', null, null, '〖微博谈〗20161123\n1.@报社V香港：少扯什么“落后就要挨打”。如果一个人活在世上，周围所有的人都想揍他，绝不是因为他落后，而是因为他欠揍。国家亦然。', '1479917814', '18', '2', '52', null, null, null, null, null, null, null, null, '1', '1', '1', '1', '19', '0', '0', '1');
-INSERT INTO `posts` VALUES ('19', null, null, '在菜场与菜贩子发生了有趣的对话。我问，这白梗韭菜怎么涨到20块一斤了，太贵了。菜贩说，这人民币眼看要破7了，涨这么多是应该的。我说，可我工资没涨啊。贩子说，所以还是自己做老板好，记住，现在这世道，手里要有实物，不要拿着人民币。还别说，我觉得这位小老板给我上的这堂课还是挺有益的。', '1479917984', '19', '2', '53', null, null, null, null, null, null, null, null, '1', '1', '1', '1', '19', '0', '0', '1');
-INSERT INTO `posts` VALUES ('20', null, null, '话说二郎神与众仙斗法，将哮天犬变成玉皇大帝，就连王母也分辨不出。王母唯恐闹出事端，只好向佛祖求教该如何辨认？\n佛祖说：江山易改本性难移，样貌可以幻化，本性不会改变。\n你让嫦娥赤身裸体端包子给他俩送去，两眼直勾勾看女人的那个就是老皇帝，只知道吃包子的那个就是狗！', '1479919115', '20', '2', '55', null, null, null, null, null, null, null, null, '2', '1', '1', '0', null, '0', '0', '1');
-INSERT INTO `posts` VALUES ('21', null, null, ' Odin wishes you a good day. A fine walk in the forest with a little bit ice bathing before trip to the veterinary for checking his tonsils, no more antibiotics wait and see. ', '1479919297', '21', '2', '58', null, null, null, null, null, null, null, null, '1', '1', '1', '0', null, '0', '0', '1');
-INSERT INTO `posts` VALUES ('22', null, null, '邮箱里收到这封很特别的邮件，目标直指最红最火的淘宝，淘宝现在天下无敌，但类似的花招耍多了，总会被吃瓜群众所唾弃！以下内容是否属实，读者自行判断。', '1479919397', '23', '2', '61', null, null, null, null, null, null, null, null, '1', '1', '1', '1', '23', '0', '0', '1');
-INSERT INTO `posts` VALUES ('23', null, null, 'The breed\'s officially recognized name is German Shepherd Dog in the English language, sometimes abbreviated as GSD and was also formerly known as the Alsatian in Britain.[', '1479921477', '9', '2', '69', null, null, null, null, null, null, null, null, '0', '1', '1', '1', '9', '0', '0', '1');
-INSERT INTO `posts` VALUES ('24', null, null, '中国正在积累起巨大的假创新泡沫\n\n创新、创新、创新！\n\n这口号一浪高过一浪，媒体连篇累牍创新的重大意义，推介创新模范', '1479923211', '25', '2', '70', null, null, null, null, null, null, null, null, '1', '1', '1', '1', '25', '0', '0', '1');
+INSERT INTO `posts` VALUES ('31', null, null, null, '1479952227', '1', '2', '64', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('32', null, null, '夏の思い出\n明石海峡の日没\n\nSunset Glow\nAkashi Strait\nHyogo, Japan\n\n+Canon EOS 5DsR\n- Canon EF 70-200mm F/4L IS USM', '1479952310', '3', '2', '65', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('33', null, null, null, '1479952373', '2', '2', '66', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('34', null, null, '话说二郎神与众仙斗法，将哮天犬变成玉皇大帝，就连王母也分辨不出。王母唯恐闹出事端，只好向佛祖求教该如何辨认？\n佛祖说：江山易改本性难移，样貌可以幻化，本性不会改变。\n你让嫦娥赤身裸体端包子给他俩送去，两眼直勾勾看女人的那个就是老皇帝，只知道吃包子的那个就是狗！', '1479952545', '8', '2', '67', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('35', null, null, 'Poor Blue....', '1479952897', '2', '2', '68', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('36', null, null, '【有意思的几个典故】  \n1，愚公移山。\n先不说能不能把山移掉，先来谈这个愚公。\n山挡路，是搬家容易，还是移山容易？\n把自己家搬到一马平川，天堂苏杭，是不是更容易和划来。\n非要和山搏斗，还子子孙孙无穷无尽。\n谁要摊这么个愚蠢的爷爷真是倒了八辈子的霉。\n谁要是号召民众学习愚公精神，那真是蠢的驴一样的。\n2，铁棒成针。\n自小，就在语文课本里学这个励志的故事。\n只要功夫深，铁杵磨成针。\n难道不会去把铁棒卖掉，买它几根针回来。\n而且了，就是磨成针，针眼用嘴吹个眼吗？\n猪一样的逻辑，猪一样的做法。', '1479952989', '8', '2', '69', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('37', null, null, 'So, who do you choose?﻿', '1479953199', '3', '2', '70', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('38', null, null, '你不装逼我们还是好朋友！！！！！！！！！！！！！！！！！！！！！！！', '1479953362', '8', '2', '71', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('39', null, null, null, '1479953428', '4', '2', '64,66,68,69,71', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('40', null, null, '突然看到follow 滚滚红尘Panda 的人数已经超过 5000 了，还是很震惊。\n\n好吧，这么多朋友来做客，我看有必要解释一下“滚滚红尘”的意思。这里的“滚滚”，就是指熊猫。2008年5月12日汶川地震之后，天涯八卦论坛上有人发帖担心大熊猫的安全，其中有个油菜花的童鞋回复说：“它们一定被震得滚来滚去滚来滚去”。', '1479954043', '1', '2', '73', null, null, null, '59', null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('41', null, null, '\"I\'ve done far worse to far bigger\"﻿', '1479954533', '8', '2', '75', null, null, null, null, '27', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('42', null, null, '就问你酷不酷？？？？？？？？？？？？？？', '1479954614', '3', '1', '76', null, null, null, null, '27', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('43', null, null, 'Mears Peak - 13,496\'\nSan Juan Mountains, CO\nOur peace shall stand as firm as rocky mountains. \n~ William Shakespeare', '1479954957', '8', '1', '78', null, null, null, null, '28', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('44', null, null, 'I lllllllllll Yamato Face ﻿', '1479955243', '2', '1', '78', null, null, null, null, '1', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('45', null, null, 'A bit reminder....\n\nIn this community, spamming it\'s not just about making at least a meter long of post in less then 5 minutes. It\'s also applied to people who pasting links in comments that\'s unrelated to post. Sometimes it contain ads, video links or even invites.', '1479955884', '9', '1', '80', null, null, null, null, '29', null, null, null, '2', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('46', null, null, '为什么Anastasia Lin应该赢得世界小姐皇冠\n\n本文译自Benedict Rogers于11月22日发表在《赫芬顿邮报》英国网站上的博客文章，题目为“为什么Anastasia Lin应该赢得世界小姐”。', '1479998423', '13', '2', '102', null, null, null, null, null, null, null, null, '1', '1', '1', '2', '13,14', '0', '0', '1');
+INSERT INTO `posts` VALUES ('47', null, null, '最好的大学在培养比贪官更可怕的人\n在中国的大学里，包括最好的北大、清华，都正在培养一群20几岁就已经“老奸巨猾”的学生，他们高智商，世俗，老到，善于表演，懂得配合，更善于利用体制达到自己的目的。', '1479998705', '14', '2', '105', null, null, null, null, null, null, null, null, '0', '1', '1', '1', '14', '0', '0', '1');
+INSERT INTO `posts` VALUES ('48', null, null, 'A  child\'s  personal  bodyguard  and  their  footbal  team.  \nNo wonder  she  feels  so  secured  and  happy.\nWhat  more  could  you  ask  for. \nLucky  girl!﻿', '1479998940', '15', '2', '108', null, null, null, null, null, null, null, null, '1', '1', '1', '2', '15,19', '0', '0', '1');
+INSERT INTO `posts` VALUES ('49', null, null, '.  .  .  .   A  CHILD\'S   INNOCENCE  IS  GOLDEN\n\nA  comfortable  linen  and bed  for  puppies = $100.00\n\nA  Thomas The Tank themed  bedroom  suite \nfor  the boy   =  $5,000.00', '1479999087', '16', '2', '109', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('50', null, null, '〖微博谈〗20161124\n钟南山院士说，别拿雾霾开玩笑了，它是一级致癌物质。资料显示：我们一个肺有3亿个肺泡，80个Pm2.5微粒可以堵死一个肺泡，我们严重污染的生活环境Pm2.5是1155单位，一年堵死三千万个肺泡！3年堵死三分之一个肺！所以预测几年后中国将会肺癌井喷，这并不是耸人听闻！然而，国人很淡定，舞照跳，拳照打。', '1479999300', '17', '2', '112', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('51', null, null, 'The Labrador Retriever, also Labrador, is a type of retriever-gun dog. The Labrador is one of the most popular breeds of dog in the United Kingdom and the United States. Wikipedia\nScientific name: Canis familiaris', '1479999444', '18', '2', '115', null, null, null, null, null, null, null, null, '1', '1', '1', '1', '18', '0', '0', '1');
+INSERT INTO `posts` VALUES ('52', null, null, 'The Labrador Retriever, also Labrador, is a type of retriever-gun dog. The Labrador is one of the most popular breeds of dog in the United Kingdom and the United States. Wikipedia\nScientific name: Canis familiaris', '1479999687', '19', '2', '120', null, null, null, null, null, null, null, null, '0', '1', '1', '2', '19,20', '0', '0', '1');
+INSERT INTO `posts` VALUES ('53', null, null, '邓小平说的这么清楚，邓的家族有多少亿万富翁？“六四”之后，中国一直走在邪路上，中共嘴上说着社会主义，手上干着官僚资本主义。', '1479999854', '20', '2', '122', null, null, null, null, null, null, null, null, '0', '1', '1', '1', '20', '0', '0', '1');
+INSERT INTO `posts` VALUES ('54', null, null, '明天峰哥就要审项目了，好紧张！', '1480000464', '13', '2', '124', null, null, null, null, null, null, null, null, '1', '1', '1', '2', '13,14', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for users
@@ -347,8 +483,8 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL COMMENT '密码',
   `phone` varchar(11) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `state` tinyint(2) NOT NULL DEFAULT '1' COMMENT '用户状态。0禁用、1未激活2正常3管理员',
-  `picid` int(11) DEFAULT NULL COMMENT '头像图片编号',
+  `state` tinyint(2) NOT NULL DEFAULT '2' COMMENT '用户状态。0禁用、1未激活2正常3管理员',
+  `picid` int(11) DEFAULT '2' COMMENT '头像图片编号',
   `sex` tinyint(2) NOT NULL DEFAULT '0' COMMENT '性别。0保密1男2女',
   `shield` text COMMENT '被屏蔽的用户编号列表，逗号分隔',
   `ignore` text COMMENT '被忽略的用户编号列表，逗号分隔',
@@ -375,28 +511,32 @@ CREATE TABLE `users` (
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '用户更新时间',
   `fans` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('9', 'peisijia', '$2y$10$XxUPG5jdE5/reilnSwGI9OWW3IsjiVAdpzlluVCpkM9BlegGSUDdi', '15141099036', '123456@qq.com', '4', '34', '2', null, null, null, '2', '1', '39,41,', null, null, '0', '35', 'peisijia', '0', null, '0', '2016-11-23 23:07:58', 'peisijia', null, null, null, '真的没有什么不可能！', 'ja3tKnU6yRIuLcDETlzghHHO1UHyR0b1UOelMUC2kGUbbLgkgO', 'u3CuXYC3MFycieL5SE7K8u0lHYU0REYouMeec9oPcUHEG9YggjpOzvopl5nL', '2016-11-24 02:50:00', null);
-INSERT INTO `users` VALUES ('10', 'wangbao', '$2y$10$7RH1cFOI6.FqLUhnKA0qT.DuTkdghtVy352r00MnlAi3SaiNDD.zW', '13111111111', '1234567@qq.com', '3', '25', '0', null, null, null, '2', '1', '36,38,', null, null, '0', '27', '王保', '0', null, '0', '2016-11-23 23:09:45', '王保', null, null, null, '无兄弟不编程！', '65eKGdUEpCM1TLpXkJKltouMUek0gD6iGrDT8jM02eWH6ahDR6', 'XhD02PaHjB3bDVU6suUIqLHbmmmx5v9IG9j5yzY8ts4RKsJveWLmBMNsbnUI', '2016-11-24 01:10:22', null);
-INSERT INTO `users` VALUES ('11', 'aaa', '$2y$10$ORSbHFjgSLlMGckBu4Ks8uY.PXBXYE.OsjX1fyfYOFbzMEB909vw6', '13111111112', 'aaa@qq.com', '1', '29', '0', null, null, null, '2', '1', '36,39,', null, null, '0', '30', 'aaa', '0', null, '0', '2016-11-23 23:11:22', 'aaa', null, null, null, '我爱兄弟连', 'HqOGBL7gq8xrMApTCLSsIkLjhP4rEjlooGdkIwvKSmjszfaAuN', 'xDDFmbVdVerxV31jspozF0d0xc7WQW0ha57qsXWzs78fYPUTCDc9xamo3Ljf', '2016-11-24 01:12:46', null);
-INSERT INTO `users` VALUES ('12', 'bbb', '$2y$10$4SuRPF6YTg.qvv29tE.i.OD0q4Zcz6aLcXoqMLuoJ/HxFncPHAUxW', '13111111113', 'bbb@qq.com', '1', '32', '0', null, null, null, '2', '1', null, null, null, '0', '31', 'bbb', '0', null, '0', '2016-11-23 23:12:09', 'bbb', null, null, null, 'The German Shepherd (German: Deutscher Schäferhund, ', 'LCd4zoMPQWibsuEGI0LhK2ZOF4R68QRnrgxlX2ejgWP7hPNmmT', 'XqS7phKoMOHHpJHLOfRWuhhi1eJ7b2ZCuB8Yj1eMd0IPxVGHNRtyUh4v8UJi', '2016-11-23 23:51:09', null);
-INSERT INTO `users` VALUES ('13', 'ccc', '$2y$10$gdnH6mbwIHAsBuChHhQWmO7u6QFLA5XaCUxZ9yI3wNKcs19ezAM9S', '13111111114', 'ccc@qq.com', '1', '37', '0', null, null, null, '2', '1', null, null, null, '0', '38', 'ccc', '0', null, '0', '2016-11-23 23:12:42', 'ccc', null, null, null, '写小说本不想幽默', 'RCSuUKaxL1mwZXnM8nJfv91p7er88BtAUtfIZoLrtLP2UWD1Ft', 'XAMPxrsEPo2Y2qt9hyqfagJNzsfOaMVgWTJ6DCw9ToG8FvrwL7BXMKeWN54n', '2016-11-23 23:58:27', null);
-INSERT INTO `users` VALUES ('14', 'ddd', '$2y$10$A4Ng7g2p1JmPGshvYz89zOw4rMH4cyWkUSa5w4lzeQVGoyLsmUKH6', '13111111115', 'ddd@qq.com', '1', '40', '0', null, null, null, '2', '1', null, null, null, '0', '41', 'ddd', '0', null, '0', '2016-11-23 23:13:22', 'ddd', null, null, null, 'The girls snuggling with us after a long weekend being boarded at the vet.', 'RaF65kfmkmNoOMdfJxnVBhgPFCVkO7zVooXLC5flQjCF78uhc6', '5DiuqlFQffq537La09V51OujOu5NgPNxE0sDEXw189cXhnQQhvuwpze9P2qm', '2016-11-24 00:01:17', null);
-INSERT INTO `users` VALUES ('15', 'eee', '$2y$10$ExK4poB3EgZVphUdc/NRgekwMRXXb2/2MymDkHJtzqbTF8FLfMYQK', '13111111116', 'eee@qq.com', '1', '42', '0', null, null, null, '2', '1', null, null, null, '0', '43', 'eee', '0', null, '0', '2016-11-23 23:14:13', 'eee', null, null, null, 'The girls snuggling with us after a long weekend being boarded at the vet.', 'LrRMgwyxzV3RJxJTUMFgqzzPkiKWXhZr7lqHmFGnJnZR4h2Xr0', 'evQ05Uk27LhLSc5rQD10OZWkWeDJGezRwKa2ng1bpLbEXfToo8AsX63vmlCn', '2016-11-24 00:06:13', null);
-INSERT INTO `users` VALUES ('16', 'fff', '$2y$10$pwbbgQ1Nkea618w/48z22OLq/qnrqFjas0McXHfvAXIo.BA0/ZEQK', '13111111117', 'fff@qq.com', '1', '46', '0', null, null, null, '2', '1', null, null, null, '0', '47', 'fff', '0', null, '0', '2016-11-23 23:14:35', 'fff', null, null, null, '这不是一个笑话，而是一个严肃的话题', 'P6bJns2O3b5sMuP9BEpgg7jVUg2hhPA6mYcE5rRE74uqtMtAja', 'LeUd2cssSpeZjG25pgRoZF600xys0ImFyebO3J8TmdEEoYSEd00FbxU20I24', '2016-11-24 00:10:08', null);
-INSERT INTO `users` VALUES ('17', 'ggg', '$2y$10$DG3FLC9LbHXbfyDO2/Ctd.eD2tw6D.yKsN5cu9xnfJQr3n3VStEDW', '13111111118', 'ggg@qq.com', '1', '48', '0', null, null, null, '2', '1', null, null, null, '0', '49', 'ggg', '0', null, '0', '2016-11-23 23:14:47', 'ggg', null, null, null, '这不是一个笑话，而是一个严肃的话题', 'N0Yk06zFHADqSlJdGcQzvqGJnOxDccCBV4J1eJYV6PojR4hyxI', 'vclQVRBFIzR4YdxPUMzPywmlpaEVyAv7QuDc8IhpBIL0yCtVwlS0kbDp5NZw', '2016-11-24 00:12:38', null);
-INSERT INTO `users` VALUES ('18', 'hhh', '$2y$10$E0JHaFrL/qXoV/wv32U35OPQQ.pSidJSfAsOJzUZkUx4wKtb4Zrqy', '13111111119', 'hhh@qq.com', '1', '50', '0', null, null, null, '2', '1', null, null, null, '0', '51', 'hhh', '0', null, '0', '2016-11-23 23:14:56', 'hhh', null, null, null, '这不是一个笑话，而是一个严肃的话题', 'fCX671GJAZlOmckrTWJdUVOgHZJYYMnTBvlRMUOiBe0pdWQS1d', 'x5qqi8NPfgo2K9mfhkRUs3TWxaEPeylZkje9hf4vJoZ1NykN9YI3cPSgkqfl', '2016-11-24 00:17:13', null);
-INSERT INTO `users` VALUES ('19', 'iii', '$2y$10$7c/8jJm7H6ySOWFdqYaHWe.byHDaeNtQYLlr.usMkXBjjw2.TigsO', '13133333331', 'iii@qq.com', '1', '53', '0', null, null, null, '2', '1', null, null, null, '0', '54', 'iii', '0', null, '0', '2016-11-23 23:15:10', 'iii', null, null, null, '近日一名教授在微博上发表题为“中国的防火墙是不是弄反了？', 'Q6dZkPNhFmxtSB1YXGRTKtzp4Zxq6Zf40PDiZYAoGczfiXrTHo', 'PA3hSno7l6m6NqeCKJLdQiuYEEAId8tv7gCdb4lk4EFQHkK9Qj7sSCHDQfyb', '2016-11-24 00:37:23', null);
-INSERT INTO `users` VALUES ('20', 'jjj', '$2y$10$9ALu5VAQWizZB0oCNGNjIOHJ/JvkbFt4Td0gAXBToHZz.06Ny2n9i', '15111111111', 'jjj@qq.com', '1', '56', '0', null, null, null, '2', '1', null, null, null, '0', '57', 'jjj', '0', null, '0', '2016-11-23 23:15:34', 'jjj', null, null, null, '话说二郎神与众仙斗法，将哮天犬变成玉皇大帝，就连王母也分辨不出。王母唯恐闹出事端，只好向佛祖求教该如何辨认？\n佛祖说：江山易改本性难移，样貌可以幻化，本性不会改变。\n', 'QBuaFfTSR6KvZxFF8pvZ94S0djlksJrzdyJ5LYORdpa2LK5Ncr', 'ILl02CBFymGBSOHBCmAmoMjDC26Mzz3gs3FRQYotZEQyzZm5ToNchYqugs3N', '2016-11-24 00:40:49', null);
-INSERT INTO `users` VALUES ('21', 'kkk', '$2y$10$j8yis8Oi0vfh5f9P3B4Bseg8OTUKPXxNnsgO/rTJ4RuDMuv0ZhOEe', null, 'kkk@qq.com', '1', '59', '0', null, null, null, '2', '1', null, null, null, '0', '60', null, '0', null, '0', '2016-11-23 23:15:43', null, null, null, null, null, 'SaSldkCcIBepN0Cth1FpbrfovCCePhMUQ0anX7fC55N2NkyZWl', 'jO3g5F8wb9MV9UKMyJV4MatTPnjIFvWaAlxeA2IZweJckNFRobZI4Iux2UIP', '2016-11-24 00:42:35', null);
-INSERT INTO `users` VALUES ('22', 'lll', '$2y$10$L7dObHGqK56zMRfQlir6.Ol/zzP1ueQuWwt0NMvX4pYKkpvx.XIlC', null, 'lll@qq.com', '1', null, '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-23 23:15:53', null, null, null, null, null, 'JEFEuOYtdAZhtCUvCZZ5hb4N7i9WATcypQvI6bCC0AgnSb0ARZ', null, '2016-11-23 23:15:53', null);
-INSERT INTO `users` VALUES ('23', 'mmm', '$2y$10$bGnkSy3T85S4Pn1LPIDjsuShD.ggNbdNSxECgvnfaW6iHQrhf.aQa', '15111111121', 'mmm@qq.com', '1', '61', '0', null, null, null, '2', '1', null, null, null, '0', '62', 'mmm', '0', null, '0', '2016-11-23 23:16:05', 'mmm', null, null, null, '邮箱里收', 'fkhGdWEh9fbKy212QDpHMgHE1GvSYtoXKEy1ywLUu5IxQ76nq7', '5RCyS6iElFyg4A9x5Q8xSib3Eu2K8iuUZrKIHTpwn4t85LboLKRPyAB2MLPe', '2016-11-24 00:55:18', null);
-INSERT INTO `users` VALUES ('24', 'nnn', '$2y$10$eZ6biv3zxPfeQeLNFq0gJueL5PemMC.NQrdqexhuG/Q2uVTs2kQCa', null, 'nnn@qq.com', '1', null, '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-23 23:16:14', null, null, null, null, null, 'f73lIu0dppJjMBqJb0KHMidHKS828xiLJlfrx7qdNuPwjuaZhN', null, '2016-11-23 23:16:14', null);
-INSERT INTO `users` VALUES ('25', 'wangruhe', '$2y$10$p1YhhXKe//CasDqjAQ/ISuBe1bP7AjGjFJ6xtTi.7ksmUpQf2tbx2', '15122222222', '12345678@qq.com', '3', '70', '0', null, null, null, '2', '1', '36,41,', null, null, '0', '71', 'wangruhe', '0', null, '0', '2016-11-24 01:43:18', 'wangruhe', null, null, null, '新盈利模式，汩汩而出。', '7ATNNTz8FdRLXU8F6tD9ejTBH5SNckFCpb912yJpPeHlK0DgIh', 'bNvWUP8MY8Irq2z2fztEPBU2SCt3ZiFDYFZAlOuMrBRHFyK0U4swTkS9CFUh', '2016-11-24 08:20:31', null);
+INSERT INTO `users` VALUES ('1', 'wangbao', '$2y$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp21vppkb5f6CN/skE/dZO5qC', null, '1105085970@qq.com', '1', '3', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', null, null, null, null, null, null, '545', 'IBnZQAmWcrBxEcp05vHqNpA79d802IX30WuGWUKx4o9qcOrZROrl1japrKEQ', '2016-11-19 14:33:51', null);
+INSERT INTO `users` VALUES ('2', 'wangbao1', '$2y$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp21vppkb5f6CN/skE/dZO5qC', null, '11050859701@qq.com', '1', '2', '0', null, null, null, '2', '1', '2,', null, null, '0', null, null, '0', null, '0', null, null, null, null, null, null, '545', 'FUu20lvKudLspJEFuADKOMn1ft8uLntFqWRcegrpTuBroN5NNGJQqHEjYJNj', '2016-11-15 21:07:31', null);
+INSERT INTO `users` VALUES ('3', 'peisijia', '$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp21vppkb5f6CN/skE/dZO5qC', null, '1249542668@qq.com', '1', '3', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', null, null, null, null, null, null, '444', 'FUu20lvKudLspJEFuADKOMn1ft8uLntFqWRcegrpTuBroN5NNGJQqHEjYJNj', '2016-11-14 15:40:09', null);
+INSERT INTO `users` VALUES ('4', 'fafferf', '$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp21vppkb5f6CN/skE/dZO5qC', null, '2414353415@qq.com', '1', '4', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', null, null, null, null, null, null, '23424', 'FUu20lvKudLspJEFuADKOMn1ft8uLntFqWRcegrpTuBroN5NNGJQqHEjYJNj', '2016-11-24 22:58:46', '7,18');
+INSERT INTO `users` VALUES ('5', 'sgrdg', '$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp21vppkb5f6CN/skE/dZO5qC', null, '2413423@ff.com', '1', '5', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', null, null, null, null, null, null, '555', 'FUu20lvKudLspJEFuADKOMn1ft8uLntFqWRcegrpTuBroN5NNGJQqHEjYJNj', '2016-11-24 22:53:14', '16');
+INSERT INTO `users` VALUES ('6', 'psjpsjpsj', '$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp21vppkb5f6CN/skE/dZO5qC', null, '123456789@qq.com', '1', '6', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-13 21:00:24', null, null, null, null, null, '22FMRDeGCW1w70M3pZPxzeCczSlKyP3SnfT9DTDA4Y5QavFWwU', null, '2016-11-14 19:44:47', null);
+INSERT INTO `users` VALUES ('7', 'maomao', '$2y$10$wfskfvC00Va7XbxXzK3iruxlHRNUUsTskr5VXTRY.VUbna67IhiEW', null, '1234567@qq.com', '1', '2', '0', null, null, '11,10,12,9,4', '2', '1', null, null, '3,4,5,6,7', '0', null, null, '0', null, '0', '2016-11-13 22:01:00', null, null, null, null, null, 'Vrd4IeRlyw9kpaMqQNmXvBPDOyQfKWSdY33OgOinCinxTnOMDt', 'hJYKpBrnXLRh1Nnx3t92BuUoXpRrldFDTvr2dFdOY2lJEMWXPx6fwCS5cyzw', '2016-11-24 22:42:26', '13');
+INSERT INTO `users` VALUES ('8', 'wang', '$2y$10$8zINeDd5GfRH2R97ljHKQ.UUg9OqSthCnFD2ovHPasqBNfyLWGaDu', null, '666@qq.com', '1', '6', '0', null, null, null, '2', '1', '1000,33,3,2,', '1000,4,3,', null, '0', null, null, '0', null, '0', '2016-11-14 14:35:34', null, null, null, null, null, '0RsXhCG4ANs5SpkNkgy9aqhEjpFQiPJ7kddYcgIbVmTMxJTtF8', 'c3zh3q2B4EbAdNPqTTaumwbhVmFGz3Sqbc0AXoyvxRzFJBXsggpsjdejomW3', '2016-11-24 22:53:12', '14,15,16');
+INSERT INTO `users` VALUES ('9', 'heihei', '$2y$10$KkcMN1/TLL2f5KSJbOTht.uQJCHkk4HyGFVHCCbOOZ.mCQlvjoFd.', null, '888@qq.com', '1', '2', '0', null, null, '12,11', '2', '1', '1,', '2,1,28,', null, '0', null, null, '0', null, '0', '2016-11-21 09:05:23', null, null, null, null, null, 'XCRyj01CzTdjdyIPVDwUengPDlcey03gjiQvabOSU1SV24vCQD', 'lIeR8Q32KxX2x7uWzwiybugBnDREpnZv1NOnndFP9vq0BtopXayr2EmW6fkZ', '2016-11-24 22:53:13', '7,16');
+INSERT INTO `users` VALUES ('10', 'wang1', '$2y$10$zyX82dvvrojy/k8ebbrQg.Mc1wnOyem.aXylUf937jryqTbO0QVGW', null, '666666@qq.com', '2', '2', '1', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-21 17:09:14', null, null, null, null, null, '1FkTjrEiR5QxQrzgtDsIi0DaXZhoA8a4GiRMpBMEjPHSDECgWA', '5DRlrNvh57QaX6hlt8DLZfKlq0ZgP1J7FbsF08L6MdMWmL5WxGSTvmECZed4', '2016-11-24 22:42:24', '7,13');
+INSERT INTO `users` VALUES ('11', '888', '$2y$10$HPgTpPRI2oI74DBfC/Lc/uYIZ8sls2htZK3sKdnT9APc7Q/4DM2dS', null, '6666@qq.com', '2', '2', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-23 16:17:26', null, null, null, null, null, 'L4T2OLNi8O7HAaw1iNIoDQONFyqmc4YubJ0mqbiWIEZsfJF2tc', '1mP6U6GweEZEckixCexEMextjFWVjL8k0QEDXTmkLpUBnoPpdLNTiHG9GB5E', '2016-11-24 22:49:35', '9,7,13,15');
+INSERT INTO `users` VALUES ('12', 'wrh', '$2y$10$yencd4640jfk9dKOyv4zaeaDAhlEoaDCiodHPHJb9zPO3TJ1ogj/W', null, '123@qq.com', '2', '2', '0', null, null, null, '2', '1', '60,', null, null, '0', null, null, '0', null, '0', '2016-11-24 11:56:57', null, null, null, null, null, 'NibY4OrYOqR5TFiFy4UdI8h6pd0TawOOzdZgtu1cVtQox7k2tM', 'sEUa2PdAKwGJk8ndeVLreXiEgut641oIyr4daEGxS4cH4hEQ7TMhEP6BGljv', '2016-11-24 22:49:34', '9,7,13,14,15');
+INSERT INTO `users` VALUES ('13', 'jiajia', '$2y$10$aOOW8sJYylTo0u6Rm1c9XevZM2M2cSm7MnJzj1jrIQZn8c9t6v8L6', '15111111111', '123456@qq.com', '4', '103', '2', null, null, '12,11,10,7,19,18,20', '2', '1', '59,60,62,66,61,', null, '8,9', '0', '125', '佳佳', '0', null, '0', '2016-11-24 22:38:05', '佳佳', null, null, null, '对我来说，有一项角逐胜过二者，那就是本周末开始的世界小姐总决赛。', '14eBGst06UE5fXA4RW1fllJV1Q8syKoGQCXi54apbQxbVDX1bT', 'pGpnp8GV8fBTz3AoCRa7d2Ac32IVJKGpWHo9PH1bY9il1OPJMwWLgL3FydDg', '2016-11-25 00:21:39', '14,15,16,17,18,19');
+INSERT INTO `users` VALUES ('14', 'aaa', '$2y$10$pYb5UtUjJofAIL2zB.Jjx.x0t8MYDFc/7uR2E9kwGHujmswTxRqwC', '13111111111', 'aaa@qq.com', '0', '106', '1', null, null, '13,12,8', '2', '1', null, '1,', null, '0', '107', 'aaa', '0', null, '0', '2016-11-24 22:44:26', 'aaa', null, null, null, '最好的大学在培养比贪官更可怕的人\n', 't5fq8AlMlLTttUKPqiEAPQYEhHONJCf8d90v0U3eNbY8OUFdAn', 'PANQb8tl3fv51ecZVH1fS4369ZZH8hTdjIERKzEt2VrGdcci7KpfVUGRAOgv', '2016-11-24 23:34:06', '15,17,18,19');
+INSERT INTO `users` VALUES ('15', 'bbb', '$2y$10$/YhmkEbeORbvIeCTeWJ3GOKvmnuO4I0edYtRsNIbB7VGRz9omxXQC', '13154444444', 'bbb@qq.com', '2', '2', '0', null, null, '14,13,12,11,8', '2', '1', null, '29,', null, '0', null, null, '0', null, '0', '2016-11-24 22:48:00', null, null, null, null, null, 'QtdvamWO9LK0q5S3s308WsNhzmtpOcgZ5zIOmMEQgoLxy03kzK', 'WcuMJefLG40fB4SUIUCyLhFqQKjxYqIWvmkacZVIE4Yf1o8Fh7atWO5iRBIS', '2016-11-25 00:15:24', null);
+INSERT INTO `users` VALUES ('16', 'ccc', '$2y$10$M1mVwZbumo8VNq/J5/JcU.1k28hfATDPiWzEQmKIwcJgm6ktDhMGC', '13122222222', 'ccc@qq.com', '2', '110', '0', null, null, '13,8,9,5', '2', '1', null, '27,', '10', '0', '111', 'ccc', '0', null, '0', '2016-11-24 22:50:45', 'ccc', null, null, null, ' A  CHILD\'S   INNOCENCE  IS  GOLDEN\n\n', 'UgqcSN8skhYvda0LdiZSutD79E0Qb6uYL25lxQCh33QHQzIRS7', 'R6a9gmGOYhCEMF8jC62AhDytDFUlafxWUKYBRcmhUNx70VxunJDxNu2nQyUS', '2016-11-24 22:56:12', '17');
+INSERT INTO `users` VALUES ('17', 'ddd', '$2y$10$qq9gx6chV8YOo8DK9edxZ.1m/GgdscLxK2QbdkyYfvmxYtiOpYBdG', '13144444444', 'ddd@qq.com', '2', '113', '0', null, null, '16,14,13', '2', '1', null, '28,', null, '0', '114', 'ddd', '0', null, '0', '2016-11-24 22:54:12', 'ddd', null, null, null, '〖微博谈〗\n', 'cQyyszA58FupxTMR5bkw8TQrulqbKukgcy3yE31EVb8IJdtZ8v', 'xs6WTFUK6ddGleLlkHb4WVDAPkbi5xcGUtkiiobs2JXHlqMjkiqC8ReJIfy5', '2016-11-24 22:56:29', null);
+INSERT INTO `users` VALUES ('18', 'eee', '$2y$10$PSLEAwzgGg/4Xsk78m/68.inITZCcb5EJNeeX1yZUI77Jw6jm3QAa', '15122222222', 'eee@qq.com', '2', '116', '2', null, null, '14,13,4', '2', '1', null, '31,', null, '0', '117', 'eee', '0', null, '0', '2016-11-24 22:56:49', 'eee', null, null, null, 'The Labrador Retriever, also Labrador, is a type of retriever-gun dog. The Labrador is ', 'EjW5UCYHS0R1D5jldJmZbJk4VyjodPHFO5qDbsv4gA7ixtea58', 'x2nHbGYU6VO6rvOnh9VMzkBwgE9C63YdkAygxscbf3z1Q3xPyZXg0G3G1Y5H', '2016-11-24 23:05:03', '13');
+INSERT INTO `users` VALUES ('19', 'fff', '$2y$10$k85TAV1Nr7/KNXlgBFyyfOWp4jVh2lNX4bnymwl8wScU1mtQPKtey', '15133333333', 'fff@qq.com', '2', '118', '2', null, null, '13,14', '2', '1', null, null, null, '0', '119', 'fff', '0', null, '0', '2016-11-24 22:59:20', 'fff', null, null, null, 'The Labrador Retriever, also Labrador, is a type of retriever-gun dog. ', '1tJt6auCmcv0tL2rXytzodseuF664XtjxJ7wRgD8mfU9Ov2fX2', 'jyIdT1N2IoQ3cPER5cNAxIfFzmzNzDXZNmTRsGFmVzluri1Z6ucZlxvL2obq', '2016-11-24 23:05:02', '13');
+INSERT INTO `users` VALUES ('20', 'ggg', '$2y$10$JQrs/.DI0Aj6DnWOUNlpCO2U80D0LHFSxMpOHurM3iiVg6ONja8TG', '18111111111', 'ggg@qq.com', '2', '121', '0', null, null, null, '2', '1', null, null, null, '0', '122', 'ggg', '0', null, '0', '2016-11-24 23:02:17', 'ggg', null, null, null, 'The Labrador Retriever, also Labrador, is a type of retriever-gun dog. ', 'VtBn25eWMXWe1xlyTn2SUzkY8LwZJit5223EawhUzijyOGaJDM', '50X7DA3jyhVxprHvwTKujUrkkhDoEosB7DpXwEkGBpVCmfxMnOdapekikwzV', '2016-11-25 00:21:39', '13');
+INSERT INTO `users` VALUES ('21', 'qqq', '$2y$10$dS4Qbh8XUc4QJZm/LqOxAuql7WoTQnOusL5zCmcOxWaC0BaIDzDfG', null, 'qqq@qq.com', '2', '2', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-24 23:45:58', null, null, null, null, null, 'nHBX8y18PFgoBSczT20h7K2uOGwGrgFFMIqxqfBh0VP4wQCIyc', 'xyUpN9FGJLtM9IVS9Ju6IM1WAOldAE2EWBLgUcoxXZ1Cm36a9KuDg76JLOUk', '2016-11-24 23:46:55', null);
 
 -- ----------------------------
 -- Table structure for votes
