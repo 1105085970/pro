@@ -138,6 +138,10 @@ class PeoController extends Controller
 
             }
 
+            //如果没有头像
+            if(!$v->toux)
+                $v->toux='/images/toux.png';
+
             //如果是已关注页
             if($param[0]=='circles'){
                 foreach($quan as $kk=>$vv){
@@ -245,6 +249,97 @@ class PeoController extends Controller
 
         return $quan;
        
+
+    }
+
+
+    //ajax 新建圈子
+    public function Post_add_circle(Request $request){
+
+        $arr=[
+            'userid'=>Auth::id(),
+            'name'=>$request->input('name'),
+            'addtime'=>time()
+        ];
+
+        //添加圈子
+        $id=DB::table('circles')->insertGetId($arr);
+
+        if(!$id)return 2;
+
+        //更新用户圈子
+        $user=Auth::user();
+
+        $circles=explode(',', $user->circle);
+
+        $circles[]=$id;
+
+        $circles=trim(implode(',',$circles),',');
+
+        //更新用户信息添加 圈子
+        $ok=DB::table('users')->where('id',Auth::id())->update(['circle'=>$circles]);
+
+        if(!$ok)return 2;
+
+        return 1;
+       
+
+    }
+
+
+    //ajax 修改圈子
+    public function Post_edit_circle(Request $request){
+
+        $where=[
+            ['id','=',$request->cid],
+            ['userid','=',Auth::id()]
+        ];
+
+        $ok=DB::table('circles')->where($where)->update(['name'=>$request->name]);
+
+        if($ok)return 1;
+        else return 2;
+
+    }
+
+    //ajax 删除圈子
+    public function Post_del_circle(Request $request){
+
+        //要删除的圈子id
+        $cid=$request->cid;
+
+        $where=[
+            ['userid','=',Auth::id()],
+            ['id','=',$cid]
+        ];
+
+        //找寻圈子中的人
+        $ren=DB::table('circles')->where($where)->first();
+
+        if(!$ren)return 2;
+
+        //需要先删除圈子内的用户
+        if($ren->followid)return 3;
+
+        //s删除圈子
+        $ok=DB::table('circles')->where($where)->delete();
+
+        if(!$ok)return 2;
+
+        //更新用户的圈子列表
+        $user=Auth::user();
+
+        $list=explode(',', $user->circle);
+
+        unset($list[array_search($cid,$list)]);
+
+        $list=trim(implode(',', $list),',');
+
+        $ok=DB::table('users')->where('id',$user->id)->update(['circle'=>$list]);
+
+        if(!$ok)return 4;
+
+        return 1;
 
     }
 

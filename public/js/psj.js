@@ -513,7 +513,7 @@ function proContents(data,param){
 		var t=$(this);
 
 		if(state==1){
-			Prompt('已经取消关注。');
+			Prompt('已关注。');
 			//关注
 			$(this).html('取消关注');
 			//添加背景变透明的类
@@ -522,7 +522,7 @@ function proContents(data,param){
 			$(this).attr('state',2);
 
 		}else if(state==2){
-			Prompt('已关注。');
+			Prompt('已经取消关注。');
 			//取消关注
 			$(this).html('关注');
 			//移除背景变透明的类
@@ -1168,6 +1168,8 @@ function peo_people(datas,param){
 	var title='人员推荐';
 	if(param=='circles')
 		title='已关注 '+datas.users.length;
+	else if(param=='haveyou')
+		title='';
 
 	if(title){
 		var tit='<div class="row">'
@@ -1402,78 +1404,6 @@ function peo_people(datas,param){
 
 			return false;
 		})
-	
-
-
-		tou.click(function(e){
-
-			e.stopPropagation();	//阻止事件冒泡
-
-			//状态 关注、取消关注
-			var state=$(this).attr('state');
-			var t=$(this);
-
-			if(state==1){
-				//关注
-				$(this).html('已关注');
-				//把状态改成 2
-				$(this).attr('state',2);
-
-			}else if(state==2){
-				//取消关注
-				$(this).html('关注');
-				//把状态改成 1
-				$(this).attr('state',1);
-
-			}
-
-			//发送ajax
-			$.ajax({
-
-				data:{
-					Action:'pro',
-					Method:'_follow_do',
-					uid:$(this).attr('uid')
-				},
-				success:function(data){
-					if(data==1){
-						Prompt('已经取消关注。');
-						//取消关注
-						t.html('关注');
-						//把状态改成 1
-						t.attr('state',1);
-						//清除缓存
-						Clear_cache();
-						Clear_cache('/pro/'+t.attr('uid'));
-						Clear_cache('/peo/circles');
-						return;
-					}else if(data==2){
-						Prompt('已关注。');
-						//关注
-						t.html('已关注');
-						//把状态改成 2
-						t.attr('state',2);
-						//清除缓存
-						Clear_cache();
-						Clear_cache('/peo/'+t.attr('uid'));
-						Clear_cache('/peo/circles');
-						return;
-					}
-
-					//失败时
-					Prompt('与服务器通信失败。');
-
-				},
-				error:function(data){
-					//失败时
-					Prompt('与服务器通信失败。');
-				}
-
-			});
-
-			return false;
-
-		})
 
 
 		a.append(tou).append(name).append(qian).append(guanz);
@@ -1514,11 +1444,16 @@ function peo_circles(data,param){
 			var wid=quans[k].follow;
 
 			for(kk in wid){
+
+				var on="return index('pro','"+wid[kk].id+"','/pro/"+wid[kk].id+"')";
+
 				foll+='<div class="peo_circles_row3_box col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
 						//头像
 						+'<img class="peo_circles_row3_toux" src="'+wid[kk].toux+'">'
 						//名字
-						+'<div class="peo_circles_row3_name">'+wid[kk].name+'</div>'
+						+'<a onclick="'+on+'" href="/pro/'+wid[kk].id+'" class="peo_circles_row3_name">'
+							+wid[kk].name
+						+'</a>'
 						//按钮
 						+'<div uname="'+wid[kk].name+'" uid="'+wid[kk].id+'" class="peo_circles_row3_name2">'+quans[k].name+'</div>'
 						
@@ -1545,7 +1480,7 @@ function peo_circles(data,param){
 					+'</div>'
 
 					//按钮
-					+'<i class="peo_circles_row2_i2 fa fa-ellipsis-v fa-lg" aria-hidden="true"></i>'
+					+'<i cid="'+quans[k].id+'" class="peo_circles_row2_i2 fa fa-ellipsis-v fa-lg" aria-hidden="true"></i>'
 
 				+'</div>'
 				+'</div>'
@@ -1566,9 +1501,17 @@ function peo_circles(data,param){
 
 	//圈子的box
 	var box='<div class="peo_circles_box col-xs-12 col-sm-12 col-md-11 col-lg-12 col-xl-10">'
-		   +'<div class="row">'
-		   		+quan
-		   +'</div>'
+
+		   		+'<div class="row">'
+		   			+quan
+		   		+'</div>'
+
+		   		+'<div class="row">'
+		   		+'<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">'
+		   			+'<div class="peo_circles_new">新建圈子</div>'
+		   		+'</div>'
+		   		+'</div>'
+
 		   +'</div>';
 
 	con.append(str).append(box);
@@ -1692,12 +1635,186 @@ function peo_circles(data,param){
 		
 	})
 
-	
+	//新建圈子被点击
+	$('.peo_circles_new').click(function(){
+
+		//弹出框
+		Popup({
+			Id:'peo_circles_new',
+			Noajax:1,
+			Width:-1,
+			Height:200
+		},function(data,arr){
+
+			//box
+			var box=$('#peo_circles_new');
+
+			var str='<div class="row">'
+				+'<div id="circles_new_top" class="col-sm-12">'
+					+'新建圈子'
+				+'</div>'
+				+'</div>'
+
+				+'<div class="row">'
+				+'<div id="circles_new_con" class="col-sm-12">'
+					+'<fieldset class="form-group">'
+						+'<input type="text" class="form-control" id="circles_new_name" placeholder="Name">'
+						+'<small class="text-muted">为此圈子命名</small>'
+					+'</fieldset>'
+				+'</div>'
+				+'</div>'
+
+				+'<div class="row">'
+				+'<div id="circles_new_bottom" class="col-sm-12">'
+
+					+'<div class="circles_new_cj">创建</div>'
+					+'<div class="circles_new_qs">取消</div>'
+					
+				+'</div>'
+				+'</div>';
+
+			box.append(str);
+			
+			//绑定事件
+			add_edit_circle();
+
+		})
+
+	})
+
+
+	//修改图标被点击
+	$('.peo_circles_row2_i2').click(function(e){
+
+		//阻止冒泡
+		e.stopPropagation();
+
+		var t=$(this);
+
+		var d={};
+
+		for(k in quans){
+			//找到相关圈子数据
+			if(quans[k].id==t.attr('cid')){
+				d=quans[k];
+			}
+		}
+
+		//弹出框
+		Popup({
+			Id:'peo_circles_new',
+			Noajax:1,
+			Width:-1,
+			Height:200
+		},function(data,arr){
+
+			//
+			var box=$('#peo_circles_new');
+
+			var str='<div class="row">'
+				+'<div id="circles_new_top" class="col-sm-12">'
+					+'修改圈子'
+				+'</div>'
+				+'</div>'
+
+				+'<div class="row">'
+				+'<div id="circles_new_con" class="col-sm-12">'
+					+'<fieldset class="form-group">'
+						+'<input type="text" class="form-control" id="circles_new_name" placeholder="Name" value="'+d.name+'" >'
+						+'<small class="text-muted">为此圈子命名</small>'
+					+'</fieldset>'
+				+'</div>'
+				+'</div>'
+
+				+'<div class="row">'
+				+'<div id="circles_new_bottom" class="col-sm-12">'
+
+					+'<div cid="'+d.id+'" class="circles_new_sc"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除圈子</div>'
+					+'<div class="circles_new_cj">修改</div>'
+					+'<div class="circles_new_qs">取消</div>'
+					
+				+'</div>'
+				+'</div>';
+
+
+			box.append(str);
+
+			//绑定事件
+			add_edit_circle(d.id);
+
+			//删除帖子被点击
+			$('.circles_new_sc').click(function(){
+
+				var t=$(this);
+				var arr={
+					Action:'peo',
+					Method:'_del_circle',
+					cid:t.attr('cid')
+				};
+				//发送ajax
+				$.ajax({
+					data:arr,
+					success:function(data){
+
+						if(data==1){
+
+							//隐藏框
+							t.parents('.Black_bg').click();
+
+							//清除缓存
+							Clear_cache();
+
+							//刷新
+							index('peo','circles','/peo/circles');
+
+							Prompt('删除成功');
+							return;
+
+						}
+
+						if(data==2){
+
+							Prompt('删除失败');
+							return;
+
+						}
+
+						if(data==3){
+
+							Prompt('请先移除圈子内用户');
+							return;
+
+						}
+
+						if(data==4){
+
+							//隐藏框
+							t.parents('.Black_bg').click();
+
+							Prompt('更新用户信息失败');
+							return;
+
+						}
+
+						Prompt('与服务器通信失败。');
+
+					},
+					error:function(data){
+						Prompt('与服务器通信失败。');
+					}
+				})
+
+			})
+
+		})
+
+		
+	})
 
 }
 
 
-//创建div
+//创建 修改用户的圈子div
 function circles_bo(datas,t){
 
 	//盒子
@@ -1761,5 +1878,101 @@ function circles_bo(datas,t){
 		    +'</div>';
 
 	box.append(top).append(quan);
+
+}
+
+//添加 修改圈子的事件
+function add_edit_circle(cid=''){
+
+	//取消被点击
+	$('.circles_new_qs').click(function(){
+		//隐藏框
+		$(this).parents('.Black_bg').click();
+
+	})
+
+	//如果文本框内容被改变
+	$('#circles_new_name').keyup(function(){
+		//如果有内容
+		if($(this).val()){
+
+			$(this).parents('#peo_circles_new').find('.circles_new_cj').addClass('circles_new_cj_on');
+
+		}else{
+
+			$(this).parents('#peo_circles_new').find('.circles_new_cj').removeClass('circles_new_cj_on');
+
+		}
+	})
+
+	//创建按钮被点击
+	$('.circles_new_cj').click(function(){
+
+		var t=$(this);
+
+		if(!t.hasClass('circles_new_cj_on'))return;
+
+		var arr={
+			Action:'peo',
+			Method:'_add_circle',
+			name:$('#circles_new_name').val()
+		};
+
+		if(cid){
+
+			arr.Method='_edit_circle';
+			arr.cid=cid;
+
+		}
+
+		//发送ajax
+		$.ajax({
+
+			data:arr,
+			success:function(data){
+
+				if(data==1){
+
+					//隐藏框
+					t.parents('.Black_bg').click();
+
+					if(!cid){
+						Prompt('创建成功。');
+					}else{
+						Prompt('修改成功。');
+					}
+					
+
+					//清除缓存
+					Clear_cache();
+
+					//刷新
+					index('peo','circles','/peo/circles');
+
+					return;
+
+				}else if(data==2){
+
+					if(!cid){
+						Prompt('创建失败。');
+					}else{
+						Prompt('修改失败。');
+					}
+
+					return;
+
+				}
+
+				Prompt('与服务器通信失败。');
+
+			},
+			error:function(data){
+				Prompt('与服务器通信失败。');
+			}
+
+		})
+
+	})
+
 
 }
