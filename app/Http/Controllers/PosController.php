@@ -72,6 +72,7 @@ class PosController extends Controller
             ->select(
                 'posts.id as id',       //帖子id
                 'users.username as name',   //用户名
+                'posts.userid as userid',   //用户id
                 'files.path as toux',       //用户头像
                 'posts.addtime as time',    //发帖时间的时间戳
                 'posts.content as cont',    //帖子主内容
@@ -425,6 +426,7 @@ class PosController extends Controller
         $rows=DB::table('comments')
             ->select(
                 'comments.id as id',        //评论id
+                'comments.userid as userid',        //用户id
                 'users.username as name',    //用户名
                 'files.path as toux',        //用户头像
                 'comments.content as cont',    //评论内容

@@ -75,6 +75,11 @@ function homContents(datas,param){
 		var col1=$('<div class="post_box_col post_box_col_right col-xs-6 col-sm-6 col-md-6 col-lg-6" ></div>');
 		var col2=$('<div class="post_box_col post_box_col_left col-xs-6 col-sm-6 col-md-6 col-lg-6" ></div>');
 
+		//清空主内容区
+		con.empty();
+		//追加两列到主内容区
+		con.append(col1).append(col2);
+
 		var num=0;
 
 		for(k in arr){
@@ -86,11 +91,7 @@ function homContents(datas,param){
 			num++;	
 
 		}
-
-		//清空主内容区
-		con.empty();
-		//追加两列到主内容区
-		con.append(col1).append(col2);
+		
 
 	}else{
 		//三列
@@ -332,7 +333,7 @@ function onpost(){
 	//显示第一条评论
 	$('.post_box_commbox').each(function(){
 
-		$(this).children('.commbox_row:eq(0)').animate({opacity:1});
+		$(this).children('.commbox_row:eq(0)').css({display:'flex'});
 
 	})
 
@@ -710,14 +711,16 @@ function posts_list(data){
 		imgs+='</div>'
 
 	}
- 
+ 	
+ 	//个人资料页跳转
+ 	var on="return index('pro','"+data[i]['userid']+"','/pro/"+data[i]['userid']+"')"
 
 	 da='<div class="row post_box">'
 
 	 		+'<div class="col-sm-12 post_box_top">'
 
 	 			//用户头像
-	 			+'<img src="'+data[i]['toux']+'">'
+	 		+'<a onclick="'+on+'" href="/pro/'+data[i]['userid']+'" ><img src="'+data[i]['toux']+'"></a>'
 
 	 			//用户名
 	 			+data[i]['name']
@@ -786,10 +789,13 @@ function forcomm(com){
 	if(com[k]['pid'])
 		pname='<span class="commbox_fuji">@'+com[k]['pname']+' </span>';
 
+	var on="return index('pro','"+com[k]['userid']+"','/pro/"+com[k]['userid']+"')";
 	comm+='<div class="commbox_row">'
 
 			//用户头像
-			+'<img class="commbox_toux" src="'+com[k]['toux']+'">'
+			+'<a onclick="'+on+'" href="/pro/'+com[k]['userid']+'">'
+				+'<img class="commbox_toux" src="'+com[k]['toux']+'">'
+			+'</a>'
 
 			//顶部窄的框
 			+'<div class="commbox_top">'
