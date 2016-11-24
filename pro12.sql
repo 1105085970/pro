@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2016-11-20 21:35:44
+Date: 2016-11-24 08:20:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,13 +54,13 @@ CREATE TABLE `collections` (
   `picid` int(11) DEFAULT '1' COMMENT '收藏集图片编号',
   `background` varchar(100) NOT NULL COMMENT '收藏集背景色',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of collections
 -- ----------------------------
-INSERT INTO `collections` VALUES ('1', '哈哈哈哈哈哈哈哈哈哈哈1', '你笑啥213', '1479533671', '1', null, null, '0', '1', '', '0', '1', '#00ABC0');
-INSERT INTO `collections` VALUES ('2', '哈哈哈哈2', '你笑啥213', '1478693390', '2', null, null, '0', '2', '8,', '0', '2', '#EB3F79');
+INSERT INTO `collections` VALUES ('1', '哈哈哈哈哈哈哈哈哈哈哈1', '你笑啥213', '1479533671', '1', null, null, '0', '2', '9,', '0', '1', '#00ABC0');
+INSERT INTO `collections` VALUES ('2', '哈哈哈哈2', '你笑啥213', '1478693390', '2', null, null, '0', '1', '', '0', '2', '#EB3F79');
 INSERT INTO `collections` VALUES ('3', '哈哈哈哈3', '你笑啥213', '1478693390', '3', null, null, '0', '1', '8,', '0', '3', '#E53935');
 INSERT INTO `collections` VALUES ('4', '哈哈哈哈', null, '1478693390', '3', null, null, '0', '0', '', '0', '4', '#A900FF');
 INSERT INTO `collections` VALUES ('5', '哈哈哈哈44', null, '1478693390', '5', null, null, '0', '0', '', '0', '1', '#00ABC0');
@@ -72,21 +72,8 @@ INSERT INTO `collections` VALUES ('10', '哈哈哈哈dffe', null, '1478693390', 
 INSERT INTO `collections` VALUES ('11', '哈哈哈哈', null, '1478693390', '6', null, null, '0', '0', '', '0', '4', '#00ABC0');
 INSERT INTO `collections` VALUES ('12', '哈哈哈哈', '你笑啥213', '1478693390', '3', null, null, '0', '0', '', '0', '1', '#7D56C1');
 INSERT INTO `collections` VALUES ('13', '哈哈哈哈', null, '1478693390', '2', null, null, '0', '0', null, '0', '4', '#1D87E4');
-INSERT INTO `collections` VALUES ('14', '哈哈哈哈', null, '1478693390', '3', null, null, '0', '0', null, '0', '5', '#00ABC0');
-INSERT INTO `collections` VALUES ('15', '哈哈哈哈', null, '1478693390', '3', null, null, '0', '0', null, '0', '3', '#7D56C1');
-INSERT INTO `collections` VALUES ('16', '哈哈哈哈', null, '1478693390', '1', null, null, '0', '0', null, '0', '4', '#00ABC0');
-INSERT INTO `collections` VALUES ('17', '哈哈哈哈', null, '1478693390', '4', null, null, '0', '0', null, '0', '6', '#1D87E4');
-INSERT INTO `collections` VALUES ('18', '哈哈哈哈', null, '1478693390', '5', null, null, '0', '0', null, '0', '3', '#029AE4');
-INSERT INTO `collections` VALUES ('19', '哈哈哈哈', null, '1478693390', '1', null, null, '0', '0', null, '0', '2', '#029AE4');
-INSERT INTO `collections` VALUES ('20', '哈哈哈哈', null, '1478693390', '3', null, null, '0', '0', null, '0', '3', '#00ABC0');
-INSERT INTO `collections` VALUES ('21', '哈哈哈哈', null, '1478693390', '2', null, null, '0', '0', null, '0', '3', '#00ABC0');
-INSERT INTO `collections` VALUES ('22', '哈哈哈哈', null, '1478693390', '5', null, null, '0', '0', null, '0', '6', '#00887A');
-INSERT INTO `collections` VALUES ('23', '哈哈哈哈', null, '1478693390', '3', null, null, '0', '0', null, '0', '4', '#679E37');
-INSERT INTO `collections` VALUES ('24', '哈哈哈哈', null, '1478693390', '3', null, null, '0', '0', null, '0', '5', '#00887A');
-INSERT INTO `collections` VALUES ('26', '第二个', '哈哈13', '1479640840', '8', null, null, '0', '1', '8,', '0', '1', '#FF6F42');
-INSERT INTO `collections` VALUES ('28', 'oiu0000', '98765', '1479634083', '8', null, null, '0', '0', '', '0', '19', '#EB3F79');
-INSERT INTO `collections` VALUES ('34', '你们好', '谢谢啊', '1479542414', '8', null, null, '0', '0', null, '0', '23', '#00ABC0');
-INSERT INTO `collections` VALUES ('35', '0000000', '0909090990990909', '1479542560', '8', null, null, '0', '0', null, '0', '1', '#00ABC0');
+INSERT INTO `collections` VALUES ('54', '23131313131', '12312312312312', '1479912308', '8', null, null, '0', '0', null, '0', '54', '#00ABC0');
+INSERT INTO `collections` VALUES ('58', '1231123', '12321323123', '1479915566', '8', null, null, '0', '0', null, '0', '58', '#A900FF');
 
 -- ----------------------------
 -- Table structure for `comments`
@@ -105,7 +92,7 @@ CREATE TABLE `comments` (
   `path` varchar(255) NOT NULL DEFAULT '0' COMMENT '父级编号层级拼接',
   `addtime` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of comments
@@ -114,6 +101,9 @@ INSERT INTO `comments` VALUES ('1', '1', '1', '虽然各色各', '1', '1', '1', 
 INSERT INTO `comments` VALUES ('2', '2', '2', '三个太过挑剔', '2', '2', '2', '2', '2', '2,', '34234234');
 INSERT INTO `comments` VALUES ('3', '3', '3', '嘎如果', '3', '3', '3', '3', '3', '3,', '234234');
 INSERT INTO `comments` VALUES ('4', '4', '4', '公司各色各', '4', '4', '4', '4', '4', '4,', '4353453');
+INSERT INTO `comments` VALUES ('5', '10', '2', 'nihao', null, null, '0', null, '0', '0,', '1479734306');
+INSERT INTO `comments` VALUES ('6', '10', '2', 'qweqweqw', null, null, '0', null, '5', '0,5,', '1479734334');
+INSERT INTO `comments` VALUES ('7', '8', '10', '哈哈个啥\n', null, null, '0', null, '0', '0,', '1479861702');
 
 -- ----------------------------
 -- Table structure for `commoption`
@@ -212,24 +202,29 @@ CREATE TABLE `communities` (
   `describe` text COMMENT '社区描述',
   `linkid` varchar(500) DEFAULT NULL COMMENT '链接编号列表，逗号分隔',
   `typeid` varchar(300) DEFAULT NULL COMMENT '类别编号列表，逗号分隔',
+  `sqjr` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '1申请加入，0加入，',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of communities
 -- ----------------------------
-INSERT INTO `communities` VALUES ('1', '呵呵呵呵呵呵', '小小小西欧爱心哦', '1231231231', '8', '0', null, '1', '100,1,2,3', '0', '0', '', null, '1', null, null, '2');
-INSERT INTO `communities` VALUES ('2', '嘿嘿嘿额', '嘿嘿嘿额黑', '123123123', '1', '0', null, '1', '2,3', '0', '1', '8,', null, '2', null, null, null);
-INSERT INTO `communities` VALUES ('3', '嘿嘿嘿额1', '嘿嘿嘿额黑', '123123123', '3', '0', null, '1', '1,3', '0', '0', '', null, '3', null, null, null);
-INSERT INTO `communities` VALUES ('4', '嘿嘿嘿额黑3', '嘿嘿嘿额黑', '123123123', '4', '0', null, '1', null, '0', '0', '', null, '4', null, null, null);
-INSERT INTO `communities` VALUES ('5', '嘿嘿嘿额黑4', '嘿嘿嘿额黑', '123123123', '5', '0', null, '1', null, '0', '0', null, null, '5', null, null, null);
-INSERT INTO `communities` VALUES ('6', '1231231', '嘿嘿嘿额黑', '123123123', '6', '0', null, '1', null, '0', '0', '', null, '6', null, null, null);
-INSERT INTO `communities` VALUES ('7', 'sadasd', '嘿嘿嘿额黑', '123123123', '1', '0', null, '1', null, '0', '0', '', null, '7', null, null, null);
-INSERT INTO `communities` VALUES ('8', '嘿嘿122', '嘿嘿嘿额黑', '123123123', '3', '0', null, '1', null, '0', '0', null, null, '8', null, null, null);
-INSERT INTO `communities` VALUES ('9', '嘿嘿trew', '嘿嘿嘿额黑', '123123123', '2', '0', null, '1', null, '0', '0', null, null, '9', null, null, null);
-INSERT INTO `communities` VALUES ('10', '嘿嘿jhgf', '嘿嘿嘿额黑', '123123123', '4', '0', null, '1', null, '0', '0', null, null, '10', null, null, null);
-INSERT INTO `communities` VALUES ('11', '嘿嘿嘿ooo', '嘿嘿嘿额黑', '123123123', '5', '0', null, '1', null, '0', '0', '', null, '11', null, null, null);
-INSERT INTO `communities` VALUES ('12', '123', '1233211', '1479643883', '8', '0', null, '1', null, '0', '0', null, null, '1', null, null, null);
+INSERT INTO `communities` VALUES ('1', '呵呵呵呵呵呵', '小小小西欧爱心哦', '1479817635', '8', '0', null, '1', '100,1,2,3', '0', '0', '', null, '34', '', null, '2', '0');
+INSERT INTO `communities` VALUES ('2', '嘿嘿嘿额', '嘿嘿嘿额黑', '123123123', '1', '0', null, '1', '2,3', '0', '1', '9,', null, '2', null, null, null, '0');
+INSERT INTO `communities` VALUES ('3', '嘿嘿嘿额1', '嘿嘿嘿额黑', '123123123', '3', '0', null, '1', '1,3', '0', '1', '8,', null, '3', null, null, null, '0');
+INSERT INTO `communities` VALUES ('4', '嘿嘿嘿额黑3', '嘿嘿嘿额黑', '123123123', '4', '0', null, '1', null, '0', '1', '8,', null, '4', null, null, null, '0');
+INSERT INTO `communities` VALUES ('5', '嘿嘿嘿额黑4', '嘿嘿嘿额黑', '123123123', '5', '0', null, '1', null, '0', '0', null, null, '5', null, null, null, '0');
+INSERT INTO `communities` VALUES ('6', '1231231', '嘿嘿嘿额黑', '123123123', '6', '0', null, '1', null, '0', '0', '', null, '6', null, null, null, '0');
+INSERT INTO `communities` VALUES ('7', 'sadasd', '嘿嘿嘿额黑', '123123123', '1', '0', null, '1', null, '0', '0', '', null, '7', null, null, null, '1');
+INSERT INTO `communities` VALUES ('8', '嘿嘿122', '嘿嘿嘿额黑', '123123123', '3', '0', null, '1', null, '0', '0', null, null, '8', null, null, null, '0');
+INSERT INTO `communities` VALUES ('9', '嘿嘿trew', '嘿嘿嘿额黑', '123123123', '2', '0', null, '1', null, '0', '0', null, null, '9', null, null, null, '0');
+INSERT INTO `communities` VALUES ('10', '嘿嘿jhgf', '嘿嘿嘿额黑', '123123123', '4', '0', null, '1', null, '0', '0', null, null, '10', null, null, null, '0');
+INSERT INTO `communities` VALUES ('11', '嘿嘿嘿ooo', '嘿嘿嘿额黑', '123123123', '5', '0', null, '1', null, '0', '0', '', null, '11', null, null, null, '0');
+INSERT INTO `communities` VALUES ('13', '唉，又是你', 'this is a good shequ', '1479817670', '8', '0', '100,', '1', null, '0', '0', null, null, '35', '', null, null, '1');
+INSERT INTO `communities` VALUES ('20', '必需审核11', '必需审核12', '1479798291', '9', '0', null, '1', null, '1', '0', null, null, '33', '1232132132313', null, null, '0');
+INSERT INTO `communities` VALUES ('24', '12323123', '1232135486', '1479917016', '8', '0', null, '1', null, '0', '0', null, null, '59', '23333333333333333333333333333333333333333333333333333333333333333333333333333333333', null, null, '0');
+INSERT INTO `communities` VALUES ('25', '33333333333', '3333333333333', '1479917647', '8', '0', null, '1', null, '0', '0', null, null, '60', null, null, null, '0');
+INSERT INTO `communities` VALUES ('26', '76543211po', '2132131211098', '1479942739', '8', '0', null, '1', null, '0', '0', null, null, '61', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `files`
@@ -244,18 +239,18 @@ CREATE TABLE `files` (
   `state` tinyint(2) NOT NULL DEFAULT '1' COMMENT '文件状态。1正常0回收站',
   `addtime` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of files
 -- ----------------------------
-INSERT INTO `files` VALUES ('1', '1', '', '1', '/images/1479536123htKmLH.jpg', '1', '2343354');
+INSERT INTO `files` VALUES ('1', '1', '', '1', '/images/sqmrbg.jpg', '1', '2343354');
 INSERT INTO `files` VALUES ('2', '2', null, '2', '/images/2.jpg', '1', '3423');
 INSERT INTO `files` VALUES ('3', '3', null, '4', '/images/3.jpg', '1', '32432423');
 INSERT INTO `files` VALUES ('4', '4', null, '5', '/images/5.jpg', '1', '43545');
 INSERT INTO `files` VALUES ('5', '5', null, '6', '/images/6.jpg', '1', '345465');
 INSERT INTO `files` VALUES ('6', null, null, '7', '/images/1.jpg', '1', null);
-INSERT INTO `files` VALUES ('7', null, null, '8', '/images/1.jpg', '1', null);
+INSERT INTO `files` VALUES ('7', null, null, '8', '/images/1479817635AkcUxw.jpg', '1', null);
 INSERT INTO `files` VALUES ('8', null, null, '9', '/images/1.jpg', '1', null);
 INSERT INTO `files` VALUES ('9', null, null, '8', '/images/1.jpg', '1', null);
 INSERT INTO `files` VALUES ('10', null, null, '1', '/images/1.jpg', '1', null);
@@ -271,7 +266,47 @@ INSERT INTO `files` VALUES ('19', null, null, '8', '/images/14795362140NYsKk.jpg
 INSERT INTO `files` VALUES ('20', null, null, '8', '/images/1479460353v2KcVz.jpg', '1', null);
 INSERT INTO `files` VALUES ('21', null, null, '8', '/images/1479466379LP4dbd.jpg', '1', null);
 INSERT INTO `files` VALUES ('22', null, null, '8', '/images/1479536072kwS6SC.jpg', '1', null);
-INSERT INTO `files` VALUES ('23', null, null, '8', '/images/1479542413fv0s8m.jpg', '1', null);
+INSERT INTO `files` VALUES ('23', null, null, '8', '/images/1479909777UONfeB.jpg', '1', null);
+INSERT INTO `files` VALUES ('24', null, null, '9', '/images/14797836159KI63W.jpg', '1', null);
+INSERT INTO `files` VALUES ('25', null, null, '9', '/images/1479783669oj3g19.jpg', '1', null);
+INSERT INTO `files` VALUES ('26', null, null, '9', '/images/1479783697Rz1P8g.jpg', '1', null);
+INSERT INTO `files` VALUES ('27', null, null, '9', '/images/14797837429nuzCD.jpg', '1', null);
+INSERT INTO `files` VALUES ('28', null, null, '9', '/images/1479783841cxmrNG.jpg', '1', null);
+INSERT INTO `files` VALUES ('29', null, null, '9', '/images/1479784007JgUCM8.jpg', '1', null);
+INSERT INTO `files` VALUES ('30', null, null, '9', '/images/1479784148RzQVCe.jpg', '1', null);
+INSERT INTO `files` VALUES ('31', null, null, '9', '/images/1479784843Wy1HcV.jpg', '1', '1479784843');
+INSERT INTO `files` VALUES ('32', null, null, '9', '/images/1479784902UkkHMA.jpg', '1', '1479784902');
+INSERT INTO `files` VALUES ('33', null, null, '9', '/images/1479788057vuYEhs.jpg', '1', '1479785674');
+INSERT INTO `files` VALUES ('34', null, null, '8', '/images/1479817603PryMj7.jpg', '1', '1479817603');
+INSERT INTO `files` VALUES ('35', null, null, '8', '/images/1479817670rIcxAQ.jpg', '1', '1479817670');
+INSERT INTO `files` VALUES ('36', null, null, '8', '/images/1479827387pSPWV0.jpg', '1', '1479827387');
+INSERT INTO `files` VALUES ('37', null, null, '8', '/images/1479827427seYSvl.jpg', '1', '1479827427');
+INSERT INTO `files` VALUES ('38', null, null, '8', '/images/1479827551fcdF6B.jpg', '1', '1479827552');
+INSERT INTO `files` VALUES ('39', null, null, '8', '/images/14798277702wYXzh.jpg', '1', '1479827770');
+INSERT INTO `files` VALUES ('40', null, null, '8', '/images/1479861525ugv0ng.jpg', '1', '1479861525');
+INSERT INTO `files` VALUES ('41', '41', 'image/jpeg', '8', '/files/2016/11/14/8/41.jpg', '1', '1479862782');
+INSERT INTO `files` VALUES ('42', null, null, '8', '/images/1479867702RuF8C5.jpg', '1', '1479867702');
+INSERT INTO `files` VALUES ('43', '43', 'image/jpeg', '8', '/files/2016/11/14/8/43.jpg', '1', '1479873276');
+INSERT INTO `files` VALUES ('44', '44', 'image/jpeg', '8', '/files/2016/11/14/8/44.jpg', '1', '1479873277');
+INSERT INTO `files` VALUES ('45', '45', 'image/jpeg', '8', '/files/2016/11/14/8/45.jpg', '1', '1479873277');
+INSERT INTO `files` VALUES ('46', '46', 'image/jpeg', '8', '/files/2016/11/14/8/46.jpg', '1', '1479873278');
+INSERT INTO `files` VALUES ('47', null, null, '8', '/images/1479892359NkTCtX.jpg', '1', '1479892359');
+INSERT INTO `files` VALUES ('48', null, null, '8', '/images/14799102057DdKVK.jpg', '1', '1479899323');
+INSERT INTO `files` VALUES ('49', null, null, '8', '/images/1479903825EZ4nJU.jpg', '1', '1479903825');
+INSERT INTO `files` VALUES ('50', null, null, '8', '/images/147990419505FEac.jpg', '1', '1479904195');
+INSERT INTO `files` VALUES ('51', null, null, '8', '/images/14799162222W2XKn.jpg', '1', '1479904452');
+INSERT INTO `files` VALUES ('52', null, null, '8', '/images/1479909932RDJAyh.jpg', '1', null);
+INSERT INTO `files` VALUES ('53', null, null, '8', '/images/1479910991YpoBO8.jpg', '1', null);
+INSERT INTO `files` VALUES ('54', null, null, '8', '/images/1479912307wmREpP.jpg', '1', '1479912308');
+INSERT INTO `files` VALUES ('55', null, null, '8', '/images/1479913516FfWYmx.jpg', '1', '1479913516');
+INSERT INTO `files` VALUES ('56', null, null, '8', '/images/14799135203AwLQT.jpg', '1', '1479913520');
+INSERT INTO `files` VALUES ('57', null, null, '8', '/images/1479913926l1tKgV.jpg', '1', '1479913926');
+INSERT INTO `files` VALUES ('58', null, null, '8', '/images/1479915566xwEimr.jpg', '1', '1479915566');
+INSERT INTO `files` VALUES ('59', null, null, '8', '/images/1479917647yOo2rO.jpg', '1', '1479916304');
+INSERT INTO `files` VALUES ('60', null, null, '8', '/images/14799174812eOhvr.jpg', '1', '1479917481');
+INSERT INTO `files` VALUES ('61', null, null, '8', '/images/14799427394y8Hu8.jpg', '1', '1479942739');
+INSERT INTO `files` VALUES ('62', null, null, '8', '/images/14799427674qb8OH.jpg', '1', '1479942767');
+INSERT INTO `files` VALUES ('63', null, null, '8', '/images/14799428081x2Z70.jpg', '1', '1479942808');
 
 -- ----------------------------
 -- Table structure for `links`
@@ -343,19 +378,36 @@ CREATE TABLE `posts` (
   `fixed` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否固定到顶部 1固定 0禁',
   `state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '帖子状态。1正常0回收站2待审核',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of posts
 -- ----------------------------
-INSERT INTO `posts` VALUES ('1', '风景风景1', null, null, '1478696390', '1', '1', '1', null, null, null, '1', '7', null, null, null, '0', '1', '1', '0', '', '0', '0', '1');
-INSERT INTO `posts` VALUES ('2', '风景风景2', null, null, '1478696390', '1', '1', '2', null, null, null, '1', '1', null, null, null, '0', '1', '1', '0', '', '0', '0', '1');
+INSERT INTO `posts` VALUES ('1', '风景风景1', null, null, '1478696390', '1', '1', '1', null, null, null, '1', '7', null, null, null, '0', '1', '1', '1', '10', '0', '0', '1');
+INSERT INTO `posts` VALUES ('2', '风景风景2', null, null, '1478696390', '1', '1', '2', null, null, null, '1', '1', null, null, null, '2', '1', '1', '0', '', '0', '0', '1');
 INSERT INTO `posts` VALUES ('3', '风景风景3', null, null, '1478696390', '1', '1', '3', null, null, null, '26', '1', null, null, null, '0', '1', '1', '1', '8', '0', '0', '1');
 INSERT INTO `posts` VALUES ('4', '风景风景4', null, null, '1478696390', '1', '1', '4', null, null, null, '1', '8', null, null, null, '0', '1', '1', '0', '', '0', '0', '1');
 INSERT INTO `posts` VALUES ('5', '风景风景5', null, null, '1478696390', '1', '1', '1', null, null, null, '1', '6', null, null, null, '0', '1', '1', '0', '', '0', '0', '1');
 INSERT INTO `posts` VALUES ('6', '风景风景6', null, null, '1478696390', '1', '1', '1', null, null, null, '26', '6', null, null, null, '0', '1', '1', '0', '', '0', '0', '1');
-INSERT INTO `posts` VALUES ('7', '忽而和任何', null, '符合人飞速热敷', '10161113', '2', '2', '2', '2', '2', '2', '2', '2', null, '2', '2', '0', '1', '1', '3', '2,8', '2', '2', '0');
-INSERT INTO `posts` VALUES ('8', '按错太过投入嘎然提供', null, '我耳根软榻上改善人体', '11111111', '3', '3', '3', '3', '3', '3', '3', '33', '3', '3', '3', '0', '1', '1', '3', '3', '3', '1', '1');
+INSERT INTO `posts` VALUES ('7', '忽而和任何', null, '符合人飞速热敷', '10161113', '2', '2', '2', '2', '2', '2', '2', '20', null, '2', '2', '0', '1', '1', '3', '2,8', '2', '2', '0');
+INSERT INTO `posts` VALUES ('9', null, null, '123456789uytrqw', '1479734505', '10', '1', null, null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('10', null, null, '哈哈哈哈哈哈哈哈哈', '1479861524', '8', '1', '39', null, null, null, null, '18', null, null, null, '1', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('11', null, null, '嘿嘿嘿嘿嘿嘿嘿嘿嘿', '1479862197', '8', '1', '37', null, null, null, null, '18', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('12', null, null, null, '1479862819', '8', '2', '41', null, null, null, null, null, null, null, null, '0', '1', '1', '0', null, '0', '0', '2');
+INSERT INTO `posts` VALUES ('13', null, null, 'wqeqewqeqewqewqe', '1479867701', '8', '1', '41', null, null, null, null, '18', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('18', null, null, '123123123', '1479903530', '8', '1', null, null, null, null, null, '4', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('19', null, null, '0987654321234569', '1479903825', '8', '1', '48', null, null, null, null, '4', null, null, null, '0', '1', '1', '1', '8', '0', '0', '1');
+INSERT INTO `posts` VALUES ('20', null, null, '45678765434567', '1479904067', '8', '1', null, null, null, null, null, '4', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('21', null, null, 'poiuy987698iu', '1479904108', '8', '1', null, null, null, null, null, '4', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('22', null, null, 'poiuytrkjhgfdsmnbvcxertyui;lkjhgf', '1479904195', '8', '1', '49', null, null, null, null, '4', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('23', null, null, 'iuytre', '1479904452', '8', '1', '50', null, null, null, null, '2', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('24', null, null, '09876hh', '1479904498', '8', '1', null, null, null, null, null, '2', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('25', null, null, '098765wnbnv', '1479904549', '8', '1', null, null, null, null, null, '2', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('26', null, null, 'okjmngb', '1479904613', '8', '1', null, null, null, null, null, '2', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('27', null, null, '123123123', '1479916304', '8', '1', '59', null, null, null, null, '21', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('28', null, null, '1231234', '1479942767', '8', '1', '61', null, null, null, null, '26', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('29', null, null, 'oiuo', '1479942808', '8', '1', '63', null, null, null, null, '26', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
+INSERT INTO `posts` VALUES ('30', null, null, '09870', '1479942828', '8', '1', null, null, null, null, null, '26', null, null, null, '0', '1', '1', '0', null, '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for `users`
@@ -367,8 +419,8 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL COMMENT '密码',
   `phone` int(11) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `state` tinyint(2) NOT NULL DEFAULT '1' COMMENT '用户状态。0禁用、1未激活2正常3管理员',
-  `picid` int(11) DEFAULT NULL COMMENT '头像图片编号',
+  `state` tinyint(2) NOT NULL DEFAULT '2' COMMENT '用户状态。0禁用、1未激活2正常3管理员',
+  `picid` int(11) DEFAULT '2' COMMENT '头像图片编号',
   `sex` tinyint(2) NOT NULL DEFAULT '0' COMMENT '性别。0保密1男2女',
   `shield` text COMMENT '被屏蔽的用户编号列表，逗号分隔',
   `ignore` text COMMENT '被忽略的用户编号列表，逗号分隔',
@@ -395,7 +447,7 @@ CREATE TABLE `users` (
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '用户更新时间',
   `fans` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of users
@@ -407,7 +459,10 @@ INSERT INTO `users` VALUES ('4', 'fafferf', '$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp2
 INSERT INTO `users` VALUES ('5', 'sgrdg', '$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp21vppkb5f6CN/skE/dZO5qC', null, '2413423@ff.com', '1', '5', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', null, null, null, null, null, null, '555', 'FUu20lvKudLspJEFuADKOMn1ft8uLntFqWRcegrpTuBroN5NNGJQqHEjYJNj', '2016-11-14 19:44:41', null);
 INSERT INTO `users` VALUES ('6', 'psjpsjpsj', '$10$xXcRBzoTpwnGgY7KoeZZ/uzFBNwxgp21vppkb5f6CN/skE/dZO5qC', null, '123456789@qq.com', '1', '6', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-13 21:00:24', null, null, null, null, null, '22FMRDeGCW1w70M3pZPxzeCczSlKyP3SnfT9DTDA4Y5QavFWwU', null, '2016-11-14 19:44:47', null);
 INSERT INTO `users` VALUES ('7', 'maomao', '$2y$10$wfskfvC00Va7XbxXzK3iruxlHRNUUsTskr5VXTRY.VUbna67IhiEW', null, '1234567@qq.com', '1', '2', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-13 22:01:00', null, null, null, null, null, 'Vrd4IeRlyw9kpaMqQNmXvBPDOyQfKWSdY33OgOinCinxTnOMDt', 'C5JW1YuS9kNLM1TVeK45QIzKYvGclZNEDgk9vLhhfx8HO9zqB3TepCFVYoJL', '2016-11-16 08:58:02', null);
-INSERT INTO `users` VALUES ('8', 'wang', '$2y$10$8zINeDd5GfRH2R97ljHKQ.UUg9OqSthCnFD2ovHPasqBNfyLWGaDu', null, '666@qq.com', '1', '6', '0', null, null, null, '2', '1', '1000,26,33,3,2,', '1000,2,', null, '0', null, null, '0', null, '0', '2016-11-14 14:35:34', null, null, null, null, null, '0RsXhCG4ANs5SpkNkgy9aqhEjpFQiPJ7kddYcgIbVmTMxJTtF8', 'jlhKN4RJV9P18uSCTD7hvbCpGijXlCT2daYfoYQwZRb83fKsUZ9tnJJm99ct', '2016-11-20 19:19:21', null);
+INSERT INTO `users` VALUES ('8', 'wang', '$2y$10$8zINeDd5GfRH2R97ljHKQ.UUg9OqSthCnFD2ovHPasqBNfyLWGaDu', null, '666@qq.com', '1', '6', '0', null, null, null, '2', '1', '1000,33,3,', '1000,4,3,', null, '0', null, null, '0', null, '0', '2016-11-14 14:35:34', null, null, null, null, null, '0RsXhCG4ANs5SpkNkgy9aqhEjpFQiPJ7kddYcgIbVmTMxJTtF8', 'buNfdp80zVDxbag6guDqwvZDoLG30zudKorwjlxT6TUVwflFh9uvkeJgYnPC', '2016-11-23 23:47:39', null);
+INSERT INTO `users` VALUES ('9', 'heihei', '$2y$10$KkcMN1/TLL2f5KSJbOTht.uQJCHkk4HyGFVHCCbOOZ.mCQlvjoFd.', null, '888@qq.com', '1', '2', '0', null, null, null, '2', '1', '1,', '2,', null, '0', null, null, '0', null, '0', '2016-11-21 09:05:23', null, null, null, null, null, 'XCRyj01CzTdjdyIPVDwUengPDlcey03gjiQvabOSU1SV24vCQD', 'lIeR8Q32KxX2x7uWzwiybugBnDREpnZv1NOnndFP9vq0BtopXayr2EmW6fkZ', '2016-11-23 16:25:49', null);
+INSERT INTO `users` VALUES ('10', 'wang1', '$2y$10$zyX82dvvrojy/k8ebbrQg.Mc1wnOyem.aXylUf937jryqTbO0QVGW', null, '666666@qq.com', '2', '2', '1', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-21 17:09:14', null, null, null, null, null, '1FkTjrEiR5QxQrzgtDsIi0DaXZhoA8a4GiRMpBMEjPHSDECgWA', '5DRlrNvh57QaX6hlt8DLZfKlq0ZgP1J7FbsF08L6MdMWmL5WxGSTvmECZed4', '2016-11-22 13:54:31', null);
+INSERT INTO `users` VALUES ('11', '888', '$2y$10$HPgTpPRI2oI74DBfC/Lc/uYIZ8sls2htZK3sKdnT9APc7Q/4DM2dS', null, '6666@qq.com', '2', '2', '0', null, null, null, '2', '1', null, null, null, '0', null, null, '0', null, '0', '2016-11-23 16:17:26', null, null, null, null, null, 'L4T2OLNi8O7HAaw1iNIoDQONFyqmc4YubJ0mqbiWIEZsfJF2tc', '1mP6U6GweEZEckixCexEMextjFWVjL8k0QEDXTmkLpUBnoPpdLNTiHG9GB5E', '2016-11-23 16:17:33', null);
 
 -- ----------------------------
 -- Table structure for `votes`

@@ -17,6 +17,7 @@ class ColController extends Controller
 {
     
     //Post请求顶部
+    //
     public function PostTop(Request $request){
         //要求返回一个数组
         //可能包含的键 
@@ -26,13 +27,17 @@ class ColController extends Controller
         //Nav           横向导航链接数组
             //例 'Nav'=>['导航1'=>['Url'=>'/ts','Action'=>'hom','Param'=>['Param1','Param2']]]
         //Fun           请求主内容成功时要执行的函数 
-        
+            $Newpost='';
+            if(Auth::check()){
+                $Newpost=1;
+            }
             $arr=[
                 'Background'=>'#03A9F4',
                 'CatName'=>'Home',
                 'Nav'=>['精选'=>['Url'=>'/col','Action'=>'col','Param'=>[]],
                         '已关注'=>['Url'=>'/col/daohang2','Action'=>'col','Param'=>['daohang2']],
-                        '你的'=>['Url'=>'/col/yours','Action'=>'col','Param'=>['yours']]]
+                        '你的'=>['Url'=>'/col/yours','Action'=>'col','Param'=>['yours']]],
+                        'Newpost'=>$Newpost
             ];
         
         return $arr;
@@ -47,6 +52,7 @@ class ColController extends Controller
             if(Auth::check()){
                 $chuang='你还没有创建收藏集';
                 $arr=DB::table('collections')->where('userid',Auth::id())->get();
+                // $arr
                 $pic=DB::table('users')->where('id',Auth::id())->first();
                 $pictx=DB::table('files')->where('id',$pic->picid)->first();
                 foreach($arr as $k=>$v){
@@ -121,7 +127,7 @@ class ColController extends Controller
             foreach($arr as $k=>$v){
                 $cun='关注';
                 $arr1=DB::table('files')->where('id',$arr->picid)->first();
-                $arr2=DB::table('files')->where('id',$arr->userid)->first();
+                $arr2=DB::table('files')->where('id',62)->first();
                 $id=explode(',',$arr->fans);
                 foreach($id as $kk=>$vv){
                     if(Auth::id()==$vv&&Auth::id()!=''){
@@ -255,9 +261,9 @@ class ColController extends Controller
             'title.unique'=>'收藏集名称已存在',
             'slogan.required'=>'请填写个性宣言',
         ]);
-            if($request->gaitu=='gai'){
+            if($request->gaitu!='mei'){
                 $lastid=DB::table('files')->orderBy('id','desc')->first();
-                 $arr['picid']=$lastid->id;
+                 $arr['picid']=$request->gaitu;
             }
             
             $arr['title']=$request->title;

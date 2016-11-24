@@ -42,7 +42,10 @@ class SeaController extends Controller
         $cd=count($user);
         if($cd>0){
             foreach($user as $k=>$v){
-                //
+                $list1=DB::table('files')->where('id',$user[$k]->picid)->first();
+                $list2=DB::table('files')->where('id',$user[$k]->background)->first();
+                $user[$k]->tx=$list1->path;
+                $user[$k]->bg=$list2->path;
             }
         }
         return ['user'=>$user,'key2'=>$cd];

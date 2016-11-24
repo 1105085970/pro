@@ -94,8 +94,12 @@ function colContents(data,param){
 		var tleft="<div class='col-lg-3 col-sm-4 col-xs-4 tleft'>"+duo+"<img src='"+data['bg']+"' class='timg'><div style='width:100%;height:100%;background:"+data['key'].background+";'>"+tou+zw+user+title2+xuanyan+guan+"</div></div>";//跳转至后的左侧div
 		var leftdiv="<div class='col-lg-1 col-md-1 col-sm-1 col-xs-1 tleft'></div>";
 		
-		var main6="<div class='row' id='scjcontent' style='width:100%'></div>";
-		div.html(tleft+main6);
+		var mainz="<div class='zhu' onclick='addPost(2)'><div class='stx'><img src='/images/mrtx.jpg' style='margin-top:15px;margin-left:20px;display:block;float:left;'></div><div style='margin-top:15px;margin-left:20px;float:left;line-height:40px;color:#BDBDBD'>分享内容...</div><div class='zhao'><img style='margin-top:15px;margin-right:20px;display:block;float:right;' src='/images/zhaoxiang.jpg'></div></div>";
+			var main8="<div class='row' id='sqcontent' style='margin-top:0px;width:100%'></div>";
+
+
+		//var main6="<div class='row' id='scjcontent' style='width:100%'></div>";
+		div.html(tleft+mainz+main8);
 		div.appendTo('#Contents');
 		
 		homContents(data.posts);
@@ -106,6 +110,32 @@ function colContents(data,param){
 }
 //鼠标悬浮效果
 
+function addPost(scid){
+	var name='';
+	var comname='';
+	$.ajax({
+		data:{Action:'com',Method:'fanhui',comid:scid},
+		success:function(data){
+			var div=bd();
+			var top1="<div class='top1'><img src='/images/mrtx.jpg' style='margin-top:20px;margin-left:20px;display:block;float:left;'><div class='uname'>"+data['key1'].username+"</div><div class='fa fa-caret-right sanjiao'></div><div class='cname'>"+data['key'].title+"</div></div>";
+			var center1="<div class='centerz'><textarea onfocus='qx(\"center1\")' onblur='cx()' class='center1'>分享内容...</textarea></div>";
+			//var bottom1="<div class='bottom1'><img style='margin-top:0px;margin-left:20px;float:left;' src='/images/xiang.jpg'></div>";
+			var tupian8="<div class='tupian2'><img id='imgPre'></div>";
+			var bottom1="<label><div class='fa fa-camera bottom1'>"+
+				"<form enctype='multipart/form-data' id='sky_upform' name='sky_upform' action='' method='post'>"+
+					
+					"<input type='file' name='upfile' value='' id='imgUp1' onchange=\"preImg8(this.id,'imgPre');\" class='scpic'>"+
+				"</form>"+
+			  "</div></label>";
+			var ttt="<div class='ttt' style='width:150px;height:16px;margin-top:20px;margin-left:30px;'></div>";
+			var qxan="<div class='qxan' onclick='haha()'>取消</div>";
+			var fabu="<div class='fabu' onclick='return fb("+data['key'].id+")'>发布</div>";
+			var body1="<div class='body1'>"+top1+center1+tupian8+bottom1+ttt+qxan+fabu+"</div>";
+			div.html("<div class='baocun'>"+body1+"</div>");
+			div.appendTo('body');
+		}
+	})
+}
 
 //创建收藏集的div   style="width:100%;height:4000px;background:green;position:absolute;z-index:51;top:137px;left:-97px"
 
@@ -297,7 +327,8 @@ function xiugaiImg(){
         	
         },
         resetForm: false,
-        clearForm: false
+        clearForm: false,
+        async:false
 	});
 }
 //修改其他数据
@@ -666,19 +697,24 @@ function sky_upfiles(){
         beforeSubmit: function(){
             $("#sky_txt").html("图片上传中...");
         },
-        success: function(data){},
+        success: function(data){
+        	messtxt=data['arr'];
+        },
         resetForm: false,
-        clearForm: false
+        clearForm: false,
+        async:false
 	});
+	return messtxt;
 }
 
 function charuColl(){
 	
 	var gaitu='mei';
 	if($('#imgPre').attr('src')!='/images/2.jpg'){
-		sky_upfiles();
-		gaitu='gai';
+		
+		gaitu=sky_upfiles();
 	}
+	
 	$.ajax({
 		data:{Action:'col',Method:'charuColl',title:$('.tjmc').val(),slogan:$('.tjxy').val(),background:$('.yyy').html(),gaitu:gaitu},
 		success:function(data){
@@ -1296,7 +1332,8 @@ function postImg(){
         	// fff=data['id'];
         },
         resetForm: false,
-        clearForm: false
+        clearForm: false,
+        async:false
 	});
 }
 function fb(id){
@@ -1305,10 +1342,11 @@ function fb(id){
 	}
 	var zou=0;
 	if($('.body1').height()==570){
-		postImg();
 		zou=1;
+		postImg();
 	}
 	//alert($('.center1').val());
+
 	$.ajax({
 		data:{Action:'com',Method:'charuposts',content:$('.center1').val(),zou:zou,commid:id},
 		success:function(data){
@@ -1435,7 +1473,8 @@ function commImg(){
         success: function(data){
         },
         resetForm: false,
-        clearForm: false
+        clearForm: false,
+        async:false
 	});
 }
 
@@ -1580,6 +1619,31 @@ function geren(id){
 }
 function seaContents(data,param){
 	if(data['key']=='没传参'){
-		
+
 	}
+	//用户！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+	var smalldiv1='';
+	var leftdiv1="<div class='col-md-1 hidden-sm-down leftdiv'></div>";//左侧距离
+	for(j in data2['user']){
+		var circle1="<div class='circle' style='margin-left:-20px;z-index:20;'><img src='"+data2['user'][j].tx+"'></div>";//创建人的头像
+		var title1="<div class='title'>"+data2['user'][j].title+"</div>";
+		var biaoyu1="<div class='biaoyu'>"+((data2['user'][j].slogan)?data2['user'][j].slogan:'')+"</div>";
+		if(data2['user'][j].userid==data2['user2']){
+			var guanzhu1='';
+		}else{
+			var guanzhu1="<div class='gz gz2 jiaru"+data2['user'][j].id+"' onclick='click2("+data2['user'][j].id+")' onmouseover='over2("+data2['user'][j].id+")' onmouseout='out2("+data2['user'][j].id+")'>"+data2['user'][j].cun+"</div>";
+		}
+		var chengyuan="<div style='width:100%;height:20px;font-size:14px;line-height:20px;margin-top:5px;'>"+data2['user'][j].membernum+"个成员</div>";
+		var on1="return index('com','"+data2['user'][j].id+",导航2','/com/"+data2['user'][j].id+"')";
+		var img1="<div style='width:100%;overflow:hidden;'><a href='#' onclick=\""+on1+"\"><img src='"+data2['user'][j].bg+"' class='img1'></a></div>";
+		// for(h in data2['user'][j].img){//此处循环的是管理员的div
+		// 	circle1+="<div class='circle' style='margin-left:"+h*20+"px;z-index:"+(data2['user'][j].img.length-h)+"'><img src='"+data2['user'][j].img[h]+"'></div>";
+			
+		// }
+		smalldiv1+="<div class='col-lg-3 col-sm-6 col-xs-6 smalldiv'><div class='bian'>"+img1+"<div class='col-md-12 down'>"+circle1+title1+biaoyu1+chengyuan+guanzhu1+"</div></div></div>";
+	}
+	var maindiv1="<div class='row col-md-11 maindiv'>"+smalldiv1+"</div>";//主div
+	
+	sq=leftdiv1+maindiv1;
+	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sq+'</div>');
 }
