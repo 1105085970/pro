@@ -251,13 +251,13 @@ class ComController extends Controller
         //社区首页返回所需要的值
         if(!empty($request->Param)){
             $id=explode(',',$request->Param);
-           // $clist=DB::table('communities')->get();
-            // foreach($clist as $k=>$v){
-            //     $clistid[]=$clist[$k]->id;
-            // }
-            // if(!in_array($id[0],$clistid)){
-            //     return ['key'=>'不存在','clist'=>$clistid];
-            // }
+            $clist=DB::table('communities')->get();
+            foreach($clist as $k=>$v){
+                $clistid[]=$clist[$k]->id;
+            }
+            if(!in_array($id[0],$clistid)){
+                return ['key'=>'不存在','clist'=>$clistid];
+            }else{
             $arr=DB::table('communities')->where('id',$id[0])->get();
             $commid=$id[0];
             $txid=DB::table('users')->where('id',$arr[0]->userid)->first();
@@ -300,6 +300,7 @@ class ComController extends Controller
             ];
             $posts=$posts->PostContents($request,$list);
             return ['key'=>$arr,'key2'=>$request->Param,'user'=>$arru->username,'bg'=>$bg->path,'shequ'=>'shequ','tx'=>$txpath->path,'posts'=>$posts];
+        }
         }
         $arr=DB::table('communities')->get();
         $alluid=DB::table('users')->get();
@@ -568,7 +569,10 @@ class ComController extends Controller
             $arr['slogan']=$request->slogan;
             $arr['addtime']=time();
             $arr['userid']=Auth::id();
-            $arr['describe']=$request->describe;
+            if($request->describe!=''){
+                $arr['describe']=$request->describe;
+            }
+            
             $arr1=DB::table('communities')->where('id',$request->id)->update($arr);
         return ['cg'=>'cg','arr'=>$arr,'describe'=>$request->describe];
     }

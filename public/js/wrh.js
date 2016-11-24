@@ -1,6 +1,7 @@
 var scj="";
 var leftmargin=360;//距离左侧的距离
 function colContents(data,param){
+	Clear_cache('/col');
 	if(param=='yours'){
 		Clear_cache('/col/yours');
 		$('#Contents').empty();
@@ -239,8 +240,9 @@ function xgscj(scid){
 						"<div class='cl16' ys='#414141' onclick='bianse(16)' onmouseover='ysover(16)'></div>"+
 					   "</div>";
 			var fw="<div class='fw'>公开范围：公开</div>";//
+			var yyy="<div class='yyy' style='display:none;'>"+bj+"</div>";
 			var cuowu="<div class='cuowu'></div>";
-			var nrtc="<div class='baocun1'>"+ctop+tupian+shang+hh+yanse+fw+cuowu+"</div>";//内容填充
+			var nrtc="<div class='baocun1'>"+ctop+tupian+shang+hh+yanse+yyy+fw+cuowu+"</div>";//内容填充
 			div.html("<div class='baocun'>"+nrtc+"</div>");
 			div.appendTo('body');
 			var tjxy=document.getElementById('tjxy');
@@ -308,7 +310,7 @@ function xiugaiColl(xgid){
 		ppp=1;
 	}
 	$.ajax({
-		data:{Action:'col',Method:'xiugaiColl',title:$('.tjmc').val(),slogan:$('.tjxy').val(),background:jj,id:xgid,ppp:ppp},
+		data:{Action:'col',Method:'xiugaiColl',title:$('.tjmc').val(),slogan:$('.tjxy').val(),background:$('.yyy').html(),id:xgid,ppp:ppp},
 		success:function(data){
 			if(data['cg']=='cg'){
 				haha();//移除修改的框
@@ -473,13 +475,13 @@ function chuangjian(){
 	var gkfw="<div class='gkfw'>公开范围：<select><option>公开</option></select></div>";
 	var wfgg="<div class='wfgg'>设定后无法更改</div>";
 	var gxxy="<div class='gxxy'><input type='text' id='igxxy' placeholder='个性宣言' class='igxxy'/></div>";
-	var tishu="<div class='tishu' style='width:40px;height:20px;position:absolute;right:20px;'>0/80</div>";
+	var zishu="<div class='zishu' style='width:40px;height:20px;position:absolute;right:20px;'>0/80</div>";
 	var tishi="<div class='tishi' style='width:200px;height:50px;margin-top:10px;margin-left:10px;'></div>";
 	var quxiao="<div class='quxiao' onclick='haha()'>取消</div>";
 	var mingcheng=$('iname').val();
 	var xuanyan=$('igxxy').val();
 	var cjjh="<div class='cjjh' onclick='return createjh()'>创建</div>";
-	var hj=cjscj+name+gkfw+wfgg+gxxy+tishu+tishi+quxiao+cjjh;
+	var hj=cjscj+name+gkfw+wfgg+gxxy+zishu+tishi+quxiao+cjjh;
 	div.html("<div class='col-lg-5 col-md-8 col-sm-10 col-xs-12 fabiao'>"+hj+"</div>");
 	div.appendTo('body');
 	var t1;
@@ -569,7 +571,7 @@ function createjh(){
 	$(".fabiao").remove();
 	var div=bd();
 	var ctop="<div class='ctop'><div class='fa fa-remove remove' onclick='haha()'></div><div class='xiugai'>修改收藏集</div><div class='bc' onclick='charuColl()'>保存</div></div>";
-	var tupian="<div class='tupian'><img id='imgPre' src='/images/sqmrbg.jpg'></div>";
+	var tupian="<div class='tupian'><img id='imgPre' src='/images/2.jpg'></div>";
 	var shang="<label><div class='fa fa-camera shang'>"+
 				"<form enctype='multipart/form-data' id='sky_upform' name='sky_upform' action='' method='post'>"+
 					"<input type='file' name='upfile' value='' id='imgUp' onchange=\"preImg(this.id,'imgPre');\" class='scpic'>"+
@@ -599,19 +601,14 @@ function createjh(){
 				"<div class='cl15' ys='#778F9B' onclick='bianse(15)' onmouseover='ysover(15)'></div>"+
 				"<div class='cl16' ys='#414141' onclick='bianse(16)' onmouseover='ysover(16)'></div>"+
 			   "</div>";
+	var yyy="<div class='yyy' style='display:none;'>#00ABC0</div>";
 	var fw="<div class='fw'>公开范围：公开</div>";
 	var cuowu="<div class='cuowu'></div>";
-	var nrtc="<div class='baocun1'>"+ctop+tupian+shang+hh+yanse+fw+cuowu+"</div>";//内容填充
+	var nrtc="<div class='baocun1'>"+ctop+tupian+shang+hh+yanse+yyy+fw+cuowu+"</div>";//内容填充
 	div.html("<div class='baocun'>"+nrtc+"</div>");
 	div.appendTo('body');
 	var tjxy=document.getElementById('tjxy');
 	//显示剩余字数的方法
-	$('.scpic').on('focus',function(){
-		
-	})
-	$('.scpic').on('blur',function(){
-		
-	})
 	var t1;
 	tjxy.onfocus=function(){
 		t1=setInterval(function(){
@@ -649,12 +646,13 @@ function xycd(){
 	})
 	
 }
-var jj='#00ABC0';
+
 function bianse(n){
-	jj=$('.cl'+n).attr('ys');
+	var jj=$('.cl'+n).attr('ys');
 	$('.hh').css('background',jj);
 	$('.tjmc').css('background',jj);
 	$('.tjxy').css('background',jj);
+	$('.yyy').html(jj);
 }
 function ysover(n){
 	$('.cl'+n).css('cursor','pointer');
@@ -675,13 +673,14 @@ function sky_upfiles(){
 }
 
 function charuColl(){
+	
 	var gaitu='mei';
-	if($('#imgPre').attr('src')!='/images/1.jpg'){
+	if($('#imgPre').attr('src')!='/images/2.jpg'){
 		sky_upfiles();
 		gaitu='gai';
 	}
 	$.ajax({
-		data:{Action:'col',Method:'charuColl',title:$('.tjmc').val(),slogan:$('.tjxy').val(),background:jj,gaitu:gaitu},
+		data:{Action:'col',Method:'charuColl',title:$('.tjmc').val(),slogan:$('.tjxy').val(),background:$('.yyy').html(),gaitu:gaitu},
 		success:function(data){
 			if(data['cg']=='cg'){
 				Clear_cache('/col/yours');
@@ -1114,7 +1113,7 @@ function comContents(data2,Param){
 
 		// }else{
 			var div=createTc();
-			
+			console.log(data2);
 			//var share="<div class='fa fa-share-alt share'></div>";
 			var duo="<div class='fa fa-ellipsis-v duo' onclick='fang2("+data2['key'][0]['id']+")' onmouseover='dmouse()'></div>";
 			var tou="<div class='circle sqcircle' style='margin-left:-40px;z-index:20;'><img src='"+data2.tx+"'></div>";
@@ -1369,7 +1368,7 @@ function xgsq(scid){
 			//("+scid+","+picid+","+path+")     
 			var ctop="<div class='ctop'><div class='fa fa-remove remove' onclick='haha()'></div><div class='xiugai'>修改社群</div><div class='bc' onclick='xiugaicomm("+scid+")'>修改</div></div>";
 			var hpicid="<input class='picid' type='hidden' value='"+picid+"'>";
-			var hpath="<input class='path' type='hidden' value='"+path+"'>";
+			var hpath="<input class='hpath' type='hidden' value='"+path+"'>";
 			var tupian="<div class='tupian'><img id='imgPre' src='"+path+"'></div>";
 			var shang="<label><div class='fa fa-camera shang'>"+
 				"<form enctype='multipart/form-data' id='sky_upform' name='sky_upform' action='' method='post'>"+
@@ -1442,10 +1441,14 @@ function commImg(){
 
 function xiugaicomm(xgid){
 	var picid=$('.picid').val();
-	var path=$('.path').val();
+	var path=$('.hpath').val();
+	// alert(path);
+	// alert($('#imgPre').attr('src'));
+	// return;
 	var ccc=0;
 	if($('#imgPre').attr('src')!=path){
 		ccc=1;
+		//alert(ccc);
 		commImg();
 	}
 	$.ajax({
@@ -1467,9 +1470,9 @@ function xiugaicomm(xgid){
 			var t=setInterval(function(){
 				if(i%2==0){
 					$('.cuowu').empty();
-					if(cuo['title']=='请填写收藏集名称'){
+					if(cuo['title']=='请填写社群名称'){
 						var tt="<span class='fa fa-exclamation-circle'>&nbsp;&nbsp;"+cuo['title']+"</div>";
-					}else if(cuo['title']=='收藏集名称已存在'){
+					}else if(cuo['title']=='社群名称已存在'){
 						var tt="<span class='fa fa-exclamation-circle'>&nbsp;&nbsp;"+cuo['title']+"</div>";
 					}else{
 						var tt='';
@@ -1576,5 +1579,7 @@ function geren(id){
 	index('pro',id,'/pro/'+id);
 }
 function seaContents(data,param){
-	console.log(data);
+	if(data['key']=='没传参'){
+		
+	}
 }

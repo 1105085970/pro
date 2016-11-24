@@ -8,7 +8,7 @@
 */
 
 namespace App\Http\Controllers;
-
+use DB;
 use Illuminate\Http\Request;
 
 class SeaController extends Controller
@@ -34,8 +34,18 @@ class SeaController extends Controller
 
     //Post请求主内容
     public function PostContents(Request $request){
-        
-        return ['key'=>'Value','key2'=>'Value2'];
+        $bian=$request->Param;//接到的参数
+        if($bian==''){
+            return ['key'=>'没传参'];
+        }
+        $user=DB::table('users')->where('username','like','%'.$bian.'%')->get();
+        $cd=count($user);
+        if($cd>0){
+            foreach($user as $k=>$v){
+                //
+            }
+        }
+        return ['user'=>$user,'key2'=>$cd];
     }
 
 }

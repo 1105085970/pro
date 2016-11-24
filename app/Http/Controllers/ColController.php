@@ -269,12 +269,12 @@ class ColController extends Controller
             $arr1=DB::table('collections')->insert($arr);
         return ['cg'=>'cg','background'=>$request->background];
     }
-    public function Postfztp(Request $request){
-        // move_uploaded_file($request->url,'/100.jpg');
-        file_put_contents('E:/wamp/www/aaa.jpg',$request->url);
-        //move_uploaded_file('/22.jpg','/111.jpg');
-        return ['url'=>$request->url];
-    }
+    // public function Postfztp(Request $request){
+    //     // move_uploaded_file($request->url,'/100.jpg');
+    //     file_put_contents('E:/wamp/www/aaa.jpg',$request->url);
+    //     //move_uploaded_file('/22.jpg','/111.jpg');
+    //     return ['url'=>$request->url];
+    // }
     //判断
     public function Postcaozuo(Request $request){
         $arr=DB::table('collections')->where('id',$request->scid)->first();
