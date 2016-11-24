@@ -122,6 +122,17 @@ class ColController extends Controller
         //点击某一个收藏级后出现的页面
         if(!empty($request->Param)){
             $id=explode(',',$request->Param);
+            $clist=DB::table('collections')->get();
+            foreach($clist as $k=>$v){
+                $clistid[]=$clist[$k]->id;
+            }
+            $ai=0;
+            if(in_array($id[0],$clistid)){
+                $ai=1;
+            }
+            if($ai==0){
+                return ['key'=>'不存在','clist'=>$clistid];
+            }
             $arr=DB::table('collections')->where('id',$id[0])->first();
             $collid=$id[0];
             foreach($arr as $k=>$v){

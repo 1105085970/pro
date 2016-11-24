@@ -72,37 +72,47 @@ function colContents(data,param){
 		$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+scj+'</div>');
 		return;
 	}
-	
-	if(data['panduan']=='tiao'){
-		$('.bigdiv').remove();
-		var div=createT();
-		var duo="<div class='fa fa-ellipsis-v duo' onclick='fang("+data['key']['id']+")' onmouseover='dmouse()'></div>";
-		var tou="<div class='tou'><img src='"+data['tx']+"' /></div>";
-		var zw="<div style='height:36px;width:100%;'></div>";
-		var user="<div class='user'>"+data['user']+"</div>";
-		//
-		//
-		//用户的ID用来查找个人资料
-		var userid="<div class='user'>"+data['userid']+"</div>";
-		//
-		//
-		//点击某一个收藏级显示该收藏集里的所有帖子
-		var title2="<div class='title2'>"+data['key']['title']+"</div>";
-		var xuanyan="<div class='xuanyan'>"+((data['key']['slogan'])?data['key']['slogan']:'这个人很懒，没有写任何东西')+"</div>";
-		//var guan="<span class='guan guan"+data['key'].id+"' onclick='gclick1("+data['key'].id+")' onmouseover='gover("+data['key'].id+")' onmouseout='gout("+data['key'].id+")'>"+data['key'].cun+"</span>";
-		var guan='';
-		var tleft="<div class='col-lg-3 col-sm-4 col-xs-4 tleft'>"+duo+"<img src='"+data['bg']+"' class='timg'><div style='width:100%;height:100%;background:"+data['key'].background+";'>"+tou+zw+user+title2+xuanyan+guan+"</div></div>";//跳转至后的左侧div
-		var leftdiv="<div class='col-lg-1 col-md-1 col-sm-1 col-xs-1 tleft'></div>";
-		
-		var mainz="<div class='zhu' onclick='addPost1("+data['key']['id']+")' style='margin-top:20px;'><div class='stx'><img src='/images/mrtx.jpg' style='margin-top:15px;margin-left:20px;display:block;float:left;'></div><div style='margin-top:15px;margin-left:20px;float:left;line-height:40px;color:#BDBDBD'>分享内容...</div><div class='zhao'><img style='margin-top:15px;margin-right:20px;display:block;float:right;' src='/images/zhaoxiang.jpg'></div></div>";
-			var main8="<div class='row' id='scjcontent' style='margin-top:0px;width:100%'></div>";
+	if(data['key']!='不存在'){
+		if(data['panduan']=='tiao'){
+			$('.bigdiv').remove();
+			var div=createT();
+			var duo="<div class='fa fa-ellipsis-v duo' onclick='fang("+data['key']['id']+")' onmouseover='dmouse()'></div>";
+			var tou="<div class='tou'><img src='"+data['tx']+"' /></div>";
+			var zw="<div style='height:36px;width:100%;'></div>";
+			var user="<div class='user'>"+data['user']+"</div>";
+			//
+			//
+			//用户的ID用来查找个人资料
+			var userid="<div class='user'>"+data['userid']+"</div>";
+			//
+			//
+			//点击某一个收藏级显示该收藏集里的所有帖子
+			var title2="<div class='title2'>"+data['key']['title']+"</div>";
+			var xuanyan="<div class='xuanyan'>"+((data['key']['slogan'])?data['key']['slogan']:'这个人很懒，没有写任何东西')+"</div>";
+			if(data['uid']==data['userid']){
+				var guan='';
+			}else{
+				var guan="<span class='guan guan"+data['key'].id+"' onclick='gclick1("+data['key'].id+")' onmouseover='gover("+data['key'].id+")' onmouseout='gout("+data['key'].id+")'>"+data['key'].cun+"</span>";
+			}
+			
+			//var guan='';
+
+			var tleft="<div class='col-lg-3 col-sm-4 col-xs-4 tleft'>"+duo+"<img src='"+data['bg']+"' class='timg'><div style='width:100%;height:100%;background:"+data['key'].background+";'>"+tou+zw+user+title2+xuanyan+guan+"</div></div>";//跳转至后的左侧div
+			var leftdiv="<div class='col-lg-1 col-md-1 col-sm-1 col-xs-1 tleft'></div>";
+			
+			var mainz="<div class='zhu' onclick='addPost1("+data['key']['id']+")' style='margin-top:20px;'><div class='stx'><img src='/images/mrtx.jpg' style='margin-top:15px;margin-left:20px;display:block;float:left;'></div><div style='margin-top:15px;margin-left:20px;float:left;line-height:40px;color:#BDBDBD'>分享内容...</div><div class='zhao'><img style='margin-top:15px;margin-right:20px;display:block;float:right;' src='/images/zhaoxiang.jpg'></div></div>";
+				var main8="<div class='row' id='scjcontent' style='margin-top:0px;width:100%'></div>";
 
 
-		//var main6="<div class='row' id='scjcontent' style='width:100%'></div>";
-		div.html(tleft+mainz+main8);
-		div.appendTo('#Contents');
-		
-		homContents(data.posts);
+			//var main6="<div class='row' id='scjcontent' style='width:100%'></div>";
+			div.html(tleft+mainz+main8);
+			div.appendTo('#Contents');
+			
+			homContents(data.posts);
+			return;
+		}
+	}else{
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="font-size:50px;line-height:50px;margin-left:24%;margin-top:100px;"><img src="/images/404.png"></div>');
 		return;
 	}
 	var div=createScj();
@@ -944,8 +954,8 @@ function comContents(data2,Param){
 		if(data2['key']=='不存在'){
 			var div1=meiyou1();
 			var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
-			var mm2="<div class='mm2'>该社群不存在。</div>";
-			var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+			var mm2="<div class='mm2'><img src='/images/404.png'></div>";
+			var zhu="<div class='col-md-6' style='margin-top:100px;'>"+mm2+"</div>";
 			div1.html(yc+zhu);
 			div1.appendTo("#Contents");
 			return;
@@ -995,8 +1005,8 @@ function comContents(data2,Param){
 		if(data2['key']=='不存在'){
 			var div1=meiyou1();
 			var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
-			var mm2="<div class='mm2'>该社群不存在。</div>";
-			var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+			var mm2="<div class='mm2'><img src='/images/404.png'></div>";
+			var zhu="<div class='col-md-6' style='margin-top:100px;'>"+mm2+"</div>";
 			div1.html(yc+zhu);
 			div1.appendTo("#Contents");
 			return;
@@ -1048,8 +1058,8 @@ function comContents(data2,Param){
 		if(data2['key']=='不存在'){
 			var div1=meiyou1();
 			var yc="<div class='col-md-3 hidden-sm-down leftdiv'></div>";
-			var mm2="<div class='mm2'>该社群不存在。</div>";
-			var zhu="<div class='col-md-6' style='margin-top:200px;'>"+mm2+"</div>";
+			var mm2="<div class='mm2'><img src='/images/404.png'></div>";
+			var zhu="<div class='col-md-6' style='margin-top:100px;'>"+mm2+"</div>";
 			div1.html(yc+zhu);
 			div1.appendTo("#Contents");
 			return;
@@ -1203,7 +1213,7 @@ console.log(data2['key']);
 			if(data2['gbg']=='管理'){
 				var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='guanli("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")' style='background:#0F9D58'>管理</span>";
 			}else{
-				var guan="";
+				var guan="<span class='guan jiaru"+data2['key'][0].id+"' onclick='click2("+data2['key'][0].id+")' onmouseover='over2("+data2['key'][0].id+")' onmouseout='out2("+data2['key'][0].id+")' style='background:#0F9D58'>"+data2['key'][0].cun+"</span>";
 			}
 			if(data2['key'][0].describe==null){
 				var sqjj="<div></div>";
@@ -1222,7 +1232,7 @@ console.log(data2['key']);
 			return;
 		}
 	}else{
-		$('#Contents').html('<div class="row bigdiv col-md-11" style="font-size:50px;line-height:50px;margin-left:27%;margin-top:200px;">该社群不存在</div>');
+		$('#Contents').html('<div class="row bigdiv col-md-11" style="font-size:50px;line-height:50px;margin-left:24%;margin-top:100px;"><img src="/images/404.png"></div>');
 		return;
 	}
 	$('#Contents').html('<div class="row bigdiv col-md-11" style="">'+sqMain(data2)+'</div>');//此处调用了sqMain(data2)方法
