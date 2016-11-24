@@ -16,7 +16,7 @@
 <body>
 
 	{{-- 全宽容器 --}}
-	<div class="container-fluid">
+	<div id="Body" class="container-fluid">
 
 		{{-- 顶部 --}}
 		<div id="Top">
@@ -69,6 +69,9 @@
 
 		{{-- 左侧导航 --}}
 		<div id="Navigation" class="hidden-sm-down"></div>
+
+		{{-- 隐藏的左侧导航 --}}
+		<div id="Navigation_hide"></div>
 
 		{{-- 主内容 --}}
 		<div id="Contentsbox" class="row">

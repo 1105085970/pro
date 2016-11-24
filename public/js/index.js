@@ -139,6 +139,13 @@ function index(Action='hom',Param='',Url=''){
 		success:function(data){
 			//请求失败时
 			if(!data){Prompt('主内容请求失败'); return;};
+
+			//如果是404
+			if(data==404){
+				my_404();
+				return;
+			}
+
 			//当请求成功时
 			Contentsdata=data;	//存数据
 			State++;	//加状态
@@ -283,6 +290,7 @@ function Top(data,Action,Url){
 		
 	}
 
+
 }
 
 //处理左侧导航函数
@@ -296,6 +304,53 @@ function Left(data,Action){
 	}
 	//覆盖
 	nav.html(a);
+
+	//隐藏的左侧导航
+	var nav_hide=$('#Navigation_hide');
+	
+	nav_hide.empty();
+
+	a='';
+	for(v in data){
+		var i='<i class="fa '+data[v]['Icon']+' fa-fw fa-lg" aria-hidden="true"></i>';
+		a+='<a action="'+data[v]['Param']+'" id="'+((data[v]['Param']==Action)?'Navigation_now':'')+'" href="'+data[v]['Url']+'">'+i+v+'</a>';
+	}
+
+	var on="return index('hom','','/')";
+
+	var b='<div id="Navigation_hide_top" >'
+		 +'<span onclick="'+on+'" >Google+</span>'
+		 +'<i id="Navigation_hide_top_right" class="fa fa-chevron-left" aria-hidden="true"></i>'
+		 +'</div>'
+		 +a;
+
+	nav_hide.append(b);
+
+	//绑定事件
+	$('#Navigation_hide_top_right').click(function(){
+
+		//隐藏左侧
+		$(this).parents('#Navigation_hide').animate({left:'-100%'});
+
+	})
+
+	$('#NavBut').click(function(){
+
+		//显示左侧
+		$('#Navigation_hide').animate({left:'0'});
+
+	})
+
+	$('#Navigation_hide a').click(function(){
+
+		//隐藏左侧
+		$('#Navigation_hide').animate({left:'-100%'});
+		//跳转
+		index($(this).attr('action'),'',$(this).attr('href'));
+
+		return false;
+	})
+
 }
 
 //当浏览器前进后退
@@ -322,8 +377,14 @@ function reduction(data){
 	$("#Contents").animate({opacity:-1,top:"10%"},500,function(){
 		//主内容
 		$("#Contents")[0].innerHTML='';
-		fun=eval(data.Action+'Contents');
-		fun(data.Contentsdata,data.Param);
+		//如果是404
+		if(data.Contentsdata==404){
+			my_404();
+		}else{
+			fun=eval(data.Action+'Contents');
+			fun(data.Contentsdata,data.Param);
+		}
+		
 	}).animate({opacity:1,top:"0%"});
 
 
@@ -359,7 +420,7 @@ function Popup(arr,fun){
 			t.remove();
 			//显示滚动条
 			if(!$('.Black_bg').length)
-				$('body').css('overflow','');
+				$('#Body').css('height','');
 
 		});
 		
@@ -369,7 +430,8 @@ function Popup(arr,fun){
 	});
 
 	//隐藏滚动条
-	$('body').css('overflow','hidden');
+	if($('#Body').height()>$(window).height())
+		$('#Body').css('height',($(window).height()+1)+"px");
 
 	//中间透明行
 	var Transparent_row=$('<div class="row Transparent_row"></div>');
@@ -733,4 +795,21 @@ function File_upload(arr){
 }
 
 
-//
+//404页面
+function my_404(){
+
+	var con=$('#Contents');
+
+	var str='<div style="display: table;" class="col-sm-12">'
+			+'<div class="container_404">'
+            	+'<div class="content">'
+                	+'<div class="title">404 Not Found.</div>'
+            	+'</div>'
+        	+'</div>'
+        	+'</div>';
+
+    con.html(str);
+
+    con.animate({opacity:1,top:"0%"});
+
+}
