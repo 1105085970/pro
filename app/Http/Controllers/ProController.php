@@ -196,6 +196,9 @@ class ProController extends Controller
         //传过来的用户id
         $uid=$request->input('uid');
 
+        //传过来的圈子id
+        $cid=$request->input('cid');
+
         //如果用户没登录 没有传id 传的id等于当前登录用户id 直接返回
         if(!Auth::check() || !$uid || Auth::id()==$uid)return;
 
@@ -229,6 +232,22 @@ class ProController extends Controller
             DB::table('users')
                 ->where('id',$uid)
                 ->update(['fans'=>trim(implode(',',$fans),',')]);
+
+            if($cid){
+                //如果有圈子id
+                $cir=DB::table('circles')->where('id',$cid)->first();
+                //数量
+                $cirnum=$cir->follownum;
+                //圈子内用户数组
+                $folls=explode(',',$cir->followid);
+
+                unset($folls[array_search($uid,$folls)]);
+
+                DB::table('circles')
+                    ->where('id',$cid)
+                    ->update(['follownum'=>--$cirnum,'followid'=>trim(implode(',',$folls),',')]);
+
+            }
 
             //返回 1
             return 1;

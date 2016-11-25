@@ -1482,7 +1482,7 @@ function peo_circles(data,param){
 					+'<div class="peo_circles_row2_name">'
 						+quans[k].name
 						//副标题
-						+'<span> '+quans[k].follownum+' 人</span>'
+						+'<span num="'+quans[k].follownum+'"> '+quans[k].follownum+' 人</span>'
 					+'</div>'
 
 					//按钮
@@ -1610,7 +1610,8 @@ function peo_circles(data,param){
 				data:{
 					Action:'pro',
 					Method:'_follow_do',
-					uid:t.attr('uid')
+					uid:t.attr('uid'),
+					cid:$(this).attr('cid')
 				},
 				success:function(data){
 					if(data==1){
@@ -1620,6 +1621,14 @@ function peo_circles(data,param){
 						Clear_cache('/peo');
 						Clear_cache('/pro/'+t.attr('uid'));
 						Clear_cache('/peo/circles');
+
+						var span=t.parents('.peo_circles_box').find('.peo_circles_row2_name span');
+
+						var num=Number(span.attr('num'))-1;
+
+						span.html(' '+num+' 人');
+
+						span.attr('num',num);
 
 						t.parents('.peo_circles_row3_box').remove();
 
@@ -1838,6 +1847,7 @@ function circles_bo(datas,t){
 	var circles=datas.quans;
 	var quan='';
 	var now2;	//判断用户是否已经在圈子中
+	var quanid='';	//判断用户所在圈子id
 	for(k in circles){
 
 		//圈子内用户ID列表
@@ -1849,7 +1859,8 @@ function circles_bo(datas,t){
 				if(ren[kk]==t.attr('uid')){
 					//用户在这个圈子中
 					now='<i class="fa fa-check" aria-hidden="true"></i> ';
-					now2=1;		
+					now2=1;
+					quanid=circles[k].id;
 				}
 			}
 		}
@@ -1878,7 +1889,7 @@ function circles_bo(datas,t){
 		    +'</div>';
 
 	quan+='<div class="row">'
-			+'<div uid="'+t.attr('uid')+'" class="circles_box_circle_no col-sm-12">'
+			+'<div cid="'+quanid+'" uid="'+t.attr('uid')+'" class="circles_box_circle_no col-sm-12">'
 				+'<i class="fa fa-close" aria-hidden="true"></i> '
 				+'不再关注'
 			+'</div>'

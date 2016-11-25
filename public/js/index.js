@@ -419,8 +419,7 @@ function Popup(arr,fun){
 
 			t.remove();
 			//显示滚动条
-			if(!$('.Black_bg').length)
-				$('#Body').css('height','');
+				$('body').css('overflow','');
 
 		});
 		
@@ -430,8 +429,7 @@ function Popup(arr,fun){
 	});
 
 	//隐藏滚动条
-	if($('#Body').height()>$(window).height())
-		$('#Body').css('height',($(window).height()+1)+"px");
+		$('body').css('overflow','hidden');
 
 	//中间透明行
 	var Transparent_row=$('<div class="row Transparent_row"></div>');
