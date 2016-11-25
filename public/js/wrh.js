@@ -74,6 +74,7 @@ function colContents(data,param){
 	}
 	if(data['key']!='不存在'){
 		if(data['panduan']=='tiao'){
+			console.log('data');
 			$('.bigdiv').remove();
 			var div=createT();
 			var duo="<div class='fa fa-ellipsis-v duo' onclick='fang("+data['key']['id']+")' onmouseover='dmouse()'></div>";
@@ -88,7 +89,7 @@ function colContents(data,param){
 			//
 			//点击某一个收藏级显示该收藏集里的所有帖子
 			var title2="<div class='title2'>"+data['key']['title']+"</div>";
-			var xuanyan="<div class='xuanyan'>"+((data['key']['slogan'])?data['key']['slogan']:'这个人很懒，没有写任何东西')+"</div>";
+			var xuanyan="<div class='xuanyan'>123213"+((data['key']['slogan'])?data['key']['slogan']:'这个人很懒，没有写任何东西')+"</div>";
 			if(data['uid']==data['userid']){
 				var guan='';
 			}else{

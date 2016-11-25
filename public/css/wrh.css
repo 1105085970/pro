@@ -185,10 +185,10 @@
 }
 /*  点击收藏集跳转后的div样式 */
 .tiao{
-	width:1020px;position:absolute;margin-top:0px;margin-left:97px;
+	width:1020px;margin-top:0px;margin-left:97px;
 }
 .tiao1{
-	width:1020px;position:absolute;margin-top:-30px;margin-left:97px;
+	width:1020px;margin-top:-30px;margin-left:97px;
 }
 .tleft{
 	background: #EEE;margin-top:23px;position:fixed;left:0px;top:89px;bottom:0px;z-index:51;margin-left:-15px;
