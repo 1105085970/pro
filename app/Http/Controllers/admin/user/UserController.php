@@ -40,6 +40,7 @@ class UserController extends Controller
       public function xiangqing(Request $request,$targetid){
           $userid=Auth::user()->id;
          //dd($targetid);
+          
          $res=DB::table('users')
                ->where('users.id',$userid)
                ->leftJoin('files','users.picid','=','files.id')
@@ -51,7 +52,10 @@ class UserController extends Controller
                   ->leftJoin('files','users.picid','=','files.id')
                   ->select('users.phone as phone','users.slogan as slogan','users.nickname as nickname','users.introduce as introduce','files.path as path','users.residence as residence')
                   ->first();
-                  
+                  if(!$list){
+              return view("errors.404");
+
+          }
             
          return view('admin.user.xiangqing',['pic'=>$res,'username'=>$res->username,'list'=>$list]);
       }

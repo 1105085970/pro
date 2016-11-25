@@ -60,6 +60,7 @@ class PostsController extends Controller
                   })
                   ->paginate($request->input('show','5'));
                // dd($list);
+              
         return view('admin.posts.xiangqing',['pic'=>$res,'list'=>$list,'request'=>$request,'username'=>$res->username,'list'=>$list]);
       }
   
