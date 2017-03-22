@@ -1900,7 +1900,7 @@ function circles_bo(datas,t){
 }
 
 //添加 修改圈子的事件
-function add_edit_circle(cid=''){
+function add_edit_circle(cid){
 
 	//取消被点击
 	$('.circles_new_qs').click(function(){

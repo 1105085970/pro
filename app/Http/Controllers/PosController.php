@@ -109,6 +109,9 @@ class PosController extends Controller
             //时间
             $v->time=$this->timep($v->time);
 
+            //转换主内容中代码
+            $v->cont=htmlspecialchars($v->cont);
+
             //如果没有主内容
             if(!$v->cont)
                 $v->cont='';
@@ -444,6 +447,9 @@ class PosController extends Controller
 
         //循环数组
         foreach($rows as $k){
+
+            //转换评论中代码
+            $k->cont=htmlspecialchars($k->cont);
 
             //如果有父级
             if($k->pid!='0'){

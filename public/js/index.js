@@ -24,8 +24,9 @@ function bg(background){
 	$('#Newpost').css('background',background);
 }
 
+
 //首页ajax逻辑
-function index(Action='hom',Param='',Url=''){
+function index(Action,Param,Url){
 
 	if(!Action)return;
 
@@ -172,7 +173,7 @@ function index(Action='hom',Param='',Url=''){
 	});
 
 	//保存数据
-	function Re(Data=''){
+	function Re(Data){
 		if(Action=='hom'&&!Param)Url='/';
 		//准备数据
 		if(!Data){
